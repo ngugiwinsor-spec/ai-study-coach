@@ -81,24 +81,25 @@
       font-size: 14px;
     }
 
-    .section {
+    .section,
+    .chat-box,
+    .quiz-box {
       margin-top: 30px;
       background: white;
       padding: 22px;
       border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
     }
 
-    .section h2 {
+    .section h2,
+    .chat-box h2,
+    .quiz-box h2 {
       margin-bottom: 12px;
     }
 
-    .chat-box {
+    .chat-box,
+    .quiz-box {
       display: none;
-      margin-top: 30px;
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
     }
 
     .chat-messages {
@@ -141,24 +142,77 @@
       outline: none;
     }
 
-    .chat-input button {
+    button {
       border: none;
       border-radius: 10px;
       background: #172033;
       color: white;
-      padding: 0 18px;
+      padding: 12px 18px;
       cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:hover {
+      opacity: 0.9;
     }
 
     .start-btn {
       margin-top: 15px;
-      padding: 12px 18px;
-      border: none;
+    }
+
+    .quiz-form {
+      display: grid;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .quiz-form label {
+      font-weight: bold;
+      margin-bottom: -8px;
+    }
+
+    .quiz-form input,
+    .quiz-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
       border-radius: 10px;
-      background: #172033;
-      color: white;
-      cursor: pointer;
       font-size: 15px;
+      background: white;
+    }
+
+    .quiz-question {
+      background: #f8fafc;
+      padding: 18px;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+
+    .quiz-question h3 {
+      margin-bottom: 12px;
+    }
+
+    .option {
+      display: block;
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      background: #f1f5f9;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #eef2ff;
+      font-weight: bold;
+      display: none;
     }
 
     footer {
@@ -192,7 +246,7 @@
       <p>Ask questions and get explanations.</p>
     </div>
 
-    <div class="card" onclick="comingSoon('Quiz Generator')">
+    <div class="card" onclick="openQuiz()">
       <div class="icon">📝</div>
       <h3>Quiz Generator</h3>
       <p>Create quizzes from your study topics.</p>
@@ -230,6 +284,8 @@
     <button class="start-btn" onclick="openTutor()">Open AI Tutor</button>
   </div>
 
+  <!-- AI TUTOR -->
+
   <div class="chat-box" id="chatBox">
 
     <h2>🤖 AI Tutor</h2>
@@ -251,6 +307,54 @@
 
   </div>
 
+  <!-- QUIZ GENERATOR -->
+
+  <div class="quiz-box" id="quizBox">
+
+    <h2>📝 Quiz Generator</h2>
+
+    <p>Create a quiz to test your knowledge.</p>
+
+    <div class="quiz-form">
+
+      <label for="quizTopic">Study topic</label>
+
+      <input
+        id="quizTopic"
+        type="text"
+        placeholder="e.g. Photosynthesis"
+      >
+
+      <label for="quizQuestions">Number of questions</label>
+
+      <select id="quizQuestions">
+        <option value="5">5 questions</option>
+        <option value="10">10 questions</option>
+        <option value="15">15 questions</option>
+      </select>
+
+      <label for="quizDifficulty">Difficulty</label>
+
+      <select id="quizDifficulty">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+
+      <button onclick="generateQuiz()">Generate Quiz</button>
+
+    </div>
+
+    <div id="quizLoading" class="message ai" style="display:none;">
+      Creating your quiz...
+    </div>
+
+    <div id="quizContent"></div>
+
+    <div id="quizResult" class="result"></div>
+
+  </div>
+
 </main>
 
 <footer>
@@ -260,6 +364,9 @@
 <script>
 
 function openTutor() {
+
+  document.getElementById("quizBox").style.display = "none";
+
   document.getElementById("chatBox").style.display = "block";
 
   document.getElementById("chatBox").scrollIntoView({
@@ -269,9 +376,26 @@ function openTutor() {
   document.getElementById("userInput").focus();
 }
 
+function openQuiz() {
+
+  document.getElementById("chatBox").style.display = "none";
+
+  document.getElementById("quizBox").style.display = "block";
+
+  document.getElementById("quizBox").scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
 function comingSoon(feature) {
   alert(feature + " will be added soon!");
 }
+
+
+/* =========================
+   AI TUTOR
+========================= */
 
 async function sendMessage() {
 
@@ -285,7 +409,9 @@ async function sendMessage() {
   }
 
   const userMessage = document.createElement("div");
+
   userMessage.className = "message user";
+
   userMessage.textContent = question;
 
   messages.appendChild(userMessage);
@@ -293,7 +419,9 @@ async function sendMessage() {
   input.value = "";
 
   const loadingMessage = document.createElement("div");
+
   loadingMessage.className = "message ai";
+
   loadingMessage.textContent = "Thinking...";
 
   messages.appendChild(loadingMessage);
@@ -303,6 +431,7 @@ async function sendMessage() {
   try {
 
     const response = await fetch("/api/api/chat", {
+
       method: "POST",
 
       headers: {
@@ -312,6 +441,7 @@ async function sendMessage() {
       body: JSON.stringify({
         message: question
       })
+
     });
 
     const data = await response.json();
@@ -319,14 +449,19 @@ async function sendMessage() {
     loadingMessage.remove();
 
     const aiMessage = document.createElement("div");
+
     aiMessage.className = "message ai";
 
     if (response.ok) {
+
       aiMessage.textContent = data.answer;
+
     } else {
+
       aiMessage.textContent =
         "Sorry, I couldn't get an answer right now. " +
         (data.error || "");
+
     }
 
     messages.appendChild(aiMessage);
@@ -336,6 +471,7 @@ async function sendMessage() {
     loadingMessage.remove();
 
     const errorMessage = document.createElement("div");
+
     errorMessage.className = "message ai";
 
     errorMessage.textContent =
@@ -347,7 +483,289 @@ async function sendMessage() {
   messages.scrollTop = messages.scrollHeight;
 }
 
+
+/* =========================
+   QUIZ GENERATOR
+========================= */
+
+async function generateQuiz() {
+
+  const topic =
+    document.getElementById("quizTopic").value.trim();
+
+  const number =
+    document.getElementById("quizQuestions").value;
+
+  const difficulty =
+    document.getElementById("quizDifficulty").value;
+
+  const quizContent =
+    document.getElementById("quizContent");
+
+  const quizLoading =
+    document.getElementById("quizLoading");
+
+  const quizResult =
+    document.getElementById("quizResult");
+
+  if (!topic) {
+
+    alert("Please enter a study topic.");
+
+    return;
+  }
+
+  quizContent.innerHTML = "";
+
+  quizResult.style.display = "none";
+
+  quizLoading.style.display = "block";
+
+  const prompt = `
+Create a ${number}-question ${difficulty}-difficulty multiple-choice quiz about "${topic}".
+
+Return ONLY valid JSON.
+
+Use exactly this structure:
+
+{
+  "questions": [
+    {
+      "question": "Question text",
+      "options": [
+        "Option A",
+        "Option B",
+        "Option C",
+        "Option D"
+      ],
+      "answer": 0,
+      "explanation": "Short explanation"
+    }
+  ]
+}
+
+The "answer" must be the zero-based number of the correct option.
+
+Make the questions educational and accurate.
+`;
+
+  try {
+
+    const response = await fetch("/api/api/chat", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        message: prompt
+      })
+
+    });
+
+    const data = await response.json();
+
+    quizLoading.style.display = "none";
+
+    if (!response.ok) {
+
+      quizContent.innerHTML =
+        '<div class="message ai">' +
+        (data.error || "Unable to create quiz.") +
+        "</div>";
+
+      return;
+    }
+
+    let quiz;
+
+    try {
+
+      let cleanAnswer = data.answer.trim();
+
+      cleanAnswer =
+        cleanAnswer.replace(/^```json/i, "");
+
+      cleanAnswer =
+        cleanAnswer.replace(/^```/i, "");
+
+      cleanAnswer =
+        cleanAnswer.replace(/```$/i, "");
+
+      quiz = JSON.parse(cleanAnswer);
+
+    } catch (error) {
+
+      quizContent.innerHTML =
+        '<div class="message ai">The AI returned an invalid quiz format. Please try again.</div>';
+
+      return;
+    }
+
+    if (!quiz.questions || !Array.isArray(quiz.questions)) {
+
+      quizContent.innerHTML =
+        '<div class="message ai">No quiz questions were received.</div>';
+
+      return;
+    }
+
+    displayQuiz(quiz.questions);
+
+  } catch (error) {
+
+    quizLoading.style.display = "none";
+
+    quizContent.innerHTML =
+      '<div class="message ai">I couldn\'t connect to the AI. Please try again.</div>';
+  }
+}
+
+
+function displayQuiz(questions) {
+
+  const quizContent =
+    document.getElementById("quizContent");
+
+  const quizResult =
+    document.getElementById("quizResult");
+
+  quizResult.style.display = "none";
+
+  quizContent.innerHTML = "";
+
+  questions.forEach((item, index) => {
+
+    const questionBox =
+      document.createElement("div");
+
+    questionBox.className =
+      "quiz-question";
+
+    const title =
+      document.createElement("h3");
+
+    title.textContent =
+      (index + 1) + ". " + item.question;
+
+    questionBox.appendChild(title);
+
+    item.options.forEach((option, optionIndex) => {
+
+      const label =
+        document.createElement("label");
+
+      label.className = "option";
+
+      const radio =
+        document.createElement("input");
+
+      radio.type = "radio";
+
+      radio.name = "question-" + index;
+
+      radio.value = optionIndex;
+
+      radio.style.marginRight = "8px";
+
+      label.appendChild(radio);
+
+      label.appendChild(
+        document.createTextNode(option)
+      );
+
+      questionBox.appendChild(label);
+
+    });
+
+    quizContent.appendChild(questionBox);
+
+  });
+
+  const submitButton =
+    document.createElement("button");
+
+  submitButton.textContent =
+    "Submit Quiz";
+
+  submitButton.style.marginTop =
+    "20px";
+
+  submitButton.onclick =
+    function() {
+
+      calculateScore(questions);
+
+    };
+
+  quizContent.appendChild(submitButton);
+}
+
+
+function calculateScore(questions) {
+
+  let score = 0;
+
+  questions.forEach((question, index) => {
+
+    const selected =
+      document.querySelector(
+        'input[name="question-' + index + '"]:checked'
+      );
+
+    if (
+      selected &&
+      Number(selected.value) === Number(question.answer)
+    ) {
+
+      score++;
+
+    }
+
+  });
+
+  const quizResult =
+    document.getElementById("quizResult");
+
+  const percentage =
+    Math.round((score / questions.length) * 100);
+
+  let message;
+
+  if (percentage >= 80) {
+
+    message = "Excellent work! 🔥";
+
+  } else if (percentage >= 60) {
+
+    message = "Good job! Keep practicing. 💪";
+
+  } else {
+
+    message = "Keep studying — you can improve! 📚";
+
+  }
+
+  quizResult.innerHTML =
+    "Score: " +
+    score +
+    "/" +
+    questions.length +
+    " (" +
+    percentage +
+    "%)<br><br>" +
+    message;
+
+  quizResult.style.display = "block";
+
+  quizResult.scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
 </script>
 
 </body>
-</html>
+  </html>
