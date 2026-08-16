@@ -6,12 +6,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const body = req.body || {};
-    const message = body.message;
+    const { message } = req.body || {};
 
-    if (!message || typeof message !== "string" || !message.trim()) {
+    if (!message || !message.trim()) {
       return res.status(400).json({
-        error: "Message is required."
+        error: "Message is required"
       });
     }
 
@@ -19,49 +18,44 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
       return res.status(500).json({
-        error: "OPENROUTER_API_KEY is not configured in Vercel."
+        error: "OPENROUTER_API_KEY is missing"
       });
     }
 
-    const openRouterResponse = await fetch(
+    const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
-
         headers: {
-          "Authorization": "Bearer " + apiKey,
+          "Authorization": `Bearer ${apiKey}`,
           "Content-Type": "application/json",
           "HTTP-Referer": "https://ai-study-coach-eta.vercel.app",
           "X-Title": "AI Study Coach"
         },
-
         body: JSON.stringify({
           model: "openrouter/free",
-
           messages: [
             {
               role: "system",
               content:
-                "You are AI Study Coach. You help students learn academic subjects clearly. Explain concepts simply, provide examples, create quizzes, flashcards and study plans when requested. Be accurate, encouraging and educational."
+                "You are AI Study Coach. Help students understand academic topics clearly. Give accurate explanations, examples, quizzes, flashcards, and study plans when requested."
             },
             {
               role: "user",
               content: message.trim()
             }
-          ],
-
-          temperature: 0.7
+          ]
         })
       }
     );
 
-    const data = await openRouterResponse.json();
+    const data = await response.json();
 
-    if (!openRouterResponse.ok) {
+    if (!response.ok) {
       return res.status(500).json({
         error:
           data?.error?.message ||
-          "OpenRouter returned an error."
+          "OpenRouter request failed"
       });
     }
 
@@ -70,21 +64,18 @@ export default async function handler(req, res) {
 
     if (!answer) {
       return res.status(500).json({
-        error: "The AI returned no answer."
+        error: "No answer was returned by the AI"
       });
     }
 
     return res.status(200).json({
-      answer: answer
+      answer
     });
 
   } catch (error) {
-    console.error("AI API error:", error);
-
     return res.status(500).json({
-      error:
-        error?.message ||
-        "Unable to connect to the AI."
+      error: error?.message ||
+        "Unable to connect to the AI"
     });
   }
-      }
+        }
