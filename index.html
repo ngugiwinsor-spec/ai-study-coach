@@ -1,1170 +1,601 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Study Coach</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Study Coach</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #f5f7fb;
-      color: #172033;
-    }
-
-    header {
-      background: #172033;
-      color: white;
-      padding: 22px;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 26px;
-      margin-bottom: 6px;
-    }
-
-    header p {
-      color: #cbd5e1;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 25px 18px;
-    }
-
-    .welcome {
-      margin-bottom: 25px;
-    }
-
-    .welcome h2 {
-      margin-bottom: 8px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-    }
-
-    .card {
-      background: white;
-      padding: 22px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-    }
-
-    .icon {
-      font-size: 30px;
-      margin-bottom: 12px;
-    }
-
-    .card h3 {
-      margin-bottom: 7px;
-    }
-
-    .card p {
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    .section,
-    .chat-box,
-    .quiz-box,
-    .flashcard-box {
-      margin-top: 30px;
-      background: white;
-      padding: 22px;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
-    }
-
-    .section h2,
-    .chat-box h2,
-    .quiz-box h2,
-    .flashcard-box h2 {
-      margin-bottom: 12px;
-    }
-
-    .chat-box,
-    .quiz-box,
-    .flashcard-box {
-      display: none;
-    }
-
-    .chat-messages {
-      min-height: 180px;
-      max-height: 400px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-    }
-
-    .message {
-      padding: 12px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-    }
-
-    .user {
-      background: #e8eefc;
-      margin-left: 20px;
-    }
-
-    .ai {
-      background: #f1f5f9;
-      margin-right: 20px;
-    }
-
-    .chat-input {
-      display: flex;
-      gap: 8px;
-    }
-
-    .chat-input textarea {
-      flex: 1;
-      min-height: 50px;
-      resize: vertical;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    button {
-      border: none;
-      border-radius: 10px;
-      background: #172033;
-      color: white;
-      padding: 12px 18px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    .start-btn {
-      margin-top: 15px;
-    }
-
-    .quiz-form,
-    .flashcard-form {
-      display: grid;
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .quiz-form label,
-    .flashcard-form label {
-      font-weight: bold;
-      margin-bottom: -8px;
-    }
-
-    .quiz-form input,
-    .quiz-form select,
-    .flashcard-form input,
-    .flashcard-form select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 15px;
-      background: white;
-    }
-
-    .quiz-question {
-      background: #f8fafc;
-      padding: 18px;
-      border-radius: 12px;
-      margin-top: 15px;
-    }
-
-    .quiz-question h3 {
-      margin-bottom: 12px;
-    }
-
-    .option {
-      display: block;
-      background: white;
-      border: 1px solid #cbd5e1;
-      padding: 12px;
-      border-radius: 10px;
-      margin-top: 8px;
-      cursor: pointer;
-    }
-
-    .option:hover {
-      background: #f1f5f9;
-    }
-
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 10px;
-      background: #eef2ff;
-      font-weight: bold;
-      display: none;
-    }
-
-    /* FLASHCARDS */
-
-    .flashcard {
-      margin-top: 25px;
-      min-height: 230px;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-
-    .flashcard-inner {
-      position: relative;
-      width: 100%;
-      min-height: 230px;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-
-    .flashcard.flipped .flashcard-inner {
-      transform: rotateY(180deg);
-    }
-
-    .flashcard-front,
-    .flashcard-back {
-      position: absolute;
-      width: 100%;
-      min-height: 230px;
-      backface-visibility: hidden;
-      border-radius: 16px;
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .flashcard-front {
-      background: #eef2ff;
-    }
-
-    .flashcard-back {
-      background: #f1f5f9;
-      transform: rotateY(180deg);
-    }
-
-    .flashcard-front h3,
-    .flashcard-back h3 {
-      margin-bottom: 15px;
-    }
-
-    .flashcard-controls {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .flashcard-counter {
-      text-align: center;
-      margin-top: 15px;
-      color: #64748b;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #64748b;
-      font-size: 13px;
-    }
-  </style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f5f7fb;color:#172033}
+header{background:#172033;color:white;padding:22px;text-align:center}
+header h1{font-size:26px;margin-bottom:6px}
+header p{color:#cbd5e1}
+.container{max-width:900px;margin:auto;padding:25px 18px}
+.welcome{margin-bottom:25px}
+.welcome h2{margin-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
+.card{background:white;padding:22px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.07);cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-3px)}
+.icon{font-size:30px;margin-bottom:12px}
+.card h3{margin-bottom:7px}
+.card p{color:#64748b;font-size:14px}
+.section,.tool{margin-top:30px;background:white;padding:22px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.07)}
+.tool{display:none}
+button{border:0;border-radius:10px;background:#172033;color:white;padding:12px 18px;cursor:pointer;font-size:15px}
+.start-btn{margin-top:15px}
+.chat-messages{min-height:180px;max-height:400px;overflow-y:auto;margin:15px 0}
+.message{padding:12px;border-radius:12px;margin-bottom:10px;line-height:1.5;white-space:pre-wrap}
+.user{background:#e8eefc;margin-left:20px}
+.ai{background:#f1f5f9;margin-right:20px}
+.chat-input{display:flex;gap:8px}
+.chat-input textarea{flex:1;min-height:50px;resize:vertical;padding:12px;border:1px solid #cbd5e1;border-radius:10px}
+.form{display:grid;gap:14px;margin-top:18px}
+.form input,.form select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px;background:white}
+.question{background:#f8fafc;padding:18px;border-radius:12px;margin-top:15px}
+.option{display:block;background:white;border:1px solid #cbd5e1;padding:12px;border-radius:10px;margin-top:8px}
+.result{margin-top:20px;padding:15px;border-radius:10px;background:#eef2ff;font-weight:bold}
+.flashcard{margin-top:25px;min-height:230px;perspective:1000px;cursor:pointer}
+.flash-inner{position:relative;width:100%;min-height:230px;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{position:absolute;width:100%;min-height:230px;backface-visibility:hidden;border-radius:16px;padding:30px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.flash-front{background:#eef2ff}
+.flash-back{background:#f1f5f9;transform:rotateY(180deg)}
+.flash-front h3,.flash-back h3{margin-bottom:15px}
+.controls{display:flex;justify-content:center;gap:10px;margin-top:20px}
+.counter{text-align:center;margin-top:15px;color:#64748b}
+footer{text-align:center;padding:30px;color:#64748b;font-size:13px}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h1>📚 AI Study Coach</h1>
-  <p>Your personal study companion</p>
+<h1>📚 AI Study Coach</h1>
+<p>Your personal study companion</p>
 </header>
 
 <main class="container">
 
-  <div class="welcome">
-    <h2>Welcome, Student 👋</h2>
-    <p>What would you like to do today?</p>
-  </div>
+<div class="welcome">
+<h2>Welcome, Student 👋</h2>
+<p>What would you like to do today?</p>
+</div>
 
-  <div class="grid">
+<div class="grid">
 
-    <div class="card" onclick="openTutor()">
-      <div class="icon">🤖</div>
-      <h3>AI Tutor</h3>
-      <p>Ask questions and get explanations.</p>
-    </div>
+<div class="card" id="tutorCard">
+<div class="icon">🤖</div>
+<h3>AI Tutor</h3>
+<p>Ask questions and get explanations.</p>
+</div>
 
-    <div class="card" onclick="openQuiz()">
-      <div class="icon">📝</div>
-      <h3>Quiz Generator</h3>
-      <p>Create quizzes from your study topics.</p>
-    </div>
+<div class="card" id="quizCard">
+<div class="icon">📝</div>
+<h3>Quiz Generator</h3>
+<p>Create quizzes from your study topics.</p>
+</div>
 
-    <div class="card" onclick="openFlashcards()">
-      <div class="icon">🧠</div>
-      <h3>Flashcards</h3>
-      <p>Turn your topics into flashcards.</p>
-    </div>
+<div class="card" id="flashcardCard">
+<div class="icon">🧠</div>
+<h3>Flashcards</h3>
+<p>Turn your topics into flashcards.</p>
+</div>
 
-    <div class="card" onclick="comingSoon('Study Planner')">
-      <div class="icon">📅</div>
-      <h3>Study Planner</h3>
-      <p>Plan your study sessions.</p>
-    </div>
+<div class="card" onclick="alert('Study Planner will be added soon!')">
+<div class="icon">📅</div>
+<h3>Study Planner</h3>
+<p>Plan your study sessions.</p>
+</div>
 
-    <div class="card" onclick="comingSoon('My Notes')">
-      <div class="icon">📖</div>
-      <h3>My Notes</h3>
-      <p>Keep your study notes organized.</p>
-    </div>
+<div class="card" onclick="alert('My Notes will be added soon!')">
+<div class="icon">📖</div>
+<h3>My Notes</h3>
+<p>Keep your study notes organized.</p>
+</div>
 
-    <div class="card" onclick="comingSoon('Progress')">
-      <div class="icon">📊</div>
-      <h3>Progress</h3>
-      <p>Track your study progress.</p>
-    </div>
+<div class="card" onclick="alert('Progress will be added soon!')">
+<div class="icon">📊</div>
+<h3>Progress</h3>
+<p>Track your study progress.</p>
+</div>
 
-  </div>
+</div>
 
-  <div class="section">
-    <h2>🎯 Today's Focus</h2>
-    <p>Choose a tool above and start learning.</p>
-    <button class="start-btn" onclick="openTutor()">Open AI Tutor</button>
-  </div>
+<div class="section">
+<h2>🎯 Today's Focus</h2>
+<p>Choose a tool above and start learning.</p>
+<button class="start-btn" id="startTutor">Open AI Tutor</button>
+</div>
 
-  <!-- AI TUTOR -->
+<!-- AI TUTOR -->
 
-  <div class="chat-box" id="chatBox">
+<div class="tool" id="chatBox">
+<h2>🤖 AI Tutor</h2>
 
-    <h2>🤖 AI Tutor</h2>
+<div class="chat-messages" id="messages">
+<div class="message ai">
+Hi! I'm your AI Study Coach. Ask me anything you're studying and I'll help you understand it.
+</div>
+</div>
 
-    <div class="chat-messages" id="messages">
-      <div class="message ai">
-        Hi! I'm your AI Study Coach. Ask me anything you're studying and I'll help you understand it.
-      </div>
-    </div>
+<div class="chat-input">
+<textarea id="userInput" placeholder="Ask your study question..."></textarea>
+<button id="sendButton">Send</button>
+</div>
+</div>
 
-    <div class="chat-input">
-      <textarea
-        id="userInput"
-        placeholder="Ask your study question..."
-      ></textarea>
+<!-- QUIZ -->
 
-      <button onclick="sendMessage()">Send</button>
-    </div>
+<div class="tool" id="quizBox">
+<h2>📝 Quiz Generator</h2>
+<p>Create a quiz to test your knowledge.</p>
 
-  </div>
+<div class="form">
+<label>Study topic</label>
+<input id="quizTopic" placeholder="e.g. Photosynthesis">
 
-  <!-- QUIZ GENERATOR -->
+<label>Number of questions</label>
+<select id="quizQuestions">
+<option value="5">5 questions</option>
+<option value="10">10 questions</option>
+<option value="15">15 questions</option>
+</select>
 
-  <div class="quiz-box" id="quizBox">
+<label>Difficulty</label>
+<select id="quizDifficulty">
+<option value="easy">Easy</option>
+<option value="medium" selected>Medium</option>
+<option value="hard">Hard</option>
+</select>
 
-    <h2>📝 Quiz Generator</h2>
+<button id="generateQuizButton">Generate Quiz</button>
+</div>
 
-    <p>Create a quiz to test your knowledge.</p>
+<div id="quizLoading" class="message ai" style="display:none">
+Creating your quiz...
+</div>
 
-    <div class="quiz-form">
+<div id="quizContent"></div>
+<div id="quizResult"></div>
+</div>
 
-      <label for="quizTopic">Study topic</label>
+<!-- FLASHCARDS -->
 
-      <input
-        id="quizTopic"
-        type="text"
-        placeholder="e.g. Photosynthesis"
-      >
+<div class="tool" id="flashcardBox">
+<h2>🧠 Flashcards</h2>
+<p>Generate flashcards to help you remember important concepts.</p>
 
-      <label for="quizQuestions">Number of questions</label>
+<div class="form">
+<label>Study topic</label>
+<input id="flashcardTopic" placeholder="e.g. Humanism in Psychology">
 
-      <select id="quizQuestions">
-        <option value="5">5 questions</option>
-        <option value="10">10 questions</option>
-        <option value="15">15 questions</option>
-      </select>
+<label>Number of cards</label>
+<select id="flashcardNumber">
+<option value="5">5 cards</option>
+<option value="10">10 cards</option>
+<option value="15">15 cards</option>
+</select>
 
-      <label for="quizDifficulty">Difficulty</label>
+<button id="generateFlashcardsButton">Generate Flashcards</button>
+</div>
 
-      <select id="quizDifficulty">
-        <option value="easy">Easy</option>
-        <option value="medium" selected>Medium</option>
-        <option value="hard">Hard</option>
-      </select>
+<div id="flashcardLoading" class="message ai" style="display:none">
+Creating your flashcards...
+</div>
 
-      <button onclick="generateQuiz()">Generate Quiz</button>
-
-    </div>
-
-    <div id="quizLoading" class="message ai" style="display:none;">
-      Creating your quiz...
-    </div>
-
-    <div id="quizContent"></div>
-
-    <div id="quizResult" class="result"></div>
-
-  </div>
-
-  <!-- FLASHCARDS -->
-
-  <div class="flashcard-box" id="flashcardBox">
-
-    <h2>🧠 Flashcards</h2>
-
-    <p>Generate flashcards to help you remember important concepts.</p>
-
-    <div class="flashcard-form">
-
-      <label for="flashcardTopic">Study topic</label>
-
-      <input
-        id="flashcardTopic"
-        type="text"
-        placeholder="e.g. Humanism in Psychology"
-      >
-
-      <label for="flashcardNumber">Number of cards</label>
-
-      <select id="flashcardNumber">
-        <option value="5">5 cards</option>
-        <option value="10">10 cards</option>
-        <option value="15">15 cards</option>
-      </select>
-
-      <button onclick="generateFlashcards()">
-        Generate Flashcards
-      </button>
-
-    </div>
-
-    <div
-      id="flashcardLoading"
-      class="message ai"
-      style="display:none;"
-    >
-      Creating your flashcards...
-    </div>
-
-    <div id="flashcardArea"></div>
-
-  </div>
+<div id="flashcardArea"></div>
+</div>
 
 </main>
 
 <footer>
-  AI Study Coach • Built for students
+AI Study Coach • Built for students
 </footer>
 
 <script>
 
-/* =========================
-   NAVIGATION
-========================= */
+const API_URL = "/api/api/chat";
 
-function hideAllTools() {
+const chatBox = document.getElementById("chatBox");
+const quizBox = document.getElementById("quizBox");
+const flashcardBox = document.getElementById("flashcardBox");
 
-  document.getElementById("chatBox").style.display = "none";
+function hideTools(){
+chatBox.style.display="none";
+quizBox.style.display="none";
+flashcardBox.style.display="none";
+}
 
-  document.getElementById("quizBox").style.display = "none";
+function showTool(tool){
+hideTools();
+tool.style.display="block";
+tool.scrollIntoView({behavior:"smooth"});
+}
 
-  document.getElementById("flashcardBox").style.display = "none";
+document.getElementById("tutorCard").addEventListener("click",function(){
+showTool(chatBox);
+document.getElementById("userInput").focus();
+});
+
+document.getElementById("startTutor").addEventListener("click",function(){
+showTool(chatBox);
+document.getElementById("userInput").focus();
+});
+
+document.getElementById("quizCard").addEventListener("click",function(){
+showTool(quizBox);
+});
+
+document.getElementById("flashcardCard").addEventListener("click",function(){
+showTool(flashcardBox);
+});
+
+
+/* AI TUTOR */
+
+document.getElementById("sendButton").addEventListener("click",sendMessage);
+
+async function sendMessage(){
+
+const input=document.getElementById("userInput");
+const messages=document.getElementById("messages");
+const question=input.value.trim();
+
+if(!question)return;
+
+const user=document.createElement("div");
+user.className="message user";
+user.textContent=question;
+messages.appendChild(user);
+
+input.value="";
+
+const loading=document.createElement("div");
+loading.className="message ai";
+loading.textContent="Thinking...";
+messages.appendChild(loading);
+
+try{
+
+const response=await fetch(API_URL,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:question})
+});
+
+const data=await response.json();
+loading.remove();
+
+const answer=document.createElement("div");
+answer.className="message ai";
+answer.textContent=response.ok
+?data.answer
+:"Sorry, I couldn't get an answer. "+(data.error||"");
+
+messages.appendChild(answer);
+
+}catch(error){
+
+loading.remove();
+
+const answer=document.createElement("div");
+answer.className="message ai";
+answer.textContent="I couldn't connect to the AI. Please try again.";
+messages.appendChild(answer);
+
+}
+
+messages.scrollTop=messages.scrollHeight;
 }
 
 
-function openTutor() {
+/* QUIZ */
 
-  hideAllTools();
+document.getElementById("generateQuizButton")
+.addEventListener("click",generateQuiz);
 
-  const box = document.getElementById("chatBox");
+async function generateQuiz(){
 
-  box.style.display = "block";
+const topic=document.getElementById("quizTopic").value.trim();
+const number=document.getElementById("quizQuestions").value;
+const difficulty=document.getElementById("quizDifficulty").value;
 
-  box.scrollIntoView({
-    behavior: "smooth"
-  });
+const content=document.getElementById("quizContent");
+const loading=document.getElementById("quizLoading");
+const result=document.getElementById("quizResult");
 
-  document.getElementById("userInput").focus();
+if(!topic){
+alert("Please enter a study topic.");
+return;
 }
 
-
-function openQuiz() {
-
-  hideAllTools();
-
-  const box = document.getElementById("quizBox");
-
-  box.style.display = "block";
-
-  box.scrollIntoView({
-    behavior: "smooth"
-  });
-}
-
-
-function openFlashcards() {
-
-  hideAllTools();
-
-  const box = document.getElementById("flashcardBox");
-
-  box.style.display = "block";
-
-  box.scrollIntoView({
-    behavior: "smooth"
-  });
-}
-
-
-function comingSoon(feature) {
-  alert(feature + " will be added soon!");
-}
-
-
-/* =========================
-   AI TUTOR
-========================= */
-
-async function sendMessage() {
-
-  const input =
-    document.getElementById("userInput");
-
-  const messages =
-    document.getElementById("messages");
-
-  const question =
-    input.value.trim();
-
-  if (!question) {
-    return;
-  }
-
-  const userMessage =
-    document.createElement("div");
-
-  userMessage.className =
-    "message user";
-
-  userMessage.textContent =
-    question;
-
-  messages.appendChild(
-    userMessage
-  );
-
-  input.value = "";
-
-  const loadingMessage =
-    document.createElement("div");
-
-  loadingMessage.className =
-    "message ai";
-
-  loadingMessage.textContent =
-    "Thinking...";
-
-  messages.appendChild(
-    loadingMessage
-  );
-
-  messages.scrollTop =
-    messages.scrollHeight;
-
-  try {
-
-    const response =
-      await fetch("/api/api/chat", {
-
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          message: question
-        })
-
-      });
-
-    const data =
-      await response.json();
-
-    loadingMessage.remove();
-
-    const aiMessage =
-      document.createElement("div");
-
-    aiMessage.className =
-      "message ai";
-
-    if (response.ok) {
-
-      aiMessage.textContent =
-        data.answer;
-
-    } else {
-
-      aiMessage.textContent =
-        "Sorry, I couldn't get an answer right now. " +
-        (data.error || "");
-
-    }
-
-    messages.appendChild(
-      aiMessage
-    );
-
-  } catch (error) {
-
-    loadingMessage.remove();
-
-    const errorMessage =
-      document.createElement("div");
-
-    errorMessage.className =
-      "message ai";
-
-    errorMessage.textContent =
-      "I couldn't connect to the AI. Please try again.";
-
-    messages.appendChild(
-      errorMessage
-    );
-  }
-
-  messages.scrollTop =
-    messages.scrollHeight;
-}
-
-
-/* =========================
-   QUIZ GENERATOR
-========================= */
-
-async function generateQuiz() {
-
-  const topic =
-    document.getElementById("quizTopic")
-      .value.trim();
-
-  const number =
-    document.getElementById("quizQuestions")
-      .value;
-
-  const difficulty =
-    document.getElementById("quizDifficulty")
-      .value;
-
-  const quizContent =
-    document.getElementById("quizContent");
-
-  const quizLoading =
-    document.getElementById("quizLoading");
-
-  const quizResult =
-    document.getElementById("quizResult");
-
-  if (!topic) {
-
-    alert("Please enter a study topic.");
-
-    return;
-  }
-
-  quizContent.innerHTML = "";
-
-  quizResult.style.display =
-    "none";
-
-  quizLoading.style.display =
-    "block";
-
-  const prompt = `
+content.innerHTML="";
+result.innerHTML="";
+loading.style.display="block";
+
+const prompt=`
 Create a ${number}-question ${difficulty}-difficulty multiple-choice quiz about "${topic}".
 
-Return ONLY valid JSON.
-
-Use exactly this structure:
+Return ONLY valid JSON using exactly this structure:
 
 {
-  "questions": [
-    {
-      "question": "Question text",
-      "options": [
-        "Option A",
-        "Option B",
-        "Option C",
-        "Option D"
-      ],
-      "answer": 0,
-      "explanation": "Short explanation"
-    }
-  ]
+"questions":[
+{
+"question":"Question text",
+"options":["Option A","Option B","Option C","Option D"],
+"answer":0
+}
+]
 }
 
-The "answer" must be the zero-based number of the correct option.
-
-Make the questions educational and accurate.
+The answer must be the zero-based index of the correct option.
 `;
 
-  try {
+try{
 
-    const response =
-      await fetch("/api/api/chat", {
+const response=await fetch(API_URL,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:prompt})
+});
 
-        method: "POST",
+const data=await response.json();
+loading.style.display="none";
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+if(!response.ok){
+content.innerHTML='<div class="message ai">'+(data.error||"Unable to create quiz.")+'</div>';
+return;
+}
 
-        body: JSON.stringify({
-          message: prompt
-        })
+let text=data.answer.trim()
+.replace(/^```json/i,"")
+.replace(/^```/i,"")
+.replace(/```$/i,"");
 
-      });
+const quiz=JSON.parse(text);
 
-    const data =
-      await response.json();
+displayQuiz(quiz.questions);
 
-    quizLoading.style.display =
-      "none";
+}catch(error){
 
-    if (!response.ok) {
+loading.style.display="none";
+content.innerHTML='<div class="message ai">Unable to create the quiz. Please try again.</div>';
 
-      quizContent.innerHTML =
-        '<div class="message ai">' +
-        (data.error ||
-          "Unable to create quiz.") +
-        "</div>";
+}
+}
 
-      return;
-    }
+function displayQuiz(questions){
 
-    let quiz;
+const content=document.getElementById("quizContent");
+content.innerHTML="";
 
-    try {
+questions.forEach((q,i)=>{
 
-      let cleanAnswer =
-        data.answer.trim();
+const box=document.createElement("div");
+box.className="question";
 
-      cleanAnswer =
-        cleanAnswer.replace(
-          /^```json/i,
-          ""
-        );
+const title=document.createElement("h3");
+title.textContent=(i+1)+". "+q.question;
+box.appendChild(title);
 
-      cleanAnswer =
-        cleanAnswer.replace(
-          /^```/i,
-          ""
-        );
+q.options.forEach((option,j)=>{
 
-      cleanAnswer =
-        cleanAnswer.replace(
-          /```$/i,
-          ""
-        );
+const label=document.createElement("label");
+label.className="option";
 
-      quiz =
-        JSON.parse(cleanAnswer);
+const radio=document.createElement("input");
+radio.type="radio";
+radio.name="quiz-"+i;
+radio.value=j;
+radio.style.marginRight="8px";
 
-    } catch (error) {
+label.appendChild(radio);
+label.appendChild(document.createTextNode(option));
 
-      quizContent.innerHTML =
-        '<div class="message ai">' +
-        "The AI returned an invalid quiz format. " +
-        "Please try again." +
-        "</div>";
+box.appendChild(label);
 
-      return;
-    }
+});
 
-    if (
-      !quiz.questions ||
-      !Array.isArray(quiz.questions)
-    ) {
+content.appendChild(box);
 
-      quizContent.innerHTML =
-        '<div class="message ai">' +
-        "No quiz questions were received." +
-        "</div>";
+});
 
-      return;
-    }
+const submit=document.createElement("button");
+submit.textContent="Submit Quiz";
+submit.style.marginTop="20px";
+submit.onclick=function(){
 
-    displayQuiz(
-      quiz.questions
-    );
+let score=0;
 
-  } catch (error) {
+questions.forEach((q,i)=>{
 
-    quizLoading.style.display =
-      "none";
+const selected=document.querySelector(
+'input[name="quiz-'+i+'"]:checked'
+);
 
-    quizContent.innerHTML =
-      '<div class="message ai">' +
-      "I couldn't connect to the AI. Please try again." +
-      "</div>";
-  }
+if(selected && Number(selected.value)===Number(q.answer)){
+score++;
+}
+
+});
+
+const percent=Math.round(score/questions.length*100);
+
+document.getElementById("quizResult").innerHTML=
+"Score: "+score+"/"+questions.length+
+" ("+percent+"%)";
+
+};
+
+content.appendChild(submit);
 }
 
 
-function displayQuiz(questions) {
+/* FLASHCARDS */
 
-  const quizContent =
-    document.getElementById(
-      "quizContent"
-    );
+document.getElementById("generateFlashcardsButton")
+.addEventListener("click",generateFlashcards);
 
-  const quizResult =
-    document.getElementById(
-      "quizResult"
-    );
+let cards=[];
+let currentCard=0;
 
-  quizResult.style.display =
-    "none";
+async function generateFlashcards(){
 
-  quizContent.innerHTML =
-    "";
+const topic=document.getElementById("flashcardTopic").value.trim();
+const number=document.getElementById("flashcardNumber").value;
 
-  questions.forEach(
-    (item, index) => {
+const area=document.getElementById("flashcardArea");
+const loading=document.getElementById("flashcardLoading");
 
-      const questionBox =
-        document.createElement(
-          "div"
-        );
-
-      questionBox.className =
-        "quiz-question";
-
-      const title =
-        document.createElement(
-          "h3"
-        );
-
-      title.textContent =
-        (index + 1) +
-        ". " +
-        item.question;
-
-      questionBox.appendChild(
-        title
-      );
-
-      item.options.forEach(
-        (option, optionIndex) => {
-
-          const label =
-            document.createElement(
-              "label"
-            );
-
-          label.className =
-            "option";
-
-          const radio =
-            document.createElement(
-              "input"
-            );
-
-          radio.type =
-            "radio";
-
-          radio.name =
-            "question-" +
-            index;
-
-          radio.value =
-            optionIndex;
-
-          radio.style.marginRight =
-            "8px";
-
-          label.appendChild(
-            radio
-          );
-
-          label.appendChild(
-            document.createTextNode(
-              option
-            )
-          );
-
-          questionBox.appendChild(
-            label
-          );
-
-        }
-      );
-
-      quizContent.appendChild(
-        questionBox
-      );
-
-    }
-  );
-
-  const submitButton =
-    document.createElement(
-      "button"
-    );
-
-  submitButton.textContent =
-    "Submit Quiz";
-
-  submitButton.style.marginTop =
-    "20px";
-
-  submitButton.onclick =
-    function() {
-
-      calculateScore(
-        questions
-      );
-
-    };
-
-  quizContent.appendChild(
-    submitButton
-  );
+if(!topic){
+alert("Please enter a study topic.");
+return;
 }
 
+area.innerHTML="";
+loading.style.display="block";
 
-function calculateScore(
-  questions
-) {
-
-  let score = 0;
-
-  questions.forEach(
-    (question, index) => {
-
-      const selected =
-        document.querySelector(
-          'input[name="question-' +
-          index +
-          '"]:checked'
-        );
-
-      if (
-        selected &&
-        Number(selected.value) ===
-        Number(question.answer)
-      ) {
-
-        score++;
-
-      }
-
-    }
-  );
-
-  const quizResult =
-    document.getElementById(
-      "quizResult"
-    );
-
-  const percentage =
-    Math.round(
-      (score / questions.length) *
-      100
-    );
-
-  let message;
-
-  if (percentage >= 80) {
-
-    message =
-      "Excellent work! 🔥";
-
-  } else if (percentage >= 60) {
-
-    message =
-      "Good job! Keep practicing. 💪";
-
-  } else {
-
-    message =
-      "Keep studying — you can improve! 📚";
-  }
-
-  quizResult.innerHTML =
-    "Score: " +
-    score +
-    "/" +
-    questions.length +
-    " (" +
-    percentage +
-    "%)<br><br>" +
-    message;
-
-  quizResult.style.display =
-    "block";
-
-  quizResult.scrollIntoView({
-    behavior: "smooth"
-  });
-}
-
-
-/* =========================
-   FLASHCARD GENERATOR
-========================= */
-
-async function generateFlashcards() {
-
-  const topic =
-    document.getElementById(
-      "flashcardTopic"
-    ).value.trim();
-
-  const number =
-    document.getElementById(
-      "flashcardNumber"
-    ).value;
-
-  const loading =
-    document.getElementById(
-      "flashcardLoading"
-    );
-
-  const area =
-    document.getElementById(
-      "flashcardArea"
-    );
-
-  if (!topic) {
-
-    alert(
-      "Please enter a study topic."
-    );
-
-    return;
-  }
-
-  area.innerHTML =
-    "";
-
-  loading.style.display =
-    "block";
-
-  const prompt = `
+const prompt=`
 Create ${number} educational flashcards about "${topic}".
 
-Return ONLY valid JSON.
-
-Use exactly this structure:
+Return ONLY valid JSON using exactly this structure:
 
 {
-  "flashcards": [
-    {
-      "front": "Question or term",
-      "back": "Clear answer or definition"
-    }
-  ]
+"flashcards":[
+{
+"front":"Question or term",
+"back":"Clear answer or definition"
+}
+]
 }
 
-Make the cards accurate, useful for studying, and easy to understand.
+Make the cards accurate, useful for studying and easy to understand.
 `;
 
-  try {
+try{
 
-    const response =
-      await fetch("/api/api/chat", {
+const response=await fetch(API_URL,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:prompt})
+});
 
-        method: "POST",
+const data=await response.json();
+loading.style.display="none";
 
-        headers: {
-          "Content-Type": "application/json"
-        },
+if(!response.ok){
+area.innerHTML='<div class="message ai">'+(data.error||"Unable to create flashcards.")+'</div>';
+return;
+}
 
-        body: JSON.stringify({
-          message: prompt
-        })
+let text=data.answer.trim()
+.replace(/^```json/i,"")
+.replace(/^```/i,"")
+.replace(/```$/i,"");
 
-      });
+const result=JSON.parse(text);
 
-    const data =
-      await response.json();
+cards=result.flashcards;
+currentCard=0;
 
-    loading.style.display =
-      "none";
+renderCard();
 
-    if (!response.ok) {
+}catch(error){
 
-      area.innerHTML =
-        '<div class="message ai">' +
-        (data.error ||
-          "Unable to create flashcards.") +
-        "</div>";
+loading.style.display="none";
+area.innerHTML='<div class="message ai">Unable to create flashcards. Please try again.</div>';
 
-      return;
-    }
+}
+}
 
-    let result;
+function renderCard(){
 
-    try {
+const area=document.getElementById("flashcardArea");
+const card=cards[currentCard];
 
-      let cleanAnswer =
-        data.answer.trim();
+if(!card)return;
 
-      cleanAnswer =
-        cleanAnswer.replace(
-          /^```json/i,
-          ""
-        );
+area.innerHTML="";
 
-      cleanAnswer =
-        cleanAnswer.replace(
-          /^```/i,
-          ""
-        );
+const flash=document.createElement("div");
+flash.className="flashcard";
 
-      cleanAnswer =
-        cleanAnswer.replace(
-          /```$/i,
-          ""
-        );
+const inner=document.createElement("div");
+inner.className="flash-inner";
 
-      result =
-        JSON.parse(
-          cleanAnswer
-        );
+const front=document.createElement("div");
+front.className="flash-front";
 
-    } catch (error) {
+const frontTitle=document.createElement("h3");
+frontTitle.textContent="Question";
 
-      area.innerHTML =
-        '<div class="message ai">' +
-        "The AI returned an invalid flashcard format. " +
-        "Please try again." +
-        "</div>";
+const frontText=document.createElement("p");
+frontText.textContent=card.front;
 
-      return;
-    }
+front.appendChild(frontTitle);
+front.appendChild(frontText);
 
-    if (
-      !result.flashcards ||
-      
+const back=document.createElement("div");
+back.className="flash-back";
+
+const backTitle=document.createElement("h3");
+backTitle.textContent="Answer";
+
+const backText=document.createElement("p");
+backText.textContent=card.back;
+
+back.appendChild(backTitle);
+back.appendChild(backText);
+
+inner.appendChild(front);
+inner.appendChild(back);
+flash.appendChild(inner);
+
+flash.addEventListener("click",function(){
+flash.classList.toggle("flipped");
+});
+
+area.appendChild(flash);
+
+const counter=document.createElement("div");
+counter.className="counter";
+counter.textContent=
+"Card "+(currentCard+1)+" of "+cards.length+
+" • Tap the card to flip";
+
+area.appendChild(counter);
+
+const controls=document.createElement("div");
+controls.className="controls";
+
+const previous=document.createElement("button");
+previous.textContent="← Previous";
+
+previous.onclick=function(){
+if(currentCard>0){
+currentCard--;
+renderCard();
+}
+};
+
+const next=document.createElement("button");
+next.textContent="Next →";
+
+next.onclick=function(){
+if(currentCard<cards.length-1){
+currentCard++;
+renderCard();
+}
+};
+
+controls.appendChild(previous);
+controls.appendChild(next);
+area.appendChild(controls);
+
+}
+
+</script>
+
+</body>
+                                     </html>
