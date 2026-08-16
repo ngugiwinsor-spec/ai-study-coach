@@ -7,203 +7,38 @@
 
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-
-body{
-margin:0;
-background:#f5f7fb;
-color:#172033;
-}
-
-header{
-background:#172033;
-color:white;
-padding:24px;
-text-align:center;
-}
-
+body{margin:0;background:#f5f7fb;color:#172033}
+header{background:#172033;color:white;padding:24px;text-align:center}
 header h1{margin:0 0 6px}
 header p{margin:0;color:#cbd5e1}
-
-.container{
-max-width:900px;
-margin:auto;
-padding:25px 18px;
-}
-
+.container{max-width:900px;margin:auto;padding:25px 18px}
 .welcome{margin-bottom:25px}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:15px;
-}
-
-.card{
-background:white;
-padding:22px;
-border-radius:16px;
-box-shadow:0 4px 15px rgba(0,0,0,.07);
-cursor:pointer;
-}
-
-.card:active{
-transform:scale(.98);
-}
-
-.icon{
-font-size:30px;
-margin-bottom:10px;
-}
-
-.card h3{
-margin:0 0 7px;
-}
-
-.card p{
-color:#64748b;
-font-size:14px;
-margin:0;
-}
-
-.section,
-.tool{
-background:white;
-padding:22px;
-border-radius:16px;
-margin-top:30px;
-box-shadow:0 4px 15px rgba(0,0,0,.07);
-}
-
-.tool{
-display:none;
-}
-
-button{
-background:#172033;
-color:white;
-border:0;
-padding:12px 18px;
-border-radius:10px;
-cursor:pointer;
-font-size:15px;
-}
-
-.start-btn{
-margin-top:15px;
-}
-
-.form{
-display:grid;
-gap:12px;
-margin-top:18px;
-}
-
-input,
-textarea,
-select{
-width:100%;
-padding:12px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-font-size:15px;
-}
-
-textarea{
-min-height:100px;
-resize:vertical;
-}
-
-.chat{
-margin-top:18px;
-}
-
-.message{
-padding:12px;
-border-radius:12px;
-margin-bottom:10px;
-white-space:pre-wrap;
-line-height:1.5;
-}
-
-.user{
-background:#e8eefc;
-}
-
-.ai{
-background:#f1f5f9;
-}
-
-.chat-input{
-display:flex;
-gap:8px;
-}
-
-.chat-input textarea{
-flex:1;
-min-height:50px;
-}
-
-.note{
-background:#f8fafc;
-padding:18px;
-border-radius:12px;
-margin-top:15px;
-}
-
-.note h3{
-margin-top:0;
-}
-
-.note small{
-color:#64748b;
-}
-
-.note-content{
-white-space:pre-wrap;
-line-height:1.5;
-margin:12px 0;
-}
-
-.delete{
-background:#dc2626;
-}
-
-.quiz-question,
-.plan-day{
-background:#f8fafc;
-padding:18px;
-border-radius:12px;
-margin-top:15px;
-}
-
-.quiz-option{
-display:block;
-padding:10px;
-margin-top:8px;
-background:white;
-border:1px solid #cbd5e1;
-border-radius:8px;
-}
-
-.flashcard{
-background:#eef2ff;
-padding:40px 20px;
-border-radius:16px;
-margin-top:20px;
-text-align:center;
-cursor:pointer;
-min-height:130px;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-footer{
-text-align:center;
-padding:30px;
-color:#64748b;
-font-size:13px;
-}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
+.card{background:white;padding:22px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.07);cursor:pointer}
+.card:active{transform:scale(.98)}
+.icon{font-size:30px;margin-bottom:10px}
+.card h3{margin:0 0 7px}
+.card p{color:#64748b;font-size:14px;margin:0}
+.section,.tool{background:white;padding:22px;border-radius:16px;margin-top:30px;box-shadow:0 4px 15px rgba(0,0,0,.07)}
+.tool{display:none}
+button{background:#172033;color:white;border:0;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:15px}
+.start-btn{margin-top:15px}
+.form{display:grid;gap:12px;margin-top:18px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
+textarea{min-height:100px;resize:vertical}
+.chat-input{display:flex;gap:8px}
+.chat-input textarea{flex:1;min-height:50px}
+.message{padding:12px;border-radius:12px;margin-bottom:10px;white-space:pre-wrap;line-height:1.5}
+.user{background:#e8eefc}
+.ai{background:#f1f5f9}
+.quiz-question,.plan-day,.note{background:#f8fafc;padding:18px;border-radius:12px;margin-top:15px}
+.quiz-option{display:block;padding:10px;margin-top:8px;background:white;border:1px solid #cbd5e1;border-radius:8px}
+.flashcard{background:#eef2ff;padding:40px 20px;border-radius:16px;margin-top:20px;text-align:center;cursor:pointer;min-height:130px;display:flex;align-items:center;justify-content:center}
+.note h3{margin-top:0}
+.note-content{white-space:pre-wrap;line-height:1.5;margin:12px 0}
+.note small{color:#64748b}
+.delete{background:#dc2626}
+footer{text-align:center;padding:30px;color:#64748b;font-size:13px}
 </style>
 </head>
 
@@ -264,14 +99,11 @@ font-size:13px;
 <div class="section">
 <h2>🎯 Today's Focus</h2>
 <p>Choose a tool above and start learning.</p>
-
-<button class="start-btn" data-tool="tutor">
-Open AI Tutor
-</button>
+<button class="start-btn" data-tool="tutor">Open AI Tutor</button>
 </div>
 
 
-<!-- TUTOR -->
+<!-- AI TUTOR -->
 
 <div class="tool" id="tutor">
 
@@ -287,41 +119,39 @@ Hi! I'm your AI Study Coach. Ask me anything you're studying and I'll help you u
 
 <div class="chat-input">
 
-<textarea
-id="userInput"
-placeholder="Ask your study question..."
-></textarea>
+<textarea id="userInput" placeholder="Ask your study question..."></textarea>
 
-<button id="sendButton">
-Send
-</button>
+<button id="sendButton">Send</button>
 
 </div>
 
 </div>
 
 
-<!-- QUIZ -->
+<!-- QUIZ GENERATOR -->
 
 <div class="tool" id="quiz">
 
 <h2>📝 Quiz Generator</h2>
 
+<p>Create a quiz to test your knowledge.</p>
+
 <div class="form">
 
-<input
-id="quizTopic"
-placeholder="Study topic"
-/>
+<input id="quizTopic" placeholder="Study topic e.g. Photosynthesis">
 
 <select id="quizNumber">
 <option value="5">5 questions</option>
 <option value="10">10 questions</option>
 </select>
 
-<button id="quizButton">
-Generate Quiz
-</button>
+<select id="quizDifficulty">
+<option value="easy">Easy</option>
+<option value="medium" selected>Medium</option>
+<option value="hard">Hard</option>
+</select>
+
+<button id="quizButton">Generate Quiz</button>
 
 </div>
 
@@ -336,21 +166,18 @@ Generate Quiz
 
 <h2>🧠 Flashcards</h2>
 
+<p>Generate flashcards for your studies.</p>
+
 <div class="form">
 
-<input
-id="flashTopic"
-placeholder="Study topic"
-/>
+<input id="flashTopic" placeholder="Study topic e.g. Humanism">
 
 <select id="flashNumber">
 <option value="5">5 cards</option>
 <option value="10">10 cards</option>
 </select>
 
-<button id="flashButton">
-Generate Flashcards
-</button>
+<button id="flashButton">Generate Flashcards</button>
 
 </div>
 
@@ -359,40 +186,33 @@ Generate Flashcards
 </div>
 
 
-<!-- PLANNER -->
+<!-- STUDY PLANNER -->
 
 <div class="tool" id="planner">
 
 <h2>📅 Study Planner</h2>
 
+<p>Create a personalized study schedule.</p>
+
 <div class="form">
 
-<textarea
-id="plannerTopics"
-placeholder="Subjects or topics you need to study..."
-></textarea>
+<textarea id="plannerTopics" placeholder="Subjects or topics you need to study..."></textarea>
 
 <select id="plannerDays">
-
 <option value="3">3 days</option>
 <option value="5">5 days</option>
 <option value="7" selected>7 days</option>
 <option value="14">14 days</option>
-
 </select>
 
 <select id="plannerTime">
-
 <option value="30">30 minutes per day</option>
 <option value="60" selected>1 hour per day</option>
 <option value="90">1.5 hours per day</option>
 <option value="120">2 hours per day</option>
-
 </select>
 
-<button id="plannerButton">
-Create My Study Plan
-</button>
+<button id="plannerButton">Create My Study Plan</button>
 
 </div>
 
@@ -407,37 +227,23 @@ Create My Study Plan
 
 <h2>📖 My Notes</h2>
 
-<p>Save your study notes directly on your device.</p>
+<p>Save your study notes on your device.</p>
 
 <div class="form">
 
-<input
-id="noteTitle"
-placeholder="Note title"
-/>
+<input id="noteTitle" placeholder="Note title">
 
-<input
-id="noteSubject"
-placeholder="Subject"
-/>
+<input id="noteSubject" placeholder="Subject">
 
-<textarea
-id="noteText"
-placeholder="Write your notes here..."
-></textarea>
+<textarea id="noteText" placeholder="Write your notes here..."></textarea>
 
-<button id="saveNote">
-💾 Save Note
-</button>
+<button id="saveNote">💾 Save Note</button>
 
 </div>
 
 <div class="form">
 
-<input
-id="searchNotes"
-placeholder="🔍 Search notes..."
-/>
+<input id="searchNotes" placeholder="🔍 Search notes...">
 
 </div>
 
@@ -470,40 +276,35 @@ const API_URL="/api/chat";
 
 /* NAVIGATION */
 
-function showTool(toolName){
+function showTool(name){
 
 document.querySelectorAll(".tool").forEach(function(tool){
-
 tool.style.display="none";
-
 });
 
-const tool=document.getElementById(toolName);
+const selected=document.getElementById(name);
 
-if(!tool)return;
+if(selected){
 
-tool.style.display="block";
+selected.style.display="block";
 
-tool.scrollIntoView({
+selected.scrollIntoView({
 behavior:"smooth",
 block:"start"
 });
 
 }
 
+}
 
-/* CONNECT ALL BUTTONS */
+document.querySelectorAll("[data-tool]").forEach(function(element){
 
-document.querySelectorAll("[data-tool]").forEach(function(button){
+element.addEventListener("click",function(){
 
-button.addEventListener("click",function(){
+showTool(element.getAttribute("data-tool"));
 
-showTool(button.getAttribute("data-tool"));
-
-if(button.getAttribute("data-tool")==="notes"){
-
+if(element.getAttribute("data-tool")==="notes"){
 renderNotes();
-
 }
 
 });
@@ -513,89 +314,56 @@ renderNotes();
 
 /* AI TUTOR */
 
-document.getElementById("sendButton").addEventListener(
-"click",
-sendMessage
-);
-
+document.getElementById("sendButton").addEventListener("click",sendMessage);
 
 async function sendMessage(){
 
 const input=document.getElementById("userInput");
-
 const messages=document.getElementById("messages");
-
 const question=input.value.trim();
 
 if(!question)return;
 
-
 const user=document.createElement("div");
-
 user.className="message user";
-
 user.textContent=question;
-
 messages.appendChild(user);
 
 input.value="";
 
-
 const loading=document.createElement("div");
-
 loading.className="message ai";
-
 loading.textContent="Thinking...";
-
 messages.appendChild(loading);
-
 
 try{
 
 const response=await fetch(API_URL,{
-
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-message:question
-})
-
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:question})
 });
-
 
 const data=await response.json();
 
 loading.remove();
 
-
 const answer=document.createElement("div");
-
 answer.className="message ai";
 
-answer.textContent=
-response.ok
+answer.textContent=response.ok
 ?data.answer
 :"Error: "+(data.error||"AI request failed.");
 
-
 messages.appendChild(answer);
-
 
 }catch(error){
 
 loading.remove();
 
 const answer=document.createElement("div");
-
 answer.className="message ai";
-
-answer.textContent=
-"Unable to connect to the AI.";
-
+answer.textContent="Unable to connect to the AI.";
 messages.appendChild(answer);
 
 }
@@ -605,224 +373,244 @@ messages.appendChild(answer);
 
 /* QUIZ */
 
-document.getElementById("quizButton").addEventListener(
-"click",
-async function(){
+document.getElementById("quizButton").addEventListener("click",generateQuiz);
 
-const topic=
-document.getElementById("quizTopic").value.trim();
+async function generateQuiz(){
 
-const number=
-document.getElementById("quizNumber").value;
-
-const result=
-document.getElementById("quizResult");
-
+const topic=document.getElementById("quizTopic").value.trim();
+const number=document.getElementById("quizNumber").value;
+const difficulty=document.getElementById("quizDifficulty").value;
+const result=document.getElementById("quizResult");
 
 if(!topic){
 
 alert("Enter a study topic first.");
-
 return;
 
 }
 
-result.innerHTML=
-'<div class="message ai">Creating quiz...</div>';
-
+result.innerHTML='<div class="message ai">Creating your quiz...</div>';
 
 const prompt=`
 
-Create a ${number}-question multiple choice quiz about ${topic}.
+You are an educational quiz generator.
 
-Return ONLY valid JSON:
+Create exactly ${number} multiple-choice questions about:
+${topic}
+
+Difficulty: ${difficulty}
+
+Return ONLY valid JSON.
+
+Do not use markdown.
+Do not use code fences.
+Do not add explanations.
+
+Use exactly this structure:
 
 {
 "questions":[
 {
-"question":"Question",
-"options":["A","B","C","D"],
+"question":"Question text",
+"options":["Option A","Option B","Option C","Option D"],
 "answer":0
 }
 ]
 }
 
-answer must be the zero-based index of the correct answer.
+The answer must be the number 0, 1, 2, or 3 representing the correct option.
 
 `;
-
 
 try{
 
 const response=await fetch(API_URL,{
-
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-message:prompt
-})
-
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:prompt})
 });
 
-
 const data=await response.json();
-
 
 if(!response.ok){
 
 result.innerHTML=
 '<div class="message ai">'+
-(data.error||"Quiz failed.")+
+(data.error||"Quiz generation failed.")+
 '</div>';
 
 return;
 
 }
 
-
-let text=data.answer.trim();
+let text=data.answer||"";
 
 text=text
-.replace(/^```json/i,"")
-.replace(/^```/i,"")
-.replace(/```$/i,"")
+.replace(/```json/gi,"")
+.replace(/```/g,"")
 .trim();
 
+const first=text.indexOf("{");
+const last=text.lastIndexOf("}");
+
+if(first===-1||last===-1){
+throw new Error("Invalid quiz response");
+}
+
+text=text.substring(first,last+1);
 
 const quiz=JSON.parse(text);
 
-result.innerHTML="";
+if(!quiz.questions||!Array.isArray(quiz.questions)){
+throw new Error("Invalid quiz format");
+}
 
+result.innerHTML="";
 
 quiz.questions.forEach(function(q,index){
 
 const box=document.createElement("div");
-
 box.className="quiz-question";
-
 
 const title=document.createElement("h3");
 
-title.textContent=
-(index+1)+". "+q.question;
+title.textContent=(index+1)+". "+q.question;
 
 box.appendChild(title);
-
 
 q.options.forEach(function(option,optionIndex){
 
 const label=document.createElement("label");
-
 label.className="quiz-option";
-
 
 const radio=document.createElement("input");
 
 radio.type="radio";
-
-radio.name="q"+index;
-
+radio.name="question"+index;
 radio.value=optionIndex;
-
 radio.style.marginRight="8px";
 
-
 label.appendChild(radio);
-
-label.appendChild(
-document.createTextNode(option)
-);
-
+label.appendChild(document.createTextNode(option));
 
 box.appendChild(label);
 
 });
 
-
 result.appendChild(box);
 
 });
 
-}catch(error){
+const submit=document.createElement("button");
 
-result.innerHTML=
-'<div class="message ai">Quiz generation failed.</div>';
+submit.textContent="Submit Quiz";
+submit.style.marginTop="20px";
 
+submit.addEventListener("click",function(){
+
+let score=0;
+
+quiz.questions.forEach(function(q,index){
+
+const selected=document.querySelector(
+'input[name="question'+index+'"]:checked'
+);
+
+if(selected&&Number(selected.value)===Number(q.answer)){
+score++;
 }
 
 });
 
+const percentage=Math.round(
+(score/quiz.questions.length)*100
+);
 
-/* FLASHCARDS */
+const scoreBox=document.createElement("div");
 
-document.getElementById("flashButton").addEventListener(
-"click",
-async function(){
+scoreBox.className="message ai";
+scoreBox.style.marginTop="20px";
 
-const topic=
-document.getElementById("flashTopic").value.trim();
+scoreBox.textContent=
+"Your Score: "+
+score+
+"/"+
+quiz.questions.length+
+" ("+
+percentage+
+"%)";
 
-const number=
-document.getElementById("flashNumber").value;
+result.appendChild(scoreBox);
 
-const result=
-document.getElementById("flashResult");
+});
 
+result.appendChild(submit);
 
-if(!topic){
+}catch(error){
 
-alert("Enter a study topic first.");
+console.error(error);
 
-return;
+result.innerHTML=
+'<div class="message ai">'+
+"Quiz generation failed. Please try again."+
+'</div>';
+
+}
 
 }
 
 
-result.innerHTML=
-'<div class="message ai">Creating flashcards...</div>';
+/* FLASHCARDS */
 
+document.getElementById("flashButton").addEventListener("click",generateFlashcards);
+
+async function generateFlashcards(){
+
+const topic=document.getElementById("flashTopic").value.trim();
+const number=document.getElementById("flashNumber").value;
+const result=document.getElementById("flashResult");
+
+if(!topic){
+
+alert("Enter a study topic first.");
+return;
+
+}
+
+result.innerHTML='<div class="message ai">Creating flashcards...</div>';
 
 const prompt=`
 
-Create ${number} flashcards about ${topic}.
+Create exactly ${number} educational flashcards about:
+${topic}
 
-Return ONLY valid JSON:
+Return ONLY valid JSON.
+
+Do not use markdown.
+Do not use code fences.
+
+Use exactly this structure:
 
 {
 "cards":[
 {
-"front":"Term or question",
-"back":"Answer"
+"front":"Question or term",
+"back":"Clear answer"
 }
 ]
 }
 
 `;
 
-
 try{
 
 const response=await fetch(API_URL,{
-
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-message:prompt
-})
-
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:prompt})
 });
 
-
 const data=await response.json();
-
 
 if(!response.ok){
 
@@ -835,99 +623,102 @@ return;
 
 }
 
-
-let text=data.answer.trim();
+let text=data.answer||"";
 
 text=text
-.replace(/^```json/i,"")
-.replace(/^```/i,"")
-.replace(/```$/i,"")
+.replace(/```json/gi,"")
+.replace(/```/g,"")
 .trim();
 
+const first=text.indexOf("{");
+const last=text.lastIndexOf("}");
 
-const flashcards=JSON.parse(text).cards;
+if(first===-1||last===-1){
+throw new Error("Invalid flashcard response");
+}
 
+const flashData=JSON.parse(
+text.substring(first,last+1)
+);
 
 result.innerHTML="";
 
+flashData.cards.forEach(function(card){
 
-flashcards.forEach(function(card){
+const flash=document.createElement("div");
 
-const box=document.createElement("div");
+flash.className="flashcard";
 
-box.className="flashcard";
+flash.textContent=card.front;
 
-box.textContent=card.front;
+let showingFront=true;
 
+flash.addEventListener("click",function(){
 
-box.addEventListener("click",function(){
+showingFront=!showingFront;
 
-box.textContent=
-box.textContent===card.front
-?card.back
-:card.front;
-
-});
-
-
-result.appendChild(box);
+flash.textContent=
+showingFront
+?card.front
+:card.back;
 
 });
 
+result.appendChild(flash);
+
+});
 
 }catch(error){
 
+console.error(error);
+
 result.innerHTML=
-'<div class="message ai">Flashcard generation failed.</div>';
+'<div class="message ai">'+
+"Flashcard generation failed. Please try again."+
+'</div>';
 
 }
 
-});
+}
 
 
 /* STUDY PLANNER */
 
-document.getElementById("plannerButton").addEventListener(
-"click",
-async function(){
+document.getElementById("plannerButton").addEventListener("click",generatePlanner);
 
-const topics=
-document.getElementById("plannerTopics").value.trim();
+async function generatePlanner(){
 
-const days=
-document.getElementById("plannerDays").value;
-
-const time=
-document.getElementById("plannerTime").value;
-
-const result=
-document.getElementById("plannerResult");
-
+const topics=document.getElementById("plannerTopics").value.trim();
+const days=document.getElementById("plannerDays").value;
+const time=document.getElementById("plannerTime").value;
+const result=document.getElementById("plannerResult");
 
 if(!topics){
 
-alert("Enter your subjects first.");
-
+alert("Enter your subjects or topics first.");
 return;
 
 }
 
-
 result.innerHTML=
 '<div class="message ai">Building your study plan...</div>';
 
-
 const prompt=`
 
-Create a ${days}-day study plan.
+Create a realistic ${days}-day study plan.
 
-Subjects:
+Topics:
 ${topics}
 
 Study time:
 ${time} minutes per day.
 
-Return ONLY valid JSON:
+Return ONLY valid JSON.
+
+Do not use markdown.
+Do not use code fences.
+
+Use exactly:
 
 {
 "days":[
@@ -943,72 +734,61 @@ Create exactly ${days} days.
 
 `;
 
-
 try{
 
 const response=await fetch(API_URL,{
-
 method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-message:prompt
-})
-
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:prompt})
 });
 
-
 const data=await response.json();
-
 
 if(!response.ok){
 
 result.innerHTML=
 '<div class="message ai">'+
-(data.error||"Planner failed.")+
+(data.error||"Planner generation failed.")+
 '</div>';
 
 return;
 
 }
 
-
-let text=data.answer.trim();
+let text=data.answer||"";
 
 text=text
-.replace(/^```json/i,"")
-.replace(/^```/i,"")
-.replace(/```$/i,"")
+.replace(/```json/gi,"")
+.replace(/```/g,"")
 .trim();
 
+const first=text.indexOf("{");
+const last=text.lastIndexOf("}");
 
-const plan=JSON.parse(text).days;
+if(first===-1||last===-1){
+throw new Error("Invalid planner response");
+}
 
+const planData=JSON.parse(
+text.substring(first,last+1)
+);
 
 result.innerHTML="";
 
-
-plan.forEach(function(day){
+planData.days.forEach(function(day){
 
 const box=document.createElement("div");
 
 box.className="plan-day";
-
 
 const title=document.createElement("h3");
 
 title.textContent=
 "Day "+day.day+" — "+day.focus;
 
-
 box.appendChild(title);
 
-
 const list=document.createElement("ul");
-
 
 day.tasks.forEach(function(task){
 
@@ -1020,22 +800,24 @@ list.appendChild(item);
 
 });
 
-
 box.appendChild(list);
 
 result.appendChild(box);
 
 });
 
-
 }catch(error){
 
+console.error(error);
+
 result.innerHTML=
-'<div class="message ai">Study plan generation failed.</div>';
+'<div class="message ai">'+
+"Study plan generation failed. Please try again."+
+'</div>';
 
 }
 
-});
+}
 
 
 /* NOTES */
@@ -1059,64 +841,42 @@ return [];
 
 function saveNote(){
 
-const title=
-document.getElementById("noteTitle").value.trim();
-
-const subject=
-document.getElementById("noteSubject").value.trim();
-
-const text=
-document.getElementById("noteText").value.trim();
-
+const title=document.getElementById("noteTitle").value.trim();
+const subject=document.getElementById("noteSubject").value.trim();
+const text=document.getElementById("noteText").value.trim();
 
 if(!title){
 
 alert("Please enter a note title.");
-
 return;
 
 }
-
 
 if(!text){
 
 alert("Please write your notes.");
-
 return;
 
 }
 
-
 const notes=getNotes();
 
-
 notes.unshift({
-
 id:Date.now(),
-
 title:title,
-
 subject:subject||"General",
-
 text:text,
-
 date:new Date().toLocaleDateString()
-
 });
-
 
 localStorage.setItem(
 "studyCoachNotes",
 JSON.stringify(notes)
 );
 
-
 document.getElementById("noteTitle").value="";
-
 document.getElementById("noteSubject").value="";
-
 document.getElementById("noteText").value="";
-
 
 renderNotes();
 
@@ -1127,17 +887,14 @@ alert("Note saved successfully!");
 
 function renderNotes(){
 
-const list=
-document.getElementById("notesList");
+const list=document.getElementById("notesList");
 
-const search=
-document.getElementById("searchNotes").value
+const search=document.getElementById("searchNotes")
+.value
 .toLowerCase()
 .trim();
 
-
 const notes=getNotes();
-
 
 const filtered=notes.filter(function(note){
 
@@ -1149,9 +906,7 @@ note.text.toLowerCase().includes(search)
 
 });
 
-
 list.innerHTML="";
-
 
 if(filtered.length===0){
 
@@ -1164,24 +919,20 @@ return;
 
 }
 
-
 filtered.forEach(function(note){
 
 const box=document.createElement("div");
 
 box.className="note";
 
-
 const title=document.createElement("h3");
 
 title.textContent=note.title;
-
 
 const small=document.createElement("small");
 
 small.textContent=
 note.subject+" • "+note.date;
-
 
 const content=document.createElement("div");
 
@@ -1189,42 +940,30 @@ content.className="note-content";
 
 content.textContent=note.text;
 
-
 const deleteButton=document.createElement("button");
 
 deleteButton.className="delete";
-
 deleteButton.textContent="🗑️ Delete";
-
 
 deleteButton.addEventListener("click",function(){
 
 const updated=getNotes().filter(function(item){
-
 return item.id!==note.id;
-
 });
-
 
 localStorage.setItem(
 "studyCoachNotes",
 JSON.stringify(updated)
 );
 
-
 renderNotes();
 
 });
 
-
 box.appendChild(title);
-
 box.appendChild(small);
-
 box.appendChild(content);
-
 box.appendChild(deleteButton);
-
 
 list.appendChild(box);
 
@@ -1233,17 +972,11 @@ list.appendChild(box);
 }
 
 
-document.getElementById("saveNote").addEventListener(
-"click",
-saveNote
-);
+document.getElementById("saveNote")
+.addEventListener("click",saveNote);
 
-
-document.getElementById("searchNotes").addEventListener(
-"input",
-renderNotes
-);
-
+document.getElementById("searchNotes")
+.addEventListener("input",renderNotes);
 
 </script>
 
