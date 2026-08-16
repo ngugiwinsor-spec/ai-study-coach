@@ -83,7 +83,8 @@
 
     .section,
     .chat-box,
-    .quiz-box {
+    .quiz-box,
+    .flashcard-box {
       margin-top: 30px;
       background: white;
       padding: 22px;
@@ -93,12 +94,14 @@
 
     .section h2,
     .chat-box h2,
-    .quiz-box h2 {
+    .quiz-box h2,
+    .flashcard-box h2 {
       margin-bottom: 12px;
     }
 
     .chat-box,
-    .quiz-box {
+    .quiz-box,
+    .flashcard-box {
       display: none;
     }
 
@@ -160,19 +163,23 @@
       margin-top: 15px;
     }
 
-    .quiz-form {
+    .quiz-form,
+    .flashcard-form {
       display: grid;
       gap: 15px;
       margin-top: 15px;
     }
 
-    .quiz-form label {
+    .quiz-form label,
+    .flashcard-form label {
       font-weight: bold;
       margin-bottom: -8px;
     }
 
     .quiz-form input,
-    .quiz-form select {
+    .quiz-form select,
+    .flashcard-form input,
+    .flashcard-form select {
       width: 100%;
       padding: 12px;
       border: 1px solid #cbd5e1;
@@ -215,6 +222,69 @@
       display: none;
     }
 
+    /* FLASHCARDS */
+
+    .flashcard {
+      margin-top: 25px;
+      min-height: 230px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flashcard-inner {
+      position: relative;
+      width: 100%;
+      min-height: 230px;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-front,
+    .flashcard-back {
+      position: absolute;
+      width: 100%;
+      min-height: 230px;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .flashcard-front {
+      background: #eef2ff;
+    }
+
+    .flashcard-back {
+      background: #f1f5f9;
+      transform: rotateY(180deg);
+    }
+
+    .flashcard-front h3,
+    .flashcard-back h3 {
+      margin-bottom: 15px;
+    }
+
+    .flashcard-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .flashcard-counter {
+      text-align: center;
+      margin-top: 15px;
+      color: #64748b;
+    }
+
     footer {
       text-align: center;
       padding: 30px;
@@ -252,10 +322,10 @@
       <p>Create quizzes from your study topics.</p>
     </div>
 
-    <div class="card" onclick="comingSoon('Flashcards')">
+    <div class="card" onclick="openFlashcards()">
       <div class="icon">🧠</div>
       <h3>Flashcards</h3>
-      <p>Turn your notes into flashcards.</p>
+      <p>Turn your topics into flashcards.</p>
     </div>
 
     <div class="card" onclick="comingSoon('Study Planner')">
@@ -280,7 +350,7 @@
 
   <div class="section">
     <h2>🎯 Today's Focus</h2>
-    <p>Ask your AI Study Coach a question and start learning.</p>
+    <p>Choose a tool above and start learning.</p>
     <button class="start-btn" onclick="openTutor()">Open AI Tutor</button>
   </div>
 
@@ -355,6 +425,50 @@
 
   </div>
 
+  <!-- FLASHCARDS -->
+
+  <div class="flashcard-box" id="flashcardBox">
+
+    <h2>🧠 Flashcards</h2>
+
+    <p>Generate flashcards to help you remember important concepts.</p>
+
+    <div class="flashcard-form">
+
+      <label for="flashcardTopic">Study topic</label>
+
+      <input
+        id="flashcardTopic"
+        type="text"
+        placeholder="e.g. Humanism in Psychology"
+      >
+
+      <label for="flashcardNumber">Number of cards</label>
+
+      <select id="flashcardNumber">
+        <option value="5">5 cards</option>
+        <option value="10">10 cards</option>
+        <option value="15">15 cards</option>
+      </select>
+
+      <button onclick="generateFlashcards()">
+        Generate Flashcards
+      </button>
+
+    </div>
+
+    <div
+      id="flashcardLoading"
+      class="message ai"
+      style="display:none;"
+    >
+      Creating your flashcards...
+    </div>
+
+    <div id="flashcardArea"></div>
+
+  </div>
+
 </main>
 
 <footer>
@@ -363,30 +477,63 @@
 
 <script>
 
-function openTutor() {
+/* =========================
+   NAVIGATION
+========================= */
+
+function hideAllTools() {
+
+  document.getElementById("chatBox").style.display = "none";
 
   document.getElementById("quizBox").style.display = "none";
 
-  document.getElementById("chatBox").style.display = "block";
+  document.getElementById("flashcardBox").style.display = "none";
+}
 
-  document.getElementById("chatBox").scrollIntoView({
+
+function openTutor() {
+
+  hideAllTools();
+
+  const box = document.getElementById("chatBox");
+
+  box.style.display = "block";
+
+  box.scrollIntoView({
     behavior: "smooth"
   });
 
   document.getElementById("userInput").focus();
 }
 
+
 function openQuiz() {
 
-  document.getElementById("chatBox").style.display = "none";
+  hideAllTools();
 
-  document.getElementById("quizBox").style.display = "block";
+  const box = document.getElementById("quizBox");
 
-  document.getElementById("quizBox").scrollIntoView({
+  box.style.display = "block";
+
+  box.scrollIntoView({
     behavior: "smooth"
   });
-
 }
+
+
+function openFlashcards() {
+
+  hideAllTools();
+
+  const box = document.getElementById("flashcardBox");
+
+  box.style.display = "block";
+
+  box.scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
 
 function comingSoon(feature) {
   alert(feature + " will be added soon!");
@@ -399,62 +546,82 @@ function comingSoon(feature) {
 
 async function sendMessage() {
 
-  const input = document.getElementById("userInput");
-  const messages = document.getElementById("messages");
+  const input =
+    document.getElementById("userInput");
 
-  const question = input.value.trim();
+  const messages =
+    document.getElementById("messages");
+
+  const question =
+    input.value.trim();
 
   if (!question) {
     return;
   }
 
-  const userMessage = document.createElement("div");
+  const userMessage =
+    document.createElement("div");
 
-  userMessage.className = "message user";
+  userMessage.className =
+    "message user";
 
-  userMessage.textContent = question;
+  userMessage.textContent =
+    question;
 
-  messages.appendChild(userMessage);
+  messages.appendChild(
+    userMessage
+  );
 
   input.value = "";
 
-  const loadingMessage = document.createElement("div");
+  const loadingMessage =
+    document.createElement("div");
 
-  loadingMessage.className = "message ai";
+  loadingMessage.className =
+    "message ai";
 
-  loadingMessage.textContent = "Thinking...";
+  loadingMessage.textContent =
+    "Thinking...";
 
-  messages.appendChild(loadingMessage);
+  messages.appendChild(
+    loadingMessage
+  );
 
-  messages.scrollTop = messages.scrollHeight;
+  messages.scrollTop =
+    messages.scrollHeight;
 
   try {
 
-    const response = await fetch("/api/api/chat", {
+    const response =
+      await fetch("/api/api/chat", {
 
-      method: "POST",
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      body: JSON.stringify({
-        message: question
-      })
+        body: JSON.stringify({
+          message: question
+        })
 
-    });
+      });
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
     loadingMessage.remove();
 
-    const aiMessage = document.createElement("div");
+    const aiMessage =
+      document.createElement("div");
 
-    aiMessage.className = "message ai";
+    aiMessage.className =
+      "message ai";
 
     if (response.ok) {
 
-      aiMessage.textContent = data.answer;
+      aiMessage.textContent =
+        data.answer;
 
     } else {
 
@@ -464,23 +631,30 @@ async function sendMessage() {
 
     }
 
-    messages.appendChild(aiMessage);
+    messages.appendChild(
+      aiMessage
+    );
 
   } catch (error) {
 
     loadingMessage.remove();
 
-    const errorMessage = document.createElement("div");
+    const errorMessage =
+      document.createElement("div");
 
-    errorMessage.className = "message ai";
+    errorMessage.className =
+      "message ai";
 
     errorMessage.textContent =
       "I couldn't connect to the AI. Please try again.";
 
-    messages.appendChild(errorMessage);
+    messages.appendChild(
+      errorMessage
+    );
   }
 
-  messages.scrollTop = messages.scrollHeight;
+  messages.scrollTop =
+    messages.scrollHeight;
 }
 
 
@@ -491,13 +665,16 @@ async function sendMessage() {
 async function generateQuiz() {
 
   const topic =
-    document.getElementById("quizTopic").value.trim();
+    document.getElementById("quizTopic")
+      .value.trim();
 
   const number =
-    document.getElementById("quizQuestions").value;
+    document.getElementById("quizQuestions")
+      .value;
 
   const difficulty =
-    document.getElementById("quizDifficulty").value;
+    document.getElementById("quizDifficulty")
+      .value;
 
   const quizContent =
     document.getElementById("quizContent");
@@ -517,9 +694,11 @@ async function generateQuiz() {
 
   quizContent.innerHTML = "";
 
-  quizResult.style.display = "none";
+  quizResult.style.display =
+    "none";
 
-  quizLoading.style.display = "block";
+  quizLoading.style.display =
+    "block";
 
   const prompt = `
 Create a ${number}-question ${difficulty}-difficulty multiple-choice quiz about "${topic}".
@@ -551,29 +730,33 @@ Make the questions educational and accurate.
 
   try {
 
-    const response = await fetch("/api/api/chat", {
+    const response =
+      await fetch("/api/api/chat", {
 
-      method: "POST",
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      body: JSON.stringify({
-        message: prompt
-      })
+        body: JSON.stringify({
+          message: prompt
+        })
 
-    });
+      });
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
-    quizLoading.style.display = "none";
+    quizLoading.style.display =
+      "none";
 
     if (!response.ok) {
 
       quizContent.innerHTML =
         '<div class="message ai">' +
-        (data.error || "Unable to create quiz.") +
+        (data.error ||
+          "Unable to create quiz.") +
         "</div>";
 
       return;
@@ -583,43 +766,67 @@ Make the questions educational and accurate.
 
     try {
 
-      let cleanAnswer = data.answer.trim();
+      let cleanAnswer =
+        data.answer.trim();
 
       cleanAnswer =
-        cleanAnswer.replace(/^```json/i, "");
+        cleanAnswer.replace(
+          /^```json/i,
+          ""
+        );
 
       cleanAnswer =
-        cleanAnswer.replace(/^```/i, "");
+        cleanAnswer.replace(
+          /^```/i,
+          ""
+        );
 
       cleanAnswer =
-        cleanAnswer.replace(/```$/i, "");
+        cleanAnswer.replace(
+          /```$/i,
+          ""
+        );
 
-      quiz = JSON.parse(cleanAnswer);
+      quiz =
+        JSON.parse(cleanAnswer);
 
     } catch (error) {
 
       quizContent.innerHTML =
-        '<div class="message ai">The AI returned an invalid quiz format. Please try again.</div>';
+        '<div class="message ai">' +
+        "The AI returned an invalid quiz format. " +
+        "Please try again." +
+        "</div>";
 
       return;
     }
 
-    if (!quiz.questions || !Array.isArray(quiz.questions)) {
+    if (
+      !quiz.questions ||
+      !Array.isArray(quiz.questions)
+    ) {
 
       quizContent.innerHTML =
-        '<div class="message ai">No quiz questions were received.</div>';
+        '<div class="message ai">' +
+        "No quiz questions were received." +
+        "</div>";
 
       return;
     }
 
-    displayQuiz(quiz.questions);
+    displayQuiz(
+      quiz.questions
+    );
 
   } catch (error) {
 
-    quizLoading.style.display = "none";
+    quizLoading.style.display =
+      "none";
 
     quizContent.innerHTML =
-      '<div class="message ai">I couldn\'t connect to the AI. Please try again.</div>';
+      '<div class="message ai">' +
+      "I couldn't connect to the AI. Please try again." +
+      "</div>";
   }
 }
 
@@ -627,65 +834,103 @@ Make the questions educational and accurate.
 function displayQuiz(questions) {
 
   const quizContent =
-    document.getElementById("quizContent");
+    document.getElementById(
+      "quizContent"
+    );
 
   const quizResult =
-    document.getElementById("quizResult");
+    document.getElementById(
+      "quizResult"
+    );
 
-  quizResult.style.display = "none";
+  quizResult.style.display =
+    "none";
 
-  quizContent.innerHTML = "";
+  quizContent.innerHTML =
+    "";
 
-  questions.forEach((item, index) => {
+  questions.forEach(
+    (item, index) => {
 
-    const questionBox =
-      document.createElement("div");
+      const questionBox =
+        document.createElement(
+          "div"
+        );
 
-    questionBox.className =
-      "quiz-question";
+      questionBox.className =
+        "quiz-question";
 
-    const title =
-      document.createElement("h3");
+      const title =
+        document.createElement(
+          "h3"
+        );
 
-    title.textContent =
-      (index + 1) + ". " + item.question;
+      title.textContent =
+        (index + 1) +
+        ". " +
+        item.question;
 
-    questionBox.appendChild(title);
-
-    item.options.forEach((option, optionIndex) => {
-
-      const label =
-        document.createElement("label");
-
-      label.className = "option";
-
-      const radio =
-        document.createElement("input");
-
-      radio.type = "radio";
-
-      radio.name = "question-" + index;
-
-      radio.value = optionIndex;
-
-      radio.style.marginRight = "8px";
-
-      label.appendChild(radio);
-
-      label.appendChild(
-        document.createTextNode(option)
+      questionBox.appendChild(
+        title
       );
 
-      questionBox.appendChild(label);
+      item.options.forEach(
+        (option, optionIndex) => {
 
-    });
+          const label =
+            document.createElement(
+              "label"
+            );
 
-    quizContent.appendChild(questionBox);
+          label.className =
+            "option";
 
-  });
+          const radio =
+            document.createElement(
+              "input"
+            );
+
+          radio.type =
+            "radio";
+
+          radio.name =
+            "question-" +
+            index;
+
+          radio.value =
+            optionIndex;
+
+          radio.style.marginRight =
+            "8px";
+
+          label.appendChild(
+            radio
+          );
+
+          label.appendChild(
+            document.createTextNode(
+              option
+            )
+          );
+
+          questionBox.appendChild(
+            label
+          );
+
+        }
+      );
+
+      quizContent.appendChild(
+        questionBox
+      );
+
+    }
+  );
 
   const submitButton =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
   submitButton.textContent =
     "Submit Quiz";
@@ -696,56 +941,74 @@ function displayQuiz(questions) {
   submitButton.onclick =
     function() {
 
-      calculateScore(questions);
+      calculateScore(
+        questions
+      );
 
     };
 
-  quizContent.appendChild(submitButton);
+  quizContent.appendChild(
+    submitButton
+  );
 }
 
 
-function calculateScore(questions) {
+function calculateScore(
+  questions
+) {
 
   let score = 0;
 
-  questions.forEach((question, index) => {
+  questions.forEach(
+    (question, index) => {
 
-    const selected =
-      document.querySelector(
-        'input[name="question-' + index + '"]:checked'
-      );
+      const selected =
+        document.querySelector(
+          'input[name="question-' +
+          index +
+          '"]:checked'
+        );
 
-    if (
-      selected &&
-      Number(selected.value) === Number(question.answer)
-    ) {
+      if (
+        selected &&
+        Number(selected.value) ===
+        Number(question.answer)
+      ) {
 
-      score++;
+        score++;
+
+      }
 
     }
-
-  });
+  );
 
   const quizResult =
-    document.getElementById("quizResult");
+    document.getElementById(
+      "quizResult"
+    );
 
   const percentage =
-    Math.round((score / questions.length) * 100);
+    Math.round(
+      (score / questions.length) *
+      100
+    );
 
   let message;
 
   if (percentage >= 80) {
 
-    message = "Excellent work! 🔥";
+    message =
+      "Excellent work! 🔥";
 
   } else if (percentage >= 60) {
 
-    message = "Good job! Keep practicing. 💪";
+    message =
+      "Good job! Keep practicing. 💪";
 
   } else {
 
-    message = "Keep studying — you can improve! 📚";
-
+    message =
+      "Keep studying — you can improve! 📚";
   }
 
   quizResult.innerHTML =
@@ -758,14 +1021,150 @@ function calculateScore(questions) {
     "%)<br><br>" +
     message;
 
-  quizResult.style.display = "block";
+  quizResult.style.display =
+    "block";
 
   quizResult.scrollIntoView({
     behavior: "smooth"
   });
 }
 
-</script>
 
-</body>
-  </html>
+/* =========================
+   FLASHCARD GENERATOR
+========================= */
+
+async function generateFlashcards() {
+
+  const topic =
+    document.getElementById(
+      "flashcardTopic"
+    ).value.trim();
+
+  const number =
+    document.getElementById(
+      "flashcardNumber"
+    ).value;
+
+  const loading =
+    document.getElementById(
+      "flashcardLoading"
+    );
+
+  const area =
+    document.getElementById(
+      "flashcardArea"
+    );
+
+  if (!topic) {
+
+    alert(
+      "Please enter a study topic."
+    );
+
+    return;
+  }
+
+  area.innerHTML =
+    "";
+
+  loading.style.display =
+    "block";
+
+  const prompt = `
+Create ${number} educational flashcards about "${topic}".
+
+Return ONLY valid JSON.
+
+Use exactly this structure:
+
+{
+  "flashcards": [
+    {
+      "front": "Question or term",
+      "back": "Clear answer or definition"
+    }
+  ]
+}
+
+Make the cards accurate, useful for studying, and easy to understand.
+`;
+
+  try {
+
+    const response =
+      await fetch("/api/api/chat", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          message: prompt
+        })
+
+      });
+
+    const data =
+      await response.json();
+
+    loading.style.display =
+      "none";
+
+    if (!response.ok) {
+
+      area.innerHTML =
+        '<div class="message ai">' +
+        (data.error ||
+          "Unable to create flashcards.") +
+        "</div>";
+
+      return;
+    }
+
+    let result;
+
+    try {
+
+      let cleanAnswer =
+        data.answer.trim();
+
+      cleanAnswer =
+        cleanAnswer.replace(
+          /^```json/i,
+          ""
+        );
+
+      cleanAnswer =
+        cleanAnswer.replace(
+          /^```/i,
+          ""
+        );
+
+      cleanAnswer =
+        cleanAnswer.replace(
+          /```$/i,
+          ""
+        );
+
+      result =
+        JSON.parse(
+          cleanAnswer
+        );
+
+    } catch (error) {
+
+      area.innerHTML =
+        '<div class="message ai">' +
+        "The AI returned an invalid flashcard format. " +
+        "Please try again." +
+        "</div>";
+
+      return;
+    }
+
+    if (
+      !result.flashcards ||
+      
