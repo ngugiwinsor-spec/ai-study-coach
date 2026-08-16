@@ -92,6 +92,64 @@
       margin-bottom: 12px;
     }
 
+    .chat-box {
+      display: none;
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .chat-messages {
+      min-height: 180px;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+
+    .message {
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      background: #e8eefc;
+      margin-left: 20px;
+    }
+
+    .ai {
+      background: #f1f5f9;
+      margin-right: 20px;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 8px;
+    }
+
+    .chat-input textarea {
+      flex: 1;
+      min-height: 50px;
+      resize: vertical;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .chat-input button {
+      border: none;
+      border-radius: 10px;
+      background: #172033;
+      color: white;
+      padding: 0 18px;
+      cursor: pointer;
+    }
+
     .start-btn {
       margin-top: 15px;
       padding: 12px 18px;
@@ -101,10 +159,6 @@
       color: white;
       cursor: pointer;
       font-size: 15px;
-    }
-
-    .start-btn:hover {
-      opacity: 0.9;
     }
 
     footer {
@@ -118,77 +172,182 @@
 
 <body>
 
-  <header>
-    <h1>📚 AI Study Coach</h1>
-    <p>Your personal study companion</p>
-  </header>
+<header>
+  <h1>📚 AI Study Coach</h1>
+  <p>Your personal study companion</p>
+</header>
 
-  <main class="container">
+<main class="container">
 
-    <div class="welcome">
-      <h2>Welcome, Student 👋</h2>
-      <p>What would you like to do today?</p>
+  <div class="welcome">
+    <h2>Welcome, Student 👋</h2>
+    <p>What would you like to do today?</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="openTutor()">
+      <div class="icon">🤖</div>
+      <h3>AI Tutor</h3>
+      <p>Ask questions and get explanations.</p>
     </div>
 
-    <div class="grid">
-
-      <div class="card" onclick="startFeature('AI Tutor')">
-        <div class="icon">🤖</div>
-        <h3>AI Tutor</h3>
-        <p>Ask questions and get explanations.</p>
-      </div>
-
-      <div class="card" onclick="startFeature('Quiz Generator')">
-        <div class="icon">📝</div>
-        <h3>Quiz Generator</h3>
-        <p>Create quizzes from your study topics.</p>
-      </div>
-
-      <div class="card" onclick="startFeature('Flashcards')">
-        <div class="icon">🧠</div>
-        <h3>Flashcards</h3>
-        <p>Turn your notes into flashcards.</p>
-      </div>
-
-      <div class="card" onclick="startFeature('Study Planner')">
-        <div class="icon">📅</div>
-        <h3>Study Planner</h3>
-        <p>Plan your study sessions.</p>
-      </div>
-
-      <div class="card" onclick="startFeature('Notes')">
-        <div class="icon">📖</div>
-        <h3>My Notes</h3>
-        <p>Keep your study notes organized.</p>
-      </div>
-
-      <div class="card" onclick="startFeature('Progress')">
-        <div class="icon">📊</div>
-        <h3>Progress</h3>
-        <p>Track your study progress.</p>
-      </div>
-
+    <div class="card" onclick="comingSoon('Quiz Generator')">
+      <div class="icon">📝</div>
+      <h3>Quiz Generator</h3>
+      <p>Create quizzes from your study topics.</p>
     </div>
 
-    <div class="section">
-      <h2>🎯 Today's Focus</h2>
-      <p>Start a study session and stay consistent with your goals.</p>
-      <button class="start-btn" onclick="startFeature('Study Session')">
-        Start Studying
-      </button>
+    <div class="card" onclick="comingSoon('Flashcards')">
+      <div class="icon">🧠</div>
+      <h3>Flashcards</h3>
+      <p>Turn your notes into flashcards.</p>
     </div>
 
-  </main>
+    <div class="card" onclick="comingSoon('Study Planner')">
+      <div class="icon">📅</div>
+      <h3>Study Planner</h3>
+      <p>Plan your study sessions.</p>
+    </div>
 
-  <footer>
-    AI Study Coach • Built for students
-  </footer>
+    <div class="card" onclick="comingSoon('My Notes')">
+      <div class="icon">📖</div>
+      <h3>My Notes</h3>
+      <p>Keep your study notes organized.</p>
+    </div>
 
-  <script>
-    function startFeature(feature) {
-      alert(feature + " will be available in the next version!");
+    <div class="card" onclick="comingSoon('Progress')">
+      <div class="icon">📊</div>
+      <h3>Progress</h3>
+      <p>Track your study progress.</p>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <h2>🎯 Today's Focus</h2>
+    <p>Ask your AI Study Coach a question and start learning.</p>
+    <button class="start-btn" onclick="openTutor()">Open AI Tutor</button>
+  </div>
+
+  <div class="chat-box" id="chatBox">
+
+    <h2>🤖 AI Tutor</h2>
+
+    <div class="chat-messages" id="messages">
+      <div class="message ai">
+        Hi! I'm your AI Study Coach. Ask me anything you're studying and I'll help you understand it.
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <textarea
+        id="userInput"
+        placeholder="Ask your study question..."
+      ></textarea>
+
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  AI Study Coach • Built for students
+</footer>
+
+<script>
+
+function openTutor() {
+  document.getElementById("chatBox").style.display = "block";
+
+  document.getElementById("chatBox").scrollIntoView({
+    behavior: "smooth"
+  });
+
+  document.getElementById("userInput").focus();
+}
+
+function comingSoon(feature) {
+  alert(feature + " will be added soon!");
+}
+
+async function sendMessage() {
+
+  const input = document.getElementById("userInput");
+  const messages = document.getElementById("messages");
+
+  const question = input.value.trim();
+
+  if (!question) {
+    return;
+  }
+
+  const userMessage = document.createElement("div");
+  userMessage.className = "message user";
+  userMessage.textContent = question;
+
+  messages.appendChild(userMessage);
+
+  input.value = "";
+
+  const loadingMessage = document.createElement("div");
+  loadingMessage.className = "message ai";
+  loadingMessage.textContent = "Thinking...";
+
+  messages.appendChild(loadingMessage);
+
+  messages.scrollTop = messages.scrollHeight;
+
+  try {
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        message: question
+      })
+    });
+
+    const data = await response.json();
+
+    loadingMessage.remove();
+
+    const aiMessage = document.createElement("div");
+    aiMessage.className = "message ai";
+
+    if (response.ok) {
+      aiMessage.textContent = data.answer;
+    } else {
+      aiMessage.textContent =
+        "Sorry, I couldn't get an answer right now. " +
+        (data.error || "");
     }
-  </script>
+
+    messages.appendChild(aiMessage);
+
+  } catch (error) {
+
+    loadingMessage.remove();
+
+    const errorMessage = document.createElement("div");
+    errorMessage.className = "message ai";
+
+    errorMessage.textContent =
+      "I couldn't connect to the AI. Please try again.";
+
+    messages.appendChild(errorMessage);
+  }
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+</script>
 
 </body>
-</html>
+        </html>
