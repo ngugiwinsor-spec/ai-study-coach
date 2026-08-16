@@ -6,322 +6,55 @@
 <title>AI Study Coach</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#172033}
+header{background:#172033;color:#fff;padding:28px 18px}
+.header-inner{max-width:900px;margin:auto}
+header h1{margin:0 0 6px;font-size:27px}
+header p{margin:0;color:#cbd5e1}
+.container{max-width:900px;margin:auto;padding:20px 14px 50px}
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f6f7fb;
-  color: #172033;
-}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:18px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:11px 15px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#475569;font-weight:600;white-space:nowrap;cursor:pointer}
+.tab.active{background:#172033;color:#fff;border-color:#172033}
 
-header {
-  background: #172033;
-  color: white;
-  padding: 30px 20px;
-}
+.panel{display:none}
+.panel.active{display:block}
 
-.header-inner {
-  max-width: 900px;
-  margin: auto;
-}
+.card{background:#fff;border:1px solid #e7eaf0;border-radius:18px;padding:22px;box-shadow:0 4px 18px rgba(15,23,42,.05)}
+.icon{font-size:28px;margin-bottom:8px}
+h2{margin:0 0 6px}
+.description{margin:0 0 22px;color:#64748b;line-height:1.5}
 
-header h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
-}
+label{display:block;font-size:14px;font-weight:600;margin:16px 0 7px}
+textarea,input,select{width:100%;padding:13px;border:1px solid #d9dee8;border-radius:12px;font:inherit;background:#fff;color:#172033}
+textarea{min-height:130px;resize:vertical}
 
-header p {
-  margin: 0;
-  color: #cbd5e1;
-  font-size: 15px;
-}
+.primary{width:100%;margin-top:17px;padding:14px;border:0;border-radius:12px;background:#172033;color:#fff;font-weight:700;font-size:15px;cursor:pointer}
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 24px 16px 50px;
-}
+.output{display:none;margin-top:20px;padding:18px;border-radius:14px;background:#f8fafc;border:1px solid #e8edf3;line-height:1.7;white-space:pre-wrap;color:#334155}
+.output.show{display:block}
+.loading{color:#64748b}
 
-/* NAVIGATION */
+.two-column{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-.tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  margin-bottom: 20px;
-  scrollbar-width: none;
-}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stat{padding:18px;background:#f8fafc;border:1px solid #e8edf3;border-radius:14px}
+.stat-number{font-size:27px;font-weight:700;margin:7px 0 3px}
+.stat-label{font-size:13px;color:#64748b}
+.progress-bar{height:8px;background:#e2e8f0;border-radius:20px;margin-top:10px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:#172033}
 
-.tabs::-webkit-scrollbar {
-  display: none;
-}
+.note{margin-top:14px;padding:17px;background:#f8fafc;border:1px solid #e8edf3;border-radius:14px}
+.note h3{margin:0 0 5px}
+.note small{color:#64748b}
+.note p{white-space:pre-wrap;line-height:1.6}
+.delete{background:#dc2626;color:#fff;border:0;padding:9px 13px;border-radius:9px;cursor:pointer}
 
-.tab {
-  flex: 0 0 auto;
-  border: 1px solid #e2e8f0;
-  background: white;
-  color: #475569;
-  padding: 11px 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.tab.active {
-  background: #172033;
-  color: white;
-  border-color: #172033;
-}
-
-/* PANELS */
-
-.panel {
-  display: none;
-}
-
-.panel.active {
-  display: block;
-}
-
-.card {
-  background: white;
-  border: 1px solid #e7eaf0;
-  border-radius: 18px;
-  padding: 24px;
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
-}
-
-.title {
-  margin-bottom: 22px;
-}
-
-.title .icon {
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-
-.title h2 {
-  margin: 0 0 6px;
-  font-size: 22px;
-}
-
-.title p {
-  margin: 0;
-  color: #64748b;
-  line-height: 1.5;
-}
-
-/* FORM */
-
-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  margin: 18px 0 7px;
-}
-
-textarea,
-input,
-select {
-  width: 100%;
-  border: 1px solid #d9dee8;
-  border-radius: 12px;
-  padding: 13px 14px;
-  font-size: 15px;
-  font-family: inherit;
-  background: white;
-  color: #172033;
-  outline: none;
-}
-
-textarea {
-  min-height: 130px;
-  resize: vertical;
-}
-
-textarea:focus,
-input:focus,
-select:focus {
-  border-color: #64748b;
-}
-
-.primary {
-  width: 100%;
-  margin-top: 18px;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background: #172033;
-  color: white;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.primary:active {
-  transform: scale(.99);
-}
-
-/* OUTPUT */
-
-.output {
-  display: none;
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: 14px;
-  background: #f8fafc;
-  border: 1px solid #e8edf3;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  color: #334155;
-}
-
-.output.show {
-  display: block;
-}
-
-.loading {
-  color: #64748b;
-}
-
-/* TWO COLUMN */
-
-.two-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-/* PROGRESS */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.stat {
-  background: #f8fafc;
-  border: 1px solid #e8edf3;
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.stat-icon {
-  font-size: 22px;
-}
-
-.stat-number {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 8px 0 4px;
-}
-
-.stat-label {
-  color: #64748b;
-  font-size: 13px;
-}
-
-.progress-bar {
-  height: 9px;
-  background: #e2e8f0;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  background: #172033;
-  transition: width .3s ease;
-}
-
-/* NOTES */
-
-.note {
-  margin-top: 14px;
-  padding: 18px;
-  border: 1px solid #e8edf3;
-  border-radius: 14px;
-  background: #f8fafc;
-}
-
-.note h3 {
-  margin: 0 0 5px;
-}
-
-.note small {
-  color: #64748b;
-}
-
-.note p {
-  line-height: 1.6;
-  white-space: pre-wrap;
-}
-
-.delete {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 9px 13px;
-  border-radius: 9px;
-  cursor: pointer;
-}
-
-/* FLASHCARD */
-
-.flashcard {
-  margin-top: 20px;
-  padding: 24px;
-  background: #f8fafc;
-  border-radius: 14px;
-  border: 1px solid #e8edf3;
-}
-
-.flashcard strong {
-  display: block;
-  margin-bottom: 8px;
-  color: #64748b;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-  header {
-    padding: 24px 18px;
-  }
-
-  header h1 {
-    font-size: 24px;
-  }
-
-  .container {
-    padding: 16px 12px 40px;
-  }
-
-  .card {
-    padding: 18px;
-    border-radius: 15px;
-  }
-
-  .two-column,
-  .stats {
-    grid-template-columns: 1fr;
-  }
-
-  .title h2 {
-    font-size: 20px;
-  }
+@media(max-width:600px){
+  .two-column,.stats{grid-template-columns:1fr}
+  .card{padding:18px}
 }
 </style>
 </head>
@@ -329,815 +62,576 @@ select:focus {
 <body>
 
 <header>
-  <div class="header-inner">
-    <h1>📚 AI Study Coach</h1>
-    <p>Learn smarter. Stay organized. Make progress.</p>
-  </div>
+<div class="header-inner">
+<h1>📚 AI Study Coach</h1>
+<p>Learn smarter. Stay organized. Make progress.</p>
+</div>
 </header>
 
 <div class="container">
 
-  <!-- TABS -->
-
-  <div class="tabs">
-    <button class="tab active" data-tab="tutor">🤖 AI Tutor</button>
-    <button class="tab" data-tab="quiz">📝 Quiz</button>
-    <button class="tab" data-tab="flashcards">🧠 Flashcards</button>
-    <button class="tab" data-tab="planner">📅 Planner</button>
-    <button class="tab" data-tab="notes">📖 Notes</button>
-    <button class="tab" data-tab="progress">📊 Progress</button>
-  </div>
-
-  <!-- AI TUTOR -->
-
-  <section id="tutor" class="panel active">
-    <div class="card">
-
-      <div class="title">
-        <div class="icon">🤖</div>
-        <h2>AI Tutor</h2>
-        <p>Ask anything about your studies and get a simple explanation.</p>
-      </div>
-
-      <label for="tutorQuestion">What would you like to learn?</label>
-
-      <textarea
-        id="tutorQuestion"
-        placeholder="Example: Explain classical conditioning in simple terms."
-      ></textarea>
-
-      <button class="primary" id="tutorButton">
-        Ask AI Tutor
-      </button>
-
-      <div id="tutorOutput" class="output"></div>
-
-    </div>
-  </section>
-
-  <!-- QUIZ -->
-
-  <section id="quiz" class="panel">
-    <div class="card">
-
-      <div class="title">
-        <div class="icon">📝</div>
-        <h2>Quiz Generator</h2>
-        <p>Test yourself with an AI-generated quiz.</p>
-      </div>
-
-      <label for="quizTopic">Topic</label>
-
-      <input
-        id="quizTopic"
-        placeholder="Example: Photosynthesis"
-      >
-
-      <div class="two-column">
-
-        <div>
-          <label for="quizCount">Questions</label>
-
-          <select id="quizCount">
-            <option value="5">5 questions</option>
-            <option value="10">10 questions</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="quizDifficulty">Difficulty</label>
-
-          <select id="quizDifficulty">
-            <option>Easy</option>
-            <option selected>Medium</option>
-            <option>Hard</option>
-          </select>
-        </div>
-
-      </div>
-
-      <button class="primary" id="quizButton">
-        Generate Quiz
-      </button>
-
-      <div id="quizOutput" class="output"></div>
-
-    </div>
-  </section>
-
-  <!-- FLASHCARDS -->
-
-  <section id="flashcards" class="panel">
-    <div class="card">
-
-      <div class="title">
-        <div class="icon">🧠</div>
-        <h2>Flashcards</h2>
-        <p>Turn any topic into quick revision cards.</p>
-      </div>
-
-      <label for="flashTopic">Topic</label>
-
-      <input
-        id="flashTopic"
-        placeholder="Example: Humanistic psychology"
-      >
-
-      <label for="flashCount">Number of cards</label>
-
-      <select id="flashCount">
-        <option value="5">5 cards</option>
-        <option value="10">10 cards</option>
-      </select>
-
-      <button class="primary" id="flashButton">
-        Create Flashcards
-      </button>
-
-      <div id="flashOutput" class="output"></div>
-
-    </div>
-  </section>
-
-  <!-- PLANNER -->
-
-  <section id="planner" class="panel">
-    <div class="card">
-
-      <div class="title">
-        <div class="icon">📅</div>
-        <h2>Study Planner</h2>
-        <p>Create a realistic study schedule around your available time.</p>
-      </div>
-
-      <label for="plannerTopics">What are you studying?</label>
-
-      <textarea
-        id="plannerTopics"
-        placeholder="Example: Physiological Psychology, Trauma & Grief, Statistics"
-      ></textarea>
-
-      <div class="two-column">
-
-        <div>
-          <label for="plannerDays">Duration</label>
-
-          <select id="plannerDays">
-            <option value="3">3 days</option>
-            <option value="5">5 days</option>
-            <option value="7" selected>7 days</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="plannerTime">Daily study time</label>
-
-          <select id="plannerTime">
-            <option value="30">30 minutes</option>
-            <option value="60" selected>1 hour</option>
-            <option value="90">1.5 hours</option>
-            <option value="120">2 hours</option>
-          </select>
-        </div>
-
-      </div>
-
-      <button class="primary" id="plannerButton">
-        Create Study Plan
-      </button>
-
-      <div id="plannerOutput" class="output"></div>
-
-    </div>
-  </section>
-
-  <!-- NOTES -->
-
-  <section id="notes" class="panel">
-    <div class="card">
-
-      <div class="title">
-        <div class="icon">📖</div>
-        <h2>My Notes</h2>
-        <p>Save important information so you can find it later.</p>
-      </div>
-
-      <label for="noteTitle">Title</label>
-
-      <input
-        id="noteTitle"
-        placeholder="Example: Classical Conditioning"
-      >
-
-      <label for="noteSubject">Subject</label>
-
-      <input
-        id="noteSubject"
-        placeholder="Example: Psychology"
-      >
-
-      <label for="noteText">Your notes</label>
-
-      <textarea
-        id="noteText"
-        placeholder="Write your notes here..."
-      ></textarea>
-
-      <button class="primary" id="saveNoteButton">
-        Save Note
-      </button>
-
-      <label for="noteSearch">Search your notes</label>
-
-      <input
-        id="noteSearch"
-        placeholder="Search..."
-      >
-
-      <div id="notesOutput"></div>
-
-    </div>
-  </section>
-
-  <!-- PROGRESS -->
-
-  <section id="progress" class="panel">
-    <div class="card">
-
-      <div class="title">
-        <div class="icon">📊</div>
-        <h2>My Progress</h2>
-        <p>See how your study habits are developing.</p>
-      </div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <div class="stat-icon">⏱️</div>
-          <div class="stat-number" id="studyMinutes">0</div>
-          <div class="stat-label">Minutes Studied</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-icon">📝</div>
-          <div class="stat-number" id="quizAverage">0%</div>
-          <div class="stat-label">Quiz Average</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-icon">🧠</div>
-          <div class="stat-number" id="flashcardsDone">0</div>
-          <div class="stat-label">Flashcards Completed</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-icon">📈</div>
-          <div class="stat-number" id="overallProgress">0%</div>
-          <div class="stat-label">Overall Progress</div>
-
-          <div class="progress-bar">
-            <div
-              class="progress-fill"
-              id="progressFill"
-            ></div>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="flashcard">
-
-        <strong>Add study time</strong>
-
-        <input
-          id="minutesInput"
-          type="number"
-          min="1"
-          placeholder="How many minutes did you study?"
-        >
-
-        <button
-          class="primary"
-          id="addMinutesButton"
-        >
-          Add Study Time
-        </button>
-
-      </div>
-
-      <div class="flashcard">
-        <strong>Your progress</strong>
-
-        <p id="progressMessage">
-          Start studying to build your progress!
-        </p>
-      </div>
-
-      <button
-        id="resetProgressButton"
-        class="delete"
-      >
-        Reset Progress
-      </button>
-
-    </div>
-  </section>
+<div class="tabs">
+<button class="tab active" data-tab="tutor">🤖 AI Tutor</button>
+<button class="tab" data-tab="quiz">📝 Quiz</button>
+<button class="tab" data-tab="flashcards">🧠 Flashcards</button>
+<button class="tab" data-tab="planner">📅 Planner</button>
+<button class="tab" data-tab="notes">📖 Notes</button>
+<button class="tab" data-tab="progress">📊 Progress</button>
+</div>
+
+<section id="tutor" class="panel active">
+<div class="card">
+<div class="icon">🤖</div>
+<h2>AI Tutor</h2>
+<p class="description">Ask anything about your studies and get a clear explanation.</p>
+
+<label for="tutorQuestion">Your question</label>
+<textarea id="tutorQuestion" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
+
+<button class="primary" id="tutorButton">Ask AI Tutor</button>
+<div id="tutorOutput" class="output"></div>
+</div>
+</section>
+
+<section id="quiz" class="panel">
+<div class="card">
+<div class="icon">📝</div>
+<h2>Quiz Generator</h2>
+<p class="description">Test your knowledge with an AI-generated quiz.</p>
+
+<label for="quizTopic">Topic</label>
+<input id="quizTopic" placeholder="Example: Photosynthesis">
+
+<div class="two-column">
+<div>
+<label for="quizCount">Questions</label>
+<select id="quizCount">
+<option value="5">5 questions</option>
+<option value="10">10 questions</option>
+</select>
+</div>
+
+<div>
+<label for="quizDifficulty">Difficulty</label>
+<select id="quizDifficulty">
+<option>Easy</option>
+<option selected>Medium</option>
+<option>Hard</option>
+</select>
+</div>
+</div>
+
+<button class="primary" id="quizButton">Generate Quiz</button>
+<div id="quizOutput" class="output"></div>
+</div>
+</section>
+
+<section id="flashcards" class="panel">
+<div class="card">
+<div class="icon">🧠</div>
+<h2>Flashcards</h2>
+<p class="description">Turn any topic into quick revision cards.</p>
+
+<label for="flashTopic">Topic</label>
+<input id="flashTopic" placeholder="Example: Humanistic psychology">
+
+<label for="flashCount">Number of cards</label>
+<select id="flashCount">
+<option value="5">5 cards</option>
+<option value="10">10 cards</option>
+</select>
+
+<button class="primary" id="flashButton">Create Flashcards</button>
+<div id="flashOutput" class="output"></div>
+</div>
+</section>
+
+<section id="planner" class="panel">
+<div class="card">
+<div class="icon">📅</div>
+<h2>Study Planner</h2>
+<p class="description">Create a realistic study schedule.</p>
+
+<label for="plannerTopics">What are you studying?</label>
+<textarea id="plannerTopics" placeholder="Example: Psychology, Statistics, Biology"></textarea>
+
+<div class="two-column">
+<div>
+<label for="plannerDays">Duration</label>
+<select id="plannerDays">
+<option value="3">3 days</option>
+<option value="5">5 days</option>
+<option value="7" selected>7 days</option>
+</select>
+</div>
+
+<div>
+<label for="plannerTime">Daily study time</label>
+<select id="plannerTime">
+<option value="30">30 minutes</option>
+<option value="60" selected>1 hour</option>
+<option value="90">1.5 hours</option>
+<option value="120">2 hours</option>
+</select>
+</div>
+</div>
+
+<button class="primary" id="plannerButton">Create Study Plan</button>
+<div id="plannerOutput" class="output"></div>
+</div>
+</section>
+
+<section id="notes" class="panel">
+<div class="card">
+<div class="icon">📖</div>
+<h2>My Notes</h2>
+<p class="description">Save important information for later.</p>
+
+<label for="noteTitle">Title</label>
+<input id="noteTitle" placeholder="Example: Classical Conditioning">
+
+<label for="noteSubject">Subject</label>
+<input id="noteSubject" placeholder="Example: Psychology">
+
+<label for="noteText">Notes</label>
+<textarea id="noteText" placeholder="Write your notes here..."></textarea>
+
+<button class="primary" id="saveNoteButton">Save Note</button>
+
+<label for="noteSearch">Search notes</label>
+<input id="noteSearch" placeholder="Search...">
+
+<div id="notesOutput"></div>
+</div>
+</section>
+
+<section id="progress" class="panel">
+<div class="card">
+<div class="icon">📊</div>
+<h2>My Progress</h2>
+<p class="description">Track your study activity.</p>
+
+<div class="stats">
+<div class="stat">
+<div>⏱️</div>
+<div class="stat-number" id="studyMinutes">0</div>
+<div class="stat-label">Minutes Studied</div>
+</div>
+
+<div class="stat">
+<div>📝</div>
+<div class="stat-number" id="quizAverage">0%</div>
+<div class="stat-label">Quiz Activity</div>
+</div>
+
+<div class="stat">
+<div>🧠</div>
+<div class="stat-number" id="flashcardsDone">0</div>
+<div class="stat-label">Flashcards</div>
+</div>
+
+<div class="stat">
+<div>📈</div>
+<div class="stat-number" id="overallProgress">0%</div>
+<div class="stat-label">Overall Progress</div>
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+</div>
+</div>
+
+<label for="minutesInput">Add study time</label>
+<input id="minutesInput" type="number" min="1" placeholder="Minutes studied">
+
+<button class="primary" id="addMinutesButton">Add Study Time</button>
+
+<div class="output show" style="margin-top:20px">
+<strong>Your progress</strong>
+<p id="progressMessage">Start studying to build your progress!</p>
+</div>
+
+<button id="resetProgressButton" class="delete" style="margin-top:18px">Reset Progress</button>
+</div>
+</section>
 
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded",function(){
 
-document.addEventListener("DOMContentLoaded", function () {
+const tabs=document.querySelectorAll(".tab");
+const panels=document.querySelectorAll(".panel");
 
-  /* =========================
-     TABS
-  ========================= */
+tabs.forEach(tab=>{
+tab.addEventListener("click",()=>{
+const target=tab.dataset.tab;
 
-  const tabs = document.querySelectorAll(".tab");
-  const panels = document.querySelectorAll(".panel");
+tabs.forEach(t=>t.classList.remove("active"));
+panels.forEach(p=>p.classList.remove("active"));
 
-  tabs.forEach(function(tab) {
+tab.classList.add("active");
+document.getElementById(target).classList.add("active");
 
-    tab.addEventListener("click", function() {
-
-      const target = tab.dataset.tab;
-
-      tabs.forEach(function(item) {
-        item.classList.remove("active");
-      });
-
-      panels.forEach(function(panel) {
-        panel.classList.remove("active");
-      });
-
-      tab.classList.add("active");
-
-      const panel = document.getElementById(target);
-
-      if (panel) {
-        panel.classList.add("active");
-      }
-
-      if (target === "progress") {
-        updateProgress();
-      }
-
-      if (target === "notes") {
-        renderNotes();
-      }
-
-    });
-
-  });
+if(target==="progress") updateProgress();
+if(target==="notes") renderNotes();
+});
+});
 
 
-  /* =========================
-     AI
-  ========================= */
+async function askAI(message){
 
-  async function askAI(message) {
+const response=await fetch("/api/chat",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message})
+});
 
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: message
-      })
-    });
+const data=await response.json();
 
-    const data = await response.json();
+if(!response.ok){
+throw new Error(data.error||"AI request failed");
+}
 
-    if (!response.ok) {
-      throw new Error(
-        data.error || "AI request failed"
-      );
-    }
-
-    return data.answer;
-
-  }
+return data.answer;
+}
 
 
-  function showOutput(element, text, loading = false) {
-
-    element.textContent = text;
-    element.classList.add("show");
-
-    if (loading) {
-      element.classList.add("loading");
-    } else {
-      element.classList.remove("loading");
-    }
-
-  }
+function showOutput(element,text,loading=false){
+element.textContent=text;
+element.classList.add("show");
+element.classList.toggle("loading",loading);
+}
 
 
-  /* =========================
-     AI TUTOR
-  ========================= */
+/* AI TUTOR */
 
-  document
-    .getElementById("tutorButton")
-    .addEventListener("click", async function() {
+document.getElementById("tutorButton").addEventListener("click",async()=>{
 
-      const question =
-        document
-          .getElementById("tutorQuestion")
-          .value
-          .trim();
+const question=document.getElementById("tutorQuestion").value.trim();
+const output=document.getElementById("tutorOutput");
 
-      const output =
-        document.getElementById("tutorOutput");
+if(!question){
+showOutput(output,"Please enter a question.");
+return;
+}
 
-      if (!question) {
-        showOutput(
-          output,
-          "Please enter a question."
-        );
-        return;
-      }
+showOutput(output,"Thinking...",true);
 
-      showOutput(
-        output,
-        "Thinking...",
-        true
-      );
+try{
+const answer=await askAI(question);
+showOutput(output,answer);
+}catch(error){
+showOutput(output,"Couldn't connect to the AI: "+error.message);
+}
 
-      try {
-
-        const answer =
-          await askAI(question);
-
-        showOutput(
-          output,
-          answer
-        );
-
-      } catch (error) {
-
-        showOutput(
-          output,
-          "Couldn't connect to the AI: " +
-          error.message
-        );
-
-      }
-
-    });
+});
 
 
-  /* =========================
-     QUIZ
-  ========================= */
+/* QUIZ */
 
-  document
-    .getElementById("quizButton")
-    .addEventListener("click", async function() {
+document.getElementById("quizButton").addEventListener("click",async()=>{
 
-      const topic =
-        document
-          .getElementById("quizTopic")
-          .value
-          .trim();
+const topic=document.getElementById("quizTopic").value.trim();
+const count=document.getElementById("quizCount").value;
+const difficulty=document.getElementById("quizDifficulty").value;
+const output=document.getElementById("quizOutput");
 
-      const count =
-        document
-          .getElementById("quizCount")
-          .value;
+if(!topic){
+showOutput(output,"Please enter a topic.");
+return;
+}
 
-      const difficulty =
-        document
-          .getElementById("quizDifficulty")
-          .value;
+showOutput(output,"Creating your quiz...",true);
 
-      const output =
-        document.getElementById("quizOutput");
+try{
 
-      if (!topic) {
-        showOutput(
-          output,
-          "Please enter a topic."
-        );
-        return;
-      }
-
-      showOutput(
-        output,
-        "Creating your quiz...",
-        true
-      );
-
-      const prompt = `
+const answer=await askAI(`
 Create ${count} multiple-choice questions about ${topic}.
 
 Difficulty: ${difficulty}.
 
-For every question provide:
-- The question
+For each question provide:
+- Question
 - Four answer choices
-- The correct answer
+- Correct answer
 
-Make the quiz clear and educational.
-`;
+Make it clear and educational.
+`);
 
-      try {
+showOutput(output,answer);
 
-        const answer =
-          await askAI(prompt);
+const progress=getProgress();
+progress.quizCount++;
+saveProgress(progress);
 
-        showOutput(
-          output,
-          answer
-        );
+}catch(error){
+showOutput(output,"Quiz generation failed: "+error.message);
+}
 
-        const progress =
-          getProgress();
-
-        progress.quizCount++;
-
-        saveProgress(progress);
-
-      } catch (error) {
-
-        showOutput(
-          output,
-          "Quiz generation failed: " +
-          error.message
-        );
-
-      }
-
-    });
+});
 
 
-  /* =========================
-     FLASHCARDS
-  ========================= */
+/* FLASHCARDS */
 
-  document
-    .getElementById("flashButton")
-    .addEventListener("click", async function() {
+document.getElementById("flashButton").addEventListener("click",async()=>{
 
-      const topic =
-        document
-          .getElementById("flashTopic")
-          .value
-          .trim();
+const topic=document.getElementById("flashTopic").value.trim();
+const count=document.getElementById("flashCount").value;
+const output=document.getElementById("flashOutput");
 
-      const count =
-        document
-          .getElementById("flashCount")
-          .value;
+if(!topic){
+showOutput(output,"Please enter a topic.");
+return;
+}
 
-      const output =
-        document.getElementById("flashOutput");
+showOutput(output,"Creating your flashcards...",true);
 
-      if (!topic) {
-        showOutput(
-          output,
-          "Please enter a topic."
-        );
-        return;
-      }
+try{
 
-      showOutput(
-        output,
-        "Creating your flashcards...",
-        true
-      );
-
-      const prompt = `
+const answer=await askAI(`
 Create ${count} study flashcards about ${topic}.
 
-For every flashcard use:
+For each card provide:
+FRONT: question or key term
+BACK: clear and accurate answer.
+`);
 
-FRONT:
-Question or key term
+showOutput(output,answer);
 
-BACK:
-Clear and accurate answer.
+const progress=getProgress();
+progress.flashcards+=Number(count);
+saveProgress(progress);
 
-Make them useful for revision.
-`;
+}catch(error){
+showOutput(output,"Flashcard generation failed: "+error.message);
+}
 
-      try {
-
-        const answer =
-          await askAI(prompt);
-
-        showOutput(
-          output,
-          answer
-        );
-
-        const progress =
-          getProgress();
-
-        progress.flashcards +=
-          Number(count);
-
-        saveProgress(progress);
-
-      } catch (error) {
-
-        showOutput(
-          output,
-          "Flashcard generation failed: " +
-          error.message
-        );
-
-      }
-
-    });
+});
 
 
-  /* =========================
-     PLANNER
-  ========================= */
+/* PLANNER */
 
-  document
-    .getElementById("plannerButton")
-    .addEventListener("click", async function() {
+document.getElementById("plannerButton").addEventListener("click",async()=>{
 
-      const topics =
-        document
-          .getElementById("plannerTopics")
-          .value
-          .trim();
+const topics=document.getElementById("plannerTopics").value.trim();
+const days=document.getElementById("plannerDays").value;
+const time=document.getElementById("plannerTime").value;
+const output=document.getElementById("plannerOutput");
 
-      const days =
-        document
-          .getElementById("plannerDays")
-          .value;
+if(!topics){
+showOutput(output,"Please enter your subjects or topics.");
+return;
+}
 
-      const time =
-        document
-          .getElementById("plannerTime")
-          .value;
+showOutput(output,"Creating your study plan...",true);
 
-      const output =
-        document.getElementById("plannerOutput");
+try{
 
-      if (!topics) {
-        showOutput(
-          output,
-          "Please enter your subjects or topics."
-        );
-        return;
-      }
-
-      showOutput(
-        output,
-        "Creating your study plan...",
-        true
-      );
-
-      const prompt = `
+const answer=await askAI(`
 Create a ${days}-day study plan.
 
-Subjects/topics:
+Subjects:
 ${topics}
 
-Available study time:
+Study time:
 ${time} minutes per day.
 
-Make the plan realistic and balanced.
+Make it realistic and balanced.
+Clearly label each day.
+`);
 
-Clearly label each day and what the student should study.
-`;
+showOutput(output,answer);
 
-      try {
+}catch(error){
+showOutput(output,"Study plan failed: "+error.message);
+}
 
-        const answer =
-          await askAI(prompt);
-
-        showOutput(
-          output,
-          answer
-        );
-
-      } catch (error) {
-
-        showOutput(
-          output,
-          "Study plan generation failed: " +
-          error.message
-        );
-
-      }
-
-    });
+});
 
 
-  /* =========================
-     NOTES
-  ========================= */
+/* NOTES */
 
-  function getNotes() {
+function getNotes(){
+try{
+return JSON.parse(localStorage.getItem("studyNotes")||"[]");
+}catch{
+return [];
+}
+}
 
-    try {
+function saveNotes(notes){
+localStorage.setItem("studyNotes",JSON.stringify(notes));
+}
 
-      return JSON.parse(
-        localStorage.getItem("studyNotes") || "[]"
-      );
+document.getElementById("saveNoteButton").addEventListener("click",()=>{
 
-    } catch {
+const title=document.getElementById("noteTitle").value.trim();
+const subject=document.getElementById("noteSubject").value.trim();
+const text=document.getElementById("noteText").value.trim();
 
-      return [];
+if(!title||!text){
+alert("Please enter a title and your notes.");
+return;
+}
 
-    }
+const notes=getNotes();
 
-  }
+notes.unshift({
+id:Date.now(),
+title,
+subject:subject||"General",
+text
+});
 
+saveNotes(notes);
 
-  function saveNotes(notes) {
+document.getElementById("noteTitle").value="";
+document.getElementById("noteSubject").value="";
+document.getElementById("noteText").value="";
 
-    localStorage.setItem(
-      "studyNotes",
-      JSON.stringify(notes)
-    );
+renderNotes();
 
-  }
+});
 
+document.getElementById("noteSearch").addEventListener("input",renderNotes);
 
-  document
-    .getElementById("saveNoteButton")
-    .addEventListener("click", function() {
+function renderNotes(){
 
-      const title =
-        document
-          .getElementById("noteTitle")
-          .value
-          .trim();
+const output=document.getElementById("notesOutput");
+const search=document.getElementById("noteSearch").value.toLowerCase();
 
-      const subject =
-        document
-          .getElementById("noteSubject")
-          .value
-          .trim();
+output.innerHTML="";
 
-      const text =
-        document
-          .getElementById("noteText")
-          .value
-          .trim();
+const notes=getNotes().filter(note=>
+note.title.toLowerCase().includes(search)||
+note.subject.toLowerCase().includes(search)||
+note.text.toLowerCase().includes(search)
+);
 
-      if (!title || !text) {
-        alert(
-          "Please enter a title and your notes."
-        );
-        return;
-      }
+if(!notes.length){
+output.innerHTML='<div class="output show">No notes found.</div>';
+return;
+}
 
-      const notes = getNotes();
+notes.forEach(note=>{
 
-      notes.unshift({
-        id: Date.now(),
-        title,
-        subject: subject || "General",
-        text
-      });
+const box=document.createElement("div");
+box.className="note";
 
-      saveNotes(notes);
+const title=document.createElement("h3");
+title.textContent=note.title;
 
-      document.getElementById("noteTitle").value = "";
-      document.getElementById("noteSubject").value = "";
-      document.getElementById("noteText").value = "";
+const subject=document.createElement("small");
+subject.textContent=note.subject;
 
-      renderNotes();
+const text=document.createElement("p");
+text.textContent=note.text;
 
-    });
+const button=document.createElement("button");
+button.className="delete";
+button.textContent="Delete";
 
+button.addEventListener("click",()=>{
+saveNotes(getNotes().filter(n=>n.id!==note.id));
+renderNotes();
+});
 
-  document
-    .getElementById("noteSearch")
-    .addEventListener(
-      "input",
-      renderNotes
-    );
+box.append(title,subject,text,button);
+output.appendChild(box);
+
+});
+
+}
 
 
-  function renderNotes() {
+/* PROGRESS */
 
-    const output =
-      document.getElementById("notesOutput");
+function getProgress(){
 
-    const search =
-      document
-        .getElementById("noteSearch")
-        .value
-        .toLowerCase();
+try{
+return JSON.parse(
+localStorage.getItem("studyProgress")||
+'{"minutes":0,"quizCount":0,"flashcards":0}'
+);
+}catch{
+return {minutes:0,quizCount:0,flashcards:0};
+}
 
-    const notes =
-      getNotes();
+}
 
-    output.innerHTML = "";
+function saveProgress(progress){
+localStorage.setItem("studyProgress",JSON.stringify(progress));
+}
 
-    const filtered =
-      notes.filter(function(note) {
+function updateProgress(){
 
-        return (
-          note.title.toLowerCase().includes(search) ||
-          note.subject.toLowerCase().include
+const progress=getProgress();
+
+document.getElementById("studyMinutes").textContent=progress.minutes;
+document.getElementById("flashcardsDone").textContent=progress.flashcards;
+
+const quizAverage=progress.quizCount>0?100:0;
+
+document.getElementById("quizAverage").textContent=quizAverage+"%";
+
+const overall=Math.min(
+100,
+Math.round(
+(
+Math.min(progress.minutes/300*100,100)+
+quizAverage+
+Math.min(progress.flashcards/50*100,100)
+)/3
+)
+);
+
+document.getElementById("overallProgress").textContent=overall+"%";
+document.getElementById("progressFill").style.width=overall+"%";
+
+document.getElementById("progressMessage").textContent=
+overall===0
+?"Start studying to build your progress!"
+:overall<50
+?"Good start. Keep going! 💪"
+:overall<80
+?"You're making great progress! 🔥"
+:"Excellent work! 🏆";
+
+}
+
+document.getElementById("addMinutesButton").addEventListener("click",()=>{
+
+const input=document.getElementById("minutesInput");
+const minutes=Number(input.value);
+
+if(!minutes||minutes<1){
+alert("Enter the number of minutes studied.");
+return;
+}
+
+const progress=getProgress();
+progress.minutes+=minutes;
+
+saveProgress(progress);
+input.value="";
+updateProgress();
+
+});
+
+document.getElementById("resetProgressButton").addEventListener("click",()=>{
+
+if(confirm("Reset all your progress?")){
+localStorage.removeItem("studyProgress");
+updateProgress();
+}
+
+});
+
+updateProgress();
+renderNotes();
+
+});
+</script>
+
+</body>
+  </html>
