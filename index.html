@@ -4,457 +4,82 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Study Coach</title>
-
 <style>
 *{box-sizing:border-box}
-
-body{
-margin:0;
-font-family:Inter,Arial,sans-serif;
-background:#f5f7fb;
-color:#18212f
-}
-
-header{
-background:#172033;
-color:white;
-padding:26px 18px
-}
-
-.header{
-max-width:920px;
-margin:auto
-}
-
-.header h1{
-margin:0;
-font-size:26px
-}
-
-.header p{
-margin:7px 0 0;
-color:#b9c3d1;
-font-size:14px
-}
-
-.container{
-max-width:920px;
-margin:auto;
-padding:18px 14px 50px
-}
-
-.tabs{
-display:flex;
-gap:7px;
-overflow-x:auto;
-margin-bottom:18px;
-padding-bottom:5px
-}
-
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#18212f}
+header{background:#172033;color:white;padding:25px 18px}
+.header,.container{max-width:920px;margin:auto}
+h1{margin:0;font-size:26px}
+.header p{margin:7px 0 0;color:#b9c3d1;font-size:14px}
+.container{padding:18px 14px 50px}
+.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:18px}
 .tabs::-webkit-scrollbar{display:none}
-
-.tab{
-border:1px solid #e1e6ee;
-background:white;
-color:#536174;
-padding:10px 14px;
-border-radius:10px;
-white-space:nowrap;
-font-weight:600;
-font-size:13px;
-cursor:pointer
-}
-
-.tab.active{
-background:#172033;
-color:white;
-border-color:#172033
-}
-
-.panel{display:none}
-.panel.active{display:block}
-
-.card{
-background:white;
-border:1px solid #e6eaf0;
-border-radius:17px;
-padding:22px;
-box-shadow:0 3px 15px rgba(15,23,42,.04)
-}
-
-.feature-icon{
-font-size:26px;
-margin-bottom:8px
-}
-
-.card h2{
-margin:0 0 6px;
-font-size:21px
-}
-
-.subtitle{
-color:#697586;
-margin:0 0 22px;
-line-height:1.5;
-font-size:14px
-}
-
-label{
-display:block;
-font-size:13px;
-font-weight:700;
-margin:15px 0 7px
-}
-
-input,textarea,select{
-width:100%;
-border:1px solid #dce2ea;
-border-radius:11px;
-padding:12px;
-font:inherit;
-color:#18212f;
-background:white;
-outline:none
-}
-
-textarea{
-min-height:120px;
-resize:vertical
-}
-
-input:focus,textarea:focus,select:focus{
-border-color:#7a8698
-}
-
-.button{
-width:100%;
-border:0;
-border-radius:11px;
-background:#172033;
-color:white;
-padding:13px;
-margin-top:17px;
-font-weight:700;
-cursor:pointer
-}
-
-.button.secondary{
-background:white;
-color:#172033;
-border:1px solid #dce2ea
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:13px
-}
-
-/* AI RESPONSE */
-
-.response{
-display:none;
-margin-top:20px;
-background:#f8fafc;
-border:1px solid #e5eaf0;
-border-radius:13px;
-padding:18px;
-line-height:1.7;
-font-size:14px
-}
-
-.response.visible{display:block}
-
-.response p{
-margin:0 0 12px
-}
-
-.response p:last-child{margin-bottom:0}
+.tab{border:1px solid #e1e6ee;background:white;color:#536174;padding:10px 14px;border-radius:10px;white-space:nowrap;font-weight:bold}
+.tab.active{background:#172033;color:white}
+.panel{display:none}.panel.active{display:block}
+.card{background:white;border:1px solid #e6eaf0;border-radius:17px;padding:22px;box-shadow:0 3px 15px rgba(15,23,42,.04)}
+.icon{font-size:26px;margin-bottom:8px}
+h2{margin:0 0 6px;font-size:21px}
+.subtitle{color:#697586;font-size:14px;line-height:1.5;margin:0 0 22px}
+label{display:block;font-size:13px;font-weight:bold;margin:15px 0 7px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #dce2ea;border-radius:11px;font:inherit;background:white}
+textarea{min-height:120px;resize:vertical}
+button{font:inherit;cursor:pointer}
+.main-btn{width:100%;border:0;border-radius:11px;background:#172033;color:white;padding:13px;margin-top:17px;font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.response{display:none;margin-top:20px;background:#f8fafc;border:1px solid #e5eaf0;border-radius:13px;padding:18px;line-height:1.7;font-size:14px}
+.response.show{display:block}
+.response p{margin:0 0 12px}
 
 /* QUIZ */
-
-.quiz-area{
-display:none;
-margin-top:20px
-}
-
-.quiz-area.visible{display:block}
-
-.quiz-progress{
-font-size:12px;
-font-weight:700;
-color:#718096;
-margin-bottom:10px
-}
-
-.quiz-question{
-padding:20px;
-border:1px solid #e3e8ef;
-border-radius:15px;
-background:#f8fafc
-}
-
-.quiz-text{
-font-size:18px;
-line-height:1.5;
-font-weight:700;
-margin-bottom:15px
-}
-
-.answer{
-width:100%;
-text-align:left;
-margin-top:9px;
-padding:13px;
-border:1px solid #dce2ea;
-background:white;
-border-radius:10px;
-cursor:pointer;
-font:inherit
-}
-
-.answer.correct{
-border-color:#3b8f5a;
-background:#edf8f0
-}
-
-.answer.wrong{
-border-color:#c95858;
-background:#fff0f0
-}
-
-.answer:disabled{
-cursor:default
-}
-
-.quiz-feedback{
-margin-top:14px;
-font-weight:700;
-font-size:14px
-}
-
-.quiz-next{
-display:none;
-margin-top:15px;
-width:100%;
-padding:13px;
-border:0;
-border-radius:11px;
-background:#172033;
-color:white;
-font-weight:700
-}
-
-.quiz-next.visible{display:block}
-
-.quiz-result{
-text-align:center;
-padding:28px 18px;
-background:#f8fafc;
-border:1px solid #e3e8ef;
-border-radius:15px
-}
-
-.quiz-result h3{
-font-size:25px;
-margin:0 0 8px
-}
-
-.quiz-score{
-font-size:40px;
-font-weight:800;
-margin:10px 0
-}
+.quiz{display:none;margin-top:20px}.quiz.show{display:block}
+.question-box{background:#f8fafc;border:1px solid #e3e8ef;border-radius:15px;padding:20px}
+.counter{font-size:12px;font-weight:bold;color:#718096;margin-bottom:10px}
+.question{font-size:18px;font-weight:bold;line-height:1.5;margin-bottom:15px}
+.answer{display:block;width:100%;text-align:left;padding:13px;margin-top:9px;border:1px solid #dce2ea;background:white;border-radius:10px}
+.answer.correct{background:#edf8f0;border-color:#3b8f5a}
+.answer.wrong{background:#fff0f0;border-color:#c95858}
+.answer:disabled{cursor:default}
+.feedback{font-weight:bold;margin-top:14px;font-size:14px}
+.next{display:none;width:100%;border:0;border-radius:11px;background:#172033;color:white;padding:13px;margin-top:15px;font-weight:bold}
+.next.show{display:block}
+.result{text-align:center;background:#f8fafc;border:1px solid #e3e8ef;border-radius:15px;padding:25px}
+.score{font-size:40px;font-weight:bold;margin:10px}
 
 /* FLASHCARDS */
-
-.flashcard-area{
-display:none;
-margin-top:20px
-}
-
-.flashcard-area.visible{display:block}
-
-.flashcard{
-min-height:230px;
-border:1px solid #e1e6ee;
-border-radius:17px;
-background:#f8fafc;
-padding:28px 22px;
-display:flex;
-flex-direction:column;
-justify-content:center;
-text-align:center;
-cursor:pointer
-}
-
-.flashcard-label{
-font-size:11px;
-font-weight:800;
-color:#7a8698;
-letter-spacing:1px;
-margin-bottom:15px
-}
-
-.flashcard-text{
-font-size:20px;
-line-height:1.5;
-font-weight:600
-}
-
-.flash-counter{
-text-align:center;
-font-size:12px;
-color:#718096;
-margin:10px 0
-}
-
-.flash-controls{
-display:flex;
-gap:10px
-}
-
-.flash-controls button{
-flex:1;
-padding:11px;
-border:1px solid #dce2ea;
-background:white;
-border-radius:10px;
-font-weight:600
-}
+.flash-area{display:none;margin-top:20px}.flash-area.show{display:block}
+.flash-counter{text-align:center;font-size:12px;color:#718096;margin-bottom:10px}
+.flashcard{min-height:230px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:#f8fafc;border:1px solid #e1e6ee;border-radius:17px;padding:25px}
+.flash-label{font-size:11px;font-weight:bold;letter-spacing:1px;color:#7a8698;margin-bottom:15px}
+.flash-text{font-size:20px;font-weight:bold;line-height:1.5}
+.flash-buttons{display:flex;gap:10px;margin-top:12px}
+.flash-buttons button{flex:1;padding:11px;border:1px solid #dce2ea;background:white;border-radius:10px;font-weight:bold}
 
 /* PLANNER */
-
-.planner-output{
-display:none;
-margin-top:20px
-}
-
-.planner-output.visible{display:block}
-
-.plan-day{
-border:1px solid #e3e8ef;
-border-radius:14px;
-margin-bottom:12px;
-overflow:hidden;
-background:white
-}
-
-.plan-day-header{
-padding:13px 15px;
-background:#f1f4f8;
-font-weight:800;
-font-size:14px
-}
-
-.plan-day-content{
-padding:15px;
-line-height:1.65;
-font-size:14px;
-white-space:pre-wrap
-}
+.plan{display:none;margin-top:20px}.plan.show{display:block}
+.plan-day{border:1px solid #e3e8ef;border-radius:14px;overflow:hidden;margin-bottom:12px;background:white}
+.plan-title{background:#f1f4f8;padding:13px 15px;font-weight:bold}
+.plan-body{padding:15px;line-height:1.7;font-size:14px}
 
 /* NOTES */
-
-.note{
-border:1px solid #e5e9ef;
-border-radius:13px;
-padding:16px;
-margin-top:12px
-}
-
-.note h3{
-margin:0 0 4px;
-font-size:16px
-}
-
-.note small{
-color:#7a8698
-}
-
-.note p{
-white-space:pre-wrap;
-line-height:1.6;
-font-size:14px
-}
-
-.delete{
-border:0;
-background:#dc4444;
-color:white;
-border-radius:8px;
-padding:8px 11px;
-font-size:12px
-}
+.note{border:1px solid #e5e9ef;border-radius:13px;padding:16px;margin-top:12px}
+.note h3{margin:0 0 4px;font-size:16px}.note small{color:#718096}
+.note p{white-space:pre-wrap;line-height:1.6;font-size:14px}
+.delete{background:#dc4444;color:white;border:0;padding:8px 11px;border-radius:8px;font-size:12px}
 
 /* PROGRESS */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{padding:18px;background:#f8fafc;border:1px solid #e4e9ef;border-radius:14px}
+.stat-number{font-size:25px;font-weight:bold;margin-top:7px}
+.stat-label{font-size:12px;color:#718096}
+.track{height:8px;background:#e2e7ed;border-radius:20px;margin-top:10px;overflow:hidden}
+.fill{height:100%;width:0;background:#172033}
 
-.stats{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px
-}
-
-.stat{
-padding:18px;
-background:#f8fafc;
-border:1px solid #e4e9ef;
-border-radius:14px
-}
-
-.stat-icon{
-font-size:21px
-}
-
-.stat-number{
-font-size:25px;
-font-weight:800;
-margin-top:7px
-}
-
-.stat-label{
-font-size:12px;
-color:#718096;
-margin-top:3px
-}
-
-.progress-track{
-height:8px;
-background:#e2e7ed;
-border-radius:20px;
-margin-top:10px;
-overflow:hidden
-}
-
-.progress-fill{
-height:100%;
-width:0;
-background:#172033
-}
-
-@media(max-width:600px){
-
-.container{
-padding:15px 12px 40px
-}
-
-.card{
-padding:18px
-}
-
-.grid,.stats{
-grid-template-columns:1fr
-}
-
-.flashcard-text{
-font-size:18px
-}
-}
+@media(max-width:600px){.card{padding:18px}.grid,.stats{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
-
 <header>
 <div class="header">
 <h1>📚 AI Study Coach</h1>
@@ -463,7 +88,6 @@ font-size:18px
 </header>
 
 <div class="container">
-
 <div class="tabs">
 <button class="tab active" data-tab="tutor">AI Tutor</button>
 <button class="tab" data-tab="quiz">Quiz</button>
@@ -473,713 +97,399 @@ font-size:18px
 <button class="tab" data-tab="progress">Progress</button>
 </div>
 
-<!-- AI TUTOR -->
-
 <section id="tutor" class="panel active">
 <div class="card">
-
-<div class="feature-icon">🤖</div>
+<div class="icon">🤖</div>
 <h2>AI Tutor</h2>
 <p class="subtitle">Ask a question and get a simple explanation tailored for studying.</p>
-
 <label>Your question</label>
-<textarea id="tutorQuestion" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
-
-<button class="button" id="tutorButton">Ask AI Tutor</button>
-
-<div id="tutorResponse" class="response"></div>
-
+<textarea id="question" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
+<button class="main-btn" id="ask">Ask AI Tutor</button>
+<div id="answer" class="response"></div>
 </div>
 </section>
-
-<!-- QUIZ -->
 
 <section id="quiz" class="panel">
 <div class="card">
-
-<div class="feature-icon">📝</div>
+<div class="icon">📝</div>
 <h2>Quiz</h2>
 <p class="subtitle">Generate questions and test what you know.</p>
-
 <label>Topic</label>
 <input id="quizTopic" placeholder="Example: Photosynthesis">
-
 <div class="grid">
-
-<div>
-<label>Questions</label>
-<select id="quizCount">
-<option value="5">5</option>
-<option value="10">10</option>
-</select>
+<div><label>Questions</label><select id="quizCount"><option value="5">5</option><option value="10">10</option></select></div>
+<div><label>Difficulty</label><select id="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
 </div>
-
-<div>
-<label>Difficulty</label>
-<select id="quizDifficulty">
-<option>Easy</option>
-<option selected>Medium</option>
-<option>Hard</option>
-</select>
-</div>
-
-</div>
-
-<button class="button" id="quizButton">Generate Quiz</button>
-
-<div id="quizArea" class="quiz-area"></div>
-
+<button class="main-btn" id="makeQuiz">Generate Quiz</button>
+<div id="quizArea" class="quiz"></div>
 </div>
 </section>
-
-<!-- FLASHCARDS -->
 
 <section id="flashcards" class="panel">
 <div class="card">
-
-<div class="feature-icon">🧠</div>
+<div class="icon">🧠</div>
 <h2>Flashcards</h2>
 <p class="subtitle">Create interactive cards for quick revision.</p>
-
 <label>Topic</label>
 <input id="flashTopic" placeholder="Example: Humanistic psychology">
-
 <label>Number of cards</label>
-<select id="flashCount">
-<option value="5">5</option>
-<option value="10">10</option>
-</select>
-
-<button class="button" id="flashButton">Create Flashcards</button>
-
-<div id="flashArea" class="flashcard-area">
-
-<div class="flash-counter" id="flashCounter"></div>
-
-<div class="flashcard" id="flashcard">
-<div class="flashcard-label" id="flashLabel">QUESTION</div>
-<div class="flashcard-text" id="flashText"></div>
+<select id="flashCount"><option value="5">5</option><option value="10">10</option></select>
+<button class="main-btn" id="makeFlash">Create Flashcards</button>
+<div id="flashArea" class="flash-area">
+<div id="flashCounter" class="flash-counter"></div>
+<div id="flashcard" class="flashcard">
+<div id="flashLabel" class="flash-label">QUESTION</div>
+<div id="flashText" class="flash-text"></div>
 </div>
-
-<div class="flash-controls">
-<button id="previousCard">Previous</button>
-<button id="nextCard">Next</button>
+<div class="flash-buttons">
+<button id="previous">Previous</button>
+<button id="next">Next</button>
 </div>
-
 </div>
-
 </div>
 </section>
-
-<!-- PLANNER -->
 
 <section id="planner" class="panel">
 <div class="card">
-
-<div class="feature-icon">📅</div>
+<div class="icon">📅</div>
 <h2>Study Planner</h2>
-<p class="subtitle">Build a realistic study schedule around your available time.</p>
-
+<p class="subtitle">Build a simple study schedule around your available time.</p>
 <label>Subjects or topics</label>
 <textarea id="plannerTopics" placeholder="Example: Psychology, Biology, Statistics"></textarea>
-
 <div class="grid">
-
-<div>
-<label>Days</label>
-<select id="plannerDays">
-<option value="3">3 days</option>
-<option value="5">5 days</option>
-<option value="7" selected>7 days</option>
-</select>
+<div><label>Days</label><select id="days"><option value="3">3 days</option><option value="5">5 days</option><option value="7" selected>7 days</option></select></div>
+<div><label>Daily time</label><select id="time"><option value="30">30 minutes</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></div>
 </div>
-
-<div>
-<label>Daily time</label>
-<select id="plannerTime">
-<option value="30">30 min</option>
-<option value="60" selected>1 hour</option>
-<option value="90">1.5 hours</option>
-<option value="120">2 hours</option>
-</select>
-</div>
-
-</div>
-
-<button class="button" id="plannerButton">Create Plan</button>
-
-<div id="plannerOutput" class="planner-output"></div>
-
+<button class="main-btn" id="makePlan">Create Plan</button>
+<div id="plan" class="plan"></div>
 </div>
 </section>
-
-<!-- NOTES -->
 
 <section id="notes" class="panel">
 <div class="card">
-
-<div class="feature-icon">📖</div>
+<div class="icon">📖</div>
 <h2>Notes</h2>
 <p class="subtitle">Keep your important study notes in one place.</p>
-
-<label>Title</label>
-<input id="noteTitle" placeholder="Example: Classical Conditioning">
-
-<label>Subject</label>
-<input id="noteSubject" placeholder="Example: Psychology">
-
-<label>Notes</label>
-<textarea id="noteText" placeholder="Write your notes here..."></textarea>
-
-<button class="button" id="saveNote">Save Note</button>
-
-<label>Search notes</label>
-<input id="noteSearch" placeholder="Search your notes">
-
-<div id="notesList"></div>
-
+<label>Title</label><input id="noteTitle" placeholder="Example: Classical Conditioning">
+<label>Subject</label><input id="noteSubject" placeholder="Example: Psychology">
+<label>Notes</label><textarea id="noteText" placeholder="Write your notes here..."></textarea>
+<button class="main-btn" id="saveNote">Save Note</button>
+<label>Search notes</label><input id="search" placeholder="Search your notes">
+<div id="notes"></div>
 </div>
 </section>
-
-<!-- PROGRESS -->
 
 <section id="progress" class="panel">
 <div class="card">
-
-<div class="feature-icon">📊</div>
+<div class="icon">📊</div>
 <h2>Progress</h2>
 <p class="subtitle">A simple overview of your study activity.</p>
-
 <div class="stats">
-
-<div class="stat">
-<div class="stat-icon">⏱️</div>
-<div class="stat-number" id="minutes">0</div>
-<div class="stat-label">Minutes studied</div>
+<div class="stat"><div>⏱️</div><div id="minutes" class="stat-number">0</div><div class="stat-label">Minutes studied</div></div>
+<div class="stat"><div>📝</div><div id="quizTotal" class="stat-number">0</div><div class="stat-label">Quizzes completed</div></div>
+<div class="stat"><div>🧠</div><div id="cardTotal" class="stat-number">0</div><div class="stat-label">Flashcards reviewed</div></div>
+<div class="stat"><div>📈</div><div id="overall" class="stat-number">0%</div><div class="stat-label">Overall progress</div><div class="track"><div id="fill" class="fill"></div></div></div>
 </div>
-
-<div class="stat">
-<div class="stat-icon">📝</div>
-<div class="stat-number" id="quizzes">0</div>
-<div class="stat-label">Quizzes completed</div>
-</div>
-
-<div class="stat">
-<div class="stat-icon">🧠</div>
-<div class="stat-number" id="cards">0</div>
-<div class="stat-label">Flashcards reviewed</div>
-</div>
-
-<div class="stat">
-<div class="stat-icon">📈</div>
-<div class="stat-number" id="overall">0%</div>
-<div class="stat-label">Overall progress</div>
-
-<div class="progress-track">
-<div class="progress-fill" id="progressFill"></div>
-</div>
-
-</div>
-
-</div>
-
 <label>Add study time</label>
-<input id="studyTime" type="number" min="1" placeholder="Minutes">
-
-<button class="button" id="addTime">Add Study Time</button>
-
+<input id="studyMinutes" type="number" min="1" placeholder="Minutes">
+<button class="main-btn" id="addMinutes">Add Study Time</button>
 </div>
 </section>
-
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded",function(){
 
-document.addEventListener("DOMContentLoaded",()=>{
-
-/* TABS */
-
-const tabs=document.querySelectorAll(".tab");
-const panels=document.querySelectorAll(".panel");
-
-tabs.forEach(tab=>{
-tab.addEventListener("click",()=>{
-
-tabs.forEach(t=>t.classList.remove("active"));
-panels.forEach(p=>p.classList.remove("active"));
-
-tab.classList.add("active");
-document.getElementById(tab.dataset.tab).classList.add("active");
-
-if(tab.dataset.tab==="progress")updateProgress();
-if(tab.dataset.tab==="notes")renderNotes();
-
-});
-});
-
-
-/* AI */
-
-async function askAI(message){
-
-const response=await fetch("/api/chat",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({message})
-});
-
-const data=await response.json();
-
-if(!response.ok){
-throw new Error(data.error||"AI request failed");
-}
-
-return data.answer;
-}
-
-
-function cleanText(text){
-
-return text
-.replace(/#{1,6}\s?/g,"")
+function clean(text){
+return String(text)
+.replace(/#{1,6}\s*/g,"")
 .replace(/\*\*\*/g,"")
 .replace(/\*\*/g,"")
 .replace(/\*/g,"")
-.replace(/---/g,"")
-.trim();
-
-}
-
-
-function showResponse(element,text){
-
-element.innerHTML="";
-
-cleanText(text)
-.split(/\n\s*\n/)
-.filter(x=>x.trim())
-.forEach(paragraph=>{
-
-const p=document.createElement("p");
-p.textContent=paragraph.trim();
-element.appendChild(p);
-
-});
-
-element.classList.add("visible");
-
-}
-
-
-/* AI TUTOR */
-
-document.getElementById("tutorButton").onclick=async()=>{
-
-const question=document.getElementById("tutorQuestion").value.trim();
-const output=document.getElementById("tutorResponse");
-
-if(!question){
-showResponse(output,"Please enter a question.");
-return;
-}
-
-output.textContent="Thinking...";
-output.classList.add("visible");
-
-try{
-
-const answer=await askAI(question);
-showResponse(output,answer);
-
-}catch(error){
-
-showResponse(output,"Unable to connect to the AI right now.");
-
-}
-
-};
-
-
-/* QUIZ */
-
-let quizQuestions=[];
-let quizIndex=0;
-let quizScore=0;
-
-document.getElementById("quizButton").onclick=async()=>{
-
-const topic=document.getElementById("quizTopic").value.trim();
-const count=document.getElementById("quizCount").value;
-const difficulty=document.getElementById("quizDifficulty").value;
-const area=document.getElementById("quizArea");
-
-if(!topic)return;
-
-area.innerHTML="Creating your quiz...";
-area.classList.add("visible");
-
-try{
-
-const answer=await askAI(`
-Create exactly ${count} multiple choice questions about ${topic}.
-
-Difficulty: ${difficulty}.
-
-Return ONLY valid JSON in this format:
-
-[
-{
-"question":"Question",
-"options":["A","B","C","D"],
-"answer":0
-}
-]
-
-The answer value must be the number of the correct option starting from 0.
-`);
-
-const cleaned=answer
-.replace(/```json/g,"")
+.replace(/```[a-zA-Z]*/g,"")
 .replace(/```/g,"")
 .trim();
-
-quizQuestions=JSON.parse(cleaned);
-
-quizIndex=0;
-quizScore=0;
-
-renderQuiz();
-
-}catch(error){
-
-area.textContent="Couldn't create the quiz. Please try again.";
-
 }
 
+/* TABS */
+document.querySelectorAll(".tab").forEach(function(tab){
+tab.addEventListener("click",function(){
+document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});
+document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active")});
+tab.classList.add("active");
+document.getElementById(tab.dataset.tab).classList.add("active");
+if(tab.dataset.tab==="progress")updateProgress();
+if(tab.dataset.tab==="notes")renderNotes();
+});
+});
+
+/* KEEP THE WORKING API CONNECTION */
+async function askAI(message){
+const response=await fetch("/api/chat",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:message})
+});
+const data=await response.json();
+if(!response.ok)throw new Error("AI request failed");
+return data.answer;
+}
+
+/* AI TUTOR */
+document.getElementById("ask").onclick=async function(){
+const question=document.getElementById("question").value.trim();
+const output=document.getElementById("answer");
+if(!question){
+output.textContent="Please enter a question.";
+output.classList.add("show");
+return;
+}
+output.textContent="Thinking...";
+output.classList.add("show");
+try{
+const result=await askAI(question);
+output.innerHTML="";
+clean(result).split(/\n\s*\n/).filter(Boolean).forEach(function(part){
+const p=document.createElement("p");
+p.textContent=part.trim();
+output.appendChild(p);
+});
+}catch(e){
+output.textContent="Unable to connect to the AI right now.";
+}
 };
 
+/* QUIZ */
+let questions=[];
+let current=0;
+let score=0;
 
-function renderQuiz(){
-
+document.getElementById("makeQuiz").onclick=async function(){
+const topic=document.getElementById("quizTopic").value.trim();
+const count=document.getElementById("quizCount").value;
+const difficulty=document.getElementById("difficulty").value;
 const area=document.getElementById("quizArea");
 
-if(quizIndex>=quizQuestions.length){
-
-const percentage=Math.round(
-quizScore/quizQuestions.length*100
-);
-
-area.innerHTML=`
-<div class="quiz-result">
-<h3>Quiz Complete</h3>
-<div class="quiz-score">${percentage}%</div>
-<p>You scored ${quizScore} out of ${quizQuestions.length}.</p>
-<button class="button" id="retryQuiz">Try Again</button>
-</div>
-`;
-
-const progress=getProgress();
-progress.quizzes++;
-saveProgress(progress);
-
-document.getElementById("retryQuiz").onclick=()=>{
-quizIndex=0;
-quizScore=0;
-renderQuiz();
-};
-
+if(!topic){
+area.textContent="Please enter a topic.";
+area.classList.add("show");
 return;
-
 }
 
-const q=quizQuestions[quizIndex];
+area.textContent="Creating your quiz...";
+area.classList.add("show");
 
+try{
+const result=await askAI(
+"Create exactly "+count+" multiple choice questions about "+topic+
+". Difficulty: "+difficulty+
+". Return ONLY valid JSON in this exact format: "+
+'[{"question":"Question","options":["A","B","C","D"],"answer":0}]'
+);
+
+questions=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
+current=0;
+score=0;
+showQuestion();
+
+}catch(e){
+area.textContent="Couldn't create the quiz. Please try again.";
+}
+};
+
+function showQuestion(){
+const area=document.getElementById("quizArea");
+
+if(current>=questions.length){
+const percent=Math.round((score/questions.length)*100);
+area.innerHTML=
+'<div class="result"><h2>Quiz Complete</h2><div class="score">'+percent+'%</div>'+
+'<p>You scored '+score+' out of '+questions.length+'.</p>'+
+'<button class="main-btn" id="retry">Try Again</button></div>';
+
+let data=getProgress();
+data.quizTotal++;
+saveProgress(data);
+
+document.getElementById("retry").onclick=function(){
+current=0;
+score=0;
+showQuestion();
+};
+return;
+}
+
+const q=questions[current];
 area.innerHTML="";
 
-const progress=document.createElement("div");
-progress.className="quiz-progress";
-progress.textContent=
-`Question ${quizIndex+1} of ${quizQuestions.length}`;
-
 const box=document.createElement("div");
-box.className="quiz-question";
+box.className="question-box";
+
+const counter=document.createElement("div");
+counter.className="counter";
+counter.textContent="Question "+(current+1)+" of "+questions.length;
 
 const question=document.createElement("div");
-question.className="quiz-text";
+question.className="question";
 question.textContent=q.question;
 
-box.appendChild(question);
-
 const feedback=document.createElement("div");
-feedback.className="quiz-feedback";
+feedback.className="feedback";
 
 const next=document.createElement("button");
-next.className="quiz-next";
-next.textContent=
-quizIndex===quizQuestions.length-1
-?"Finish Quiz"
-:"Next Question";
+next.className="next";
+next.textContent=current===questions.length-1?"Finish Quiz":"Next Question";
 
-q.options.forEach((option,index)=>{
-
+q.options.forEach(function(option,index){
 const button=document.createElement("button");
 button.className="answer";
 button.textContent=option;
 
-button.onclick=()=>{
+button.onclick=function(){
+document.querySelectorAll(".answer").forEach(function(b){b.disabled=true});
 
-document.querySelectorAll(".answer")
-.forEach(b=>b.disabled=true);
-
-if(index===q.answer){
-
+if(index===Number(q.answer)){
 button.classList.add("correct");
-feedback.textContent="Correct! ✓";
-quizScore++;
-
+feedback.textContent="Correct ✓";
+score++;
 }else{
-
 button.classList.add("wrong");
-feedback.textContent="Not quite. The correct answer is "+q.options[q.answer]+".";
-
-document.querySelectorAll(".answer")[q.answer]
-.classList.add("correct");
-
+feedback.textContent="Not quite. Correct answer: "+q.options[q.answer];
+document.querySelectorAll(".answer")[Number(q.answer)].classList.add("correct");
 }
 
-next.classList.add("visible");
-
+next.classList.add("show");
 };
 
 box.appendChild(button);
-
 });
 
-next.onclick=()=>{
-quizIndex++;
-renderQuiz();
+next.onclick=function(){
+current++;
+showQuestion();
 };
 
-area.append(progress,box,feedback,next);
-
+box.prepend(counter,question);
+area.append(box,feedback,next);
 }
-
 
 /* FLASHCARDS */
-
 let flashcards=[];
 let flashIndex=0;
-let flashShowingAnswer=false;
+let showingAnswer=false;
 
-function renderFlashcard(){
-
-if(!flashcards.length)return;
-
-const card=flashcards[flashIndex];
-
-document.getElementById("flashLabel").textContent=
-flashShowingAnswer?"ANSWER":"QUESTION";
-
-document.getElementById("flashText").textContent=
-flashShowingAnswer?card.answer:card.question;
-
-document.getElementById("flashCounter").textContent=
-`Card ${flashIndex+1} of ${flashcards.length}`;
-
-}
-
-document.getElementById("flashcard").onclick=()=>{
-
-flashShowingAnswer=!flashShowingAnswer;
-renderFlashcard();
-
-};
-
-document.getElementById("previousCard").onclick=()=>{
-
-flashIndex=
-(flashIndex-1+flashcards.length)%flashcards.length;
-
-flashShowingAnswer=false;
-renderFlashcard();
-
-};
-
-document.getElementById("nextCard").onclick=()=>{
-
-flashIndex=
-(flashIndex+1)%flashcards.length;
-
-flashShowingAnswer=false;
-renderFlashcard();
-
-};
-
-
-document.getElementById("flashButton").onclick=async()=>{
-
+document.getElementById("makeFlash").onclick=async function(){
 const topic=document.getElementById("flashTopic").value.trim();
 const count=document.getElementById("flashCount").value;
-const area=document.getElementById("flashArea");
-
 if(!topic)return;
 
-area.classList.add("visible");
-
+document.getElementById("flashArea").classList.add("show");
 document.getElementById("flashText").textContent="Creating...";
 
 try{
+const result=await askAI(
+"Create exactly "+count+" flashcards about "+topic+
+". Return ONLY valid JSON in this exact format: "+
+'[{"question":"Question","answer":"Answer"}]'
+);
 
-const answer=await askAI(`
-Create exactly ${count} flashcards about ${topic}.
-
-Return ONLY valid JSON:
-
-[
-{
-"question":"Question or term",
-"answer":"Clear answer"
-}
-]
-`);
-
-const cleaned=answer
-.replace(/```json/g,"")
-.replace(/```/g,"")
-.trim();
-
-flashcards=JSON.parse(cleaned);
-
+flashcards=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
 flashIndex=0;
-flashShowingAnswer=false;
-
-renderFlashcard();
-
-}catch(error){
-
-document.getElementById("flashText").textContent=
-"Couldn't create the flashcards. Please try again.";
-
+showingAnswer=false;
+showFlashcard();
+}catch(e){
+document.getElementById("flashText").textContent="Couldn't create the flashcards.";
 }
-
 };
 
+function showFlashcard(){
+if(!flashcards.length)return;
+const card=flashcards[flashIndex];
+document.getElementById("flashLabel").textContent=showingAnswer?"ANSWER":"QUESTION";
+document.getElementById("flashText").textContent=showingAnswer?clean(card.answer):clean(card.question);
+document.getElementById("flashCounter").textContent="Card "+(flashIndex+1)+" of "+flashcards.length;
+}
 
-/* PLANNER */
+document.getElementById("flashcard").onclick=function(){
+showingAnswer=!showingAnswer;
+showFlashcard();
+};
 
-document.getElementById("plannerButton").onclick=async()=>{
+document.getElementById("previous").onclick=function(){
+flashIndex=(flashIndex-1+flashcards.length)%flashcards.length;
+showingAnswer=false;
+showFlashcard();
+};
 
+document.getElementById("next").onclick=function(){
+flashIndex=(flashIndex+1)%flashcards.length;
+showingAnswer=false;
+showFlashcard();
+};
+
+/* STUDY PLANNER */
+document.getElementById("makePlan").onclick=async function(){
 const topics=document.getElementById("plannerTopics").value.trim();
-const days=document.getElementById("plannerDays").value;
-const time=document.getElementById("plannerTime").value;
-const output=document.getElementById("plannerOutput");
+const days=document.getElementById("days").value;
+const time=document.getElementById("time").value;
+const output=document.getElementById("plan");
 
-if(!topics)return;
+if(!topics){
+output.textContent="Please enter your subjects or topics.";
+output.classList.add("show");
+return;
+}
 
-output.innerHTML="Creating your study plan...";
-output.classList.add("visible");
+output.textContent="Creating your study plan...";
+output.classList.add("show");
 
 try{
+const result=await askAI(
+"Create a "+days+"-day study plan for "+topics+
+". The student has "+time+" minutes per day. "+
+"Return ONLY valid JSON in this exact format: "+
+'[{"day":"Day 1","focus":"Topic","sessions":["Study session","Revision session"]}]'
+);
 
-const answer=await askAI(`
-Create a ${days}-day study plan for these subjects:
-
-${topics}
-
-The student has ${time} minutes each day.
-
-Return ONLY valid JSON in this format:
-
-[
-{
-"day":"Day 1",
-"focus":"Topic or subject",
-"sessions":["Session 1","Session 2"]
-}
-]
-
-Keep each day realistic and concise.
-`);
-
-const cleaned=answer
-.replace(/```json/g,"")
-.replace(/```/g,"")
-.trim();
-
-const plan=JSON.parse(cleaned);
-
+const plan=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
 output.innerHTML="";
 
-plan.forEach(day=>{
-
+plan.forEach(function(day){
 const box=document.createElement("div");
 box.className="plan-day";
 
-const header=document.createElement("div");
-header.className="plan-day-header";
-header.textContent=day.day+" · "+day.focus;
+const title=document.createElement("div");
+title.className="plan-title";
+title.textContent=day.day+" · "+day.focus;
 
-const content=document.createElement("div");
-content.className="plan-day-content";
+const body=document.createElement("div");
+body.className="plan-body";
+body.textContent=day.sessions.map(function(s,i){
+return "Session "+(i+1)+": "+s;
+}).join("\n");
 
-content.textContent=day.sessions
-.map((session,index)=>
-`Session ${index+1}: ${session}`
-)
-.join("\n");
-
-box.append(header,content);
+box.append(title,body);
 output.appendChild(box);
-
 });
-
-}catch(error){
-
-output.textContent=
-"Couldn't create the study plan. Please try again.";
-
+}catch(e){
+output.textContent="Couldn't create the study plan. Please try again.";
 }
-
 };
 
-
 /* NOTES */
-
-function getNotes(){
-
-return JSON.parse(
-localStorage.getItem("studyNotes")||"[]"
-);
-
-}
-
-function saveNotes(notes){
-
-localStorage.setItem(
-"studyNotes",
-JSON.stringify(notes)
-);
-
-}
+function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
+function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
 
 function renderNotes(){
-
-const list=document.getElementById("notesList");
-
-const search=document.getElementById("noteSearch")
-.value.toLowerCase();
-
+const list=document.getElementById("notes");
+const search=document.getElementById("search").value.toLowerCase();
 list.innerHTML="";
 
-getNotes()
-.filter(n=>
-n.title.toLowerCase().includes(search)||
+getNotes().filter(function(n){
+return n.title.toLowerCase().includes(search)||
 n.subject.toLowerCase().includes(search)||
-n.text.toLowerCase().includes(search)
-)
-.forEach(note=>{
+n.text.toLowerCase().includes(search);
+}).forEach(function(note){
 
 const box=document.createElement("div");
 box.className="note";
@@ -1193,28 +503,79 @@ subject.textContent=note.subject;
 const text=document.createElement("p");
 text.textContent=note.text;
 
-const button=document.createElement("button");
-button.className="delete";
-button.textContent="Delete";
-
-button.onclick=()=>{
-
-saveNotes(
-getNotes().filter(n=>n.id!==note.id)
-);
-
+const del=document.createElement("button");
+del.className="delete";
+del.textContent="Delete";
+del.onclick=function(){
+saveNotes(getNotes().filter(function(n){return n.id!==note.id}));
 renderNotes();
-
 };
 
-box.append(title,subject,text,button);
+box.append(title,subject,text,del);
 list.appendChild(box);
-
 });
-
 }
 
-document.getElementById("saveNote").onclick=()=>{
-
+document.getElementById("saveNote").onclick=function(){
 const title=document.getElementById("noteTitle").value.trim();
-  
+const subject=document.getElementById("noteSubject").value.trim();
+const text=document.getElementById("noteText").value.trim();
+if(!title||!text)return;
+
+const notes=getNotes();
+notes.unshift({id:Date.now(),title:title,subject:subject||"General",text:text});
+saveNotes(notes);
+
+document.getElementById("noteTitle").value="";
+document.getElementById("noteSubject").value="";
+document.getElementById("noteText").value="";
+renderNotes();
+};
+
+document.getElementById("search").oninput=renderNotes;
+
+/* PROGRESS */
+function getProgress(){
+return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0}');
+}
+
+function saveProgress(data){
+localStorage.setItem("studyProgress",JSON.stringify(data));
+}
+
+function updateProgress(){
+const data=getProgress();
+
+document.getElementById("minutes").textContent=data.minutes;
+document.getElementById("quizTotal").textContent=data.quizTotal;
+document.getElementById("cardTotal").textContent=data.cardTotal;
+
+const percent=Math.min(100,Math.round(
+(Math.min(data.minutes/300*100,100)+
+Math.min(data.quizTotal/10*100,100)+
+Math.min(data.cardTotal/50*100,100))/3
+));
+
+document.getElementById("overall").textContent=percent+"%";
+document.getElementById("fill").style.width=percent+"%";
+}
+
+document.getElementById("addMinutes").onclick=function(){
+const input=document.getElementById("studyMinutes");
+const minutes=Number(input.value);
+if(!minutes)return;
+
+const data=getProgress();
+data.minutes+=minutes;
+saveProgress(data);
+input.value="";
+updateProgress();
+};
+
+updateProgress();
+renderNotes();
+
+});
+</script>
+</body>
+  </html>
