@@ -215,6 +215,63 @@ margin:12px 0;
 background:#dc2626;
 }
 
+.progress-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-top:20px;
+}
+
+.progress-card{
+background:#f8fafc;
+padding:20px;
+border-radius:14px;
+text-align:center;
+}
+
+.progress-icon{
+font-size:30px;
+margin-bottom:8px;
+}
+
+.progress-number{
+font-size:28px;
+font-weight:bold;
+margin:8px 0;
+}
+
+.progress-label{
+color:#64748b;
+font-size:14px;
+}
+
+.progress-bar{
+height:12px;
+background:#e2e8f0;
+border-radius:20px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.progress-fill{
+height:100%;
+width:0%;
+background:#172033;
+transition:width .4s;
+}
+
+.progress-section{
+margin-top:20px;
+padding:18px;
+background:#f8fafc;
+border-radius:14px;
+}
+
+.reset-button{
+background:#dc2626;
+margin-top:20px;
+}
+
 footer{
 text-align:center;
 padding:30px;
@@ -540,11 +597,149 @@ oninput="renderNotes()"
 
 <div class="tool" id="progress">
 
-<h2>📊 Progress</h2>
+<h2>📊 My Progress</h2>
 
-<p>
-Progress tracking will be added soon.
+<p>Keep track of your learning journey.</p>
+
+<div class="progress-grid">
+
+<div class="progress-card">
+
+<div class="progress-icon">
+⏱️
+</div>
+
+<div
+class="progress-number"
+id="studyTimeDisplay"
+>
+0
+</div>
+
+<div class="progress-label">
+Minutes Studied
+</div>
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-icon">
+📝
+</div>
+
+<div
+class="progress-number"
+id="quizScoreDisplay"
+>
+0%
+</div>
+
+<div class="progress-label">
+Average Quiz Score
+</div>
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-icon">
+🧠
+</div>
+
+<div
+class="progress-number"
+id="flashcardDisplay"
+>
+0
+</div>
+
+<div class="progress-label">
+Flashcards Completed
+</div>
+
+</div>
+
+
+<div class="progress-card">
+
+<div class="progress-icon">
+📈
+</div>
+
+<div
+class="progress-number"
+id="overallDisplay"
+>
+0%
+</div>
+
+<div class="progress-label">
+Overall Progress
+</div>
+
+</div>
+
+</div>
+
+
+<div class="progress-section">
+
+<h3>Overall Progress</h3>
+
+<div class="progress-bar">
+
+<div
+class="progress-fill"
+id="progressFill"
+></div>
+
+</div>
+
+<p
+id="progressMessage"
+style="margin-top:12px;color:#64748b"
+>
+Start studying to build your progress!
 </p>
+
+</div>
+
+
+<div class="progress-section">
+
+<h3>⏱️ Study Time</h3>
+
+<p style="margin-top:8px">
+Add time whenever you complete a study session.
+</p>
+
+<div class="form">
+
+<input
+id="studyMinutes"
+type="number"
+min="1"
+placeholder="Minutes studied"
+/>
+
+<button onclick="addStudyTime()">
+Add Study Time
+</button>
+
+</div>
+
+</div>
+
+
+<button
+class="reset-button"
+onclick="resetProgress()"
+>
+Reset Progress
+</button>
 
 </div>
 
@@ -558,7 +753,7 @@ AI Study Coach • Built for students
 <script>
 
 /* =========================
-   NAVIGATION
+NAVIGATION
 ========================= */
 
 function openTool(toolName){
@@ -569,7 +764,8 @@ tool.style.display="none";
 
 });
 
-const selected=document.getElementById(toolName);
+const selected=
+document.getElementById(toolName);
 
 if(selected){
 
@@ -582,53 +778,316 @@ block:"start"
 
 }
 
+if(toolName==="progress"){
+updateProgressDisplay();
+}
+
 }
 
 
 /* =========================
-   AI TUTOR
+PROGRESS DATA
+========================= */
+
+function getProgress(){
+
+try{
+
+return JSON.parse(
+localStorage.getItem("studyCoachProgress") ||
+'{"studyMinutes":0,"quizScores":[],"flashcards":0}'
+);
+
+}catch(error){
+
+return{
+studyMinutes:0,
+quizScores:[],
+flashcards:0
+};
+
+}
+
+}
+
+
+function saveProgress(progress){
+
+localStorage.setItem(
+"studyCoachProgress",
+JSON.stringify(progress)
+);
+
+}
+
+
+function addStudyTime(){
+
+const input=
+document.getElementById("studyMinutes");
+
+const minutes=
+Number(input.value);
+
+if(!minutes || minutes<1){
+
+alert("Enter the number of minutes you studied.");
+
+return;
+
+}
+
+const progress=getProgress();
+
+progress.studyMinutes+=minutes;
+
+saveProgress(progress);
+
+input.value="";
+
+updateProgressDisplay();
+
+alert(minutes+" minutes added to your study time!");
+
+}
+
+
+function calculateAverage(scores){
+
+if(!scores.length){
+return 0;
+}
+
+const total=
+scores.reduce(
+(sum,score)=>sum+score,
+0
+);
+
+return Math.round(
+total/scores.length
+);
+
+}
+
+
+function calculateOverall(progress){
+
+const quizProgress=
+calculateAverage(progress.quizScores);
+
+const studyProgress=
+Math.min(
+Math.round(
+(progress.studyMinutes/300)*100
+),
+100
+);
+
+const flashcardProgress=
+Math.min(
+Math.round(
+(progress.flashcards/50)*100
+),
+100
+);
+
+return Math.round(
+(
+quizProgress+
+studyProgress+
+flashcardProgress
+)/3
+);
+
+}
+
+
+function updateProgressDisplay(){
+
+const progress=getProgress();
+
+const average=
+calculateAverage(
+progress.quizScores
+);
+
+const overall=
+calculateOverall(progress);
+
+
+document.getElementById(
+"studyTimeDisplay"
+).textContent=
+progress.studyMinutes;
+
+
+document.getElementById(
+"quizScoreDisplay"
+).textContent=
+average+"%";
+
+
+document.getElementById(
+"flashcardDisplay"
+).textContent=
+progress.flashcards;
+
+
+document.getElementById(
+"overallDisplay"
+).textContent=
+overall+"%";
+
+
+document.getElementById(
+"progressFill"
+).style.width=
+overall+"%";
+
+
+const message=
+document.getElementById(
+"progressMessage"
+);
+
+
+if(overall===0){
+
+message.textContent=
+"Start studying to build your progress!";
+
+}else if(overall<40){
+
+message.textContent=
+"Good start! Keep going. 💪";
+
+}else if(overall<70){
+
+message.textContent=
+"You're making great progress! 🔥";
+
+}else if(overall<90){
+
+message.textContent=
+"Excellent work! Keep pushing! 🚀";
+
+}else{
+
+message.textContent=
+"Outstanding! You're becoming a master learner! 🏆";
+
+}
+
+}
+
+
+function recordQuizScore(score){
+
+const progress=getProgress();
+
+progress.quizScores.push(score);
+
+saveProgress(progress);
+
+updateProgressDisplay();
+
+}
+
+
+function recordFlashcards(number){
+
+const progress=getProgress();
+
+progress.flashcards+=number;
+
+saveProgress(progress);
+
+updateProgressDisplay();
+
+}
+
+
+function resetProgress(){
+
+const confirmReset=
+confirm(
+"Are you sure you want to reset all your progress?"
+);
+
+if(!confirmReset){
+return;
+}
+
+localStorage.removeItem(
+"studyCoachProgress"
+);
+
+updateProgressDisplay();
+
+}
+
+
+/* =========================
+AI TUTOR
 ========================= */
 
 async function sendMessage(){
 
-const input=document.getElementById("userInput");
+const input=
+document.getElementById("userInput");
 
-const messages=document.getElementById("messages");
+const messages=
+document.getElementById("messages");
 
-const question=input.value.trim();
+const question=
+input.value.trim();
 
 if(!question){
 return;
 }
 
-const userMessage=document.createElement("div");
 
-userMessage.className="message user";
+const userMessage=
+document.createElement("div");
 
-userMessage.textContent=question;
+userMessage.className=
+"message user";
 
-messages.appendChild(userMessage);
+userMessage.textContent=
+question;
+
+messages.appendChild(
+userMessage
+);
 
 input.value="";
 
 
-const loading=document.createElement("div");
+const loading=
+document.createElement("div");
 
-loading.className="message ai";
+loading.className=
+"message ai";
 
-loading.textContent="Thinking...";
+loading.textContent=
+"Thinking...";
 
-messages.appendChild(loading);
+messages.appendChild(
+loading
+);
 
 
 try{
 
-const response=await fetch("/api/chat",{
+const response=
+await fetch("/api/chat",{
 
 method:"POST",
 
 headers:{
-"Content-Type":"application/json"
+"Content-Type":
+"application/json"
 },
 
 body:JSON.stringify({
@@ -638,72 +1097,101 @@ message:question
 });
 
 
-const data=await response.json();
+const data=
+await response.json();
 
 loading.remove();
 
 
-const aiMessage=document.createElement("div");
+const aiMessage=
+document.createElement("div");
 
-aiMessage.className="message ai";
+aiMessage.className=
+"message ai";
+
 
 if(response.ok){
 
 aiMessage.textContent=
-data.answer || "No answer received.";
+data.answer ||
+"No answer received.";
 
 }else{
 
 aiMessage.textContent=
 "Error: "+
-(data.error || "AI request failed.");
+(
+data.error ||
+"AI request failed."
+);
 
 }
 
-messages.appendChild(aiMessage);
+
+messages.appendChild(
+aiMessage
+);
+
 
 }catch(error){
 
 loading.remove();
 
-const errorMessage=document.createElement("div");
 
-errorMessage.className="message ai";
+const errorMessage=
+document.createElement("div");
+
+errorMessage.className=
+"message ai";
 
 errorMessage.textContent=
 "Couldn't connect to the AI.";
 
-messages.appendChild(errorMessage);
+messages.appendChild(
+errorMessage
+);
 
 }
 
-messages.scrollTop=messages.scrollHeight;
+
+messages.scrollTop=
+messages.scrollHeight;
 
 }
 
 
 /* =========================
-   QUIZ
+QUIZ
 ========================= */
 
 async function generateQuiz(){
 
 const topic=
-document.getElementById("quizTopic").value.trim();
+document.getElementById(
+"quizTopic"
+).value.trim();
 
 const number=
-document.getElementById("quizNumber").value;
+document.getElementById(
+"quizNumber"
+).value;
 
 const difficulty=
-document.getElementById("quizDifficulty").value;
+document.getElementById(
+"quizDifficulty"
+).value;
 
 const result=
-document.getElementById("quizResult");
+document.getElementById(
+"quizResult"
+);
 
 
 if(!topic){
 
-alert("Please enter a study topic.");
+alert(
+"Please enter a study topic."
+);
 
 return;
 
@@ -743,12 +1231,14 @@ The answer must be 0, 1, 2, or 3.
 
 try{
 
-const response=await fetch("/api/chat",{
+const response=
+await fetch("/api/chat",{
 
 method:"POST",
 
 headers:{
-"Content-Type":"application/json"
+"Content-Type":
+"application/json"
 },
 
 body:JSON.stringify({
@@ -758,14 +1248,18 @@ message:prompt
 });
 
 
-const data=await response.json();
+const data=
+await response.json();
 
 
 if(!response.ok){
 
 result.innerHTML=
 '<div class="message ai">'+
-(data.error || "Quiz generation failed.")+
+(
+data.error ||
+"Quiz generation failed."
+)+
 '</div>';
 
 return;
@@ -773,109 +1267,152 @@ return;
 }
 
 
-let text=data.answer || "";
+let text=
+data.answer || "";
 
-text=text
-.replace(/```json/gi,"")
-.replace(/```/g,"")
+
+text=
+text
+.replace(
+/```json/gi,
+""
+)
+.replace(
+/```/g,
+""
+)
 .trim();
 
 
-const first=text.indexOf("{");
+const first=
+text.indexOf("{");
 
-const last=text.lastIndexOf("}");
+const last=
+text.lastIndexOf("}");
 
 
-if(first===-1 || last===-1){
+if(first===-1||last===-1){
 
-throw new Error("Invalid AI response.");
+throw new Error(
+"Invalid AI response."
+);
 
 }
 
 
 const quiz=
 JSON.parse(
-text.substring(first,last+1)
+text.substring(
+first,
+last+1
+)
 );
 
 
 result.innerHTML="";
 
 
-quiz.questions.forEach(function(question,index){
+quiz.questions.forEach(
+function(question,index){
 
-const box=document.createElement("div");
+const box=
+document.createElement("div");
 
-box.className="quiz-question";
+box.className=
+"quiz-question";
 
 
-const title=document.createElement("h3");
+const title=
+document.createElement("h3");
 
 title.textContent=
-(index+1)+". "+
+(index+1)+
+". "+
 question.question;
 
 box.appendChild(title);
 
 
-question.options.forEach(function(option,optionIndex){
+question.options.forEach(
+function(option,optionIndex){
 
-const label=document.createElement("label");
+const label=
+document.createElement("label");
 
-label.className="quiz-option";
+label.className=
+"quiz-option";
 
 
-const radio=document.createElement("input");
+const radio=
+document.createElement("input");
 
 radio.type="radio";
 
-radio.name="quiz"+index;
+radio.name=
+"quiz"+index;
 
-radio.value=optionIndex;
+radio.value=
+optionIndex;
 
-radio.style.marginRight="8px";
+radio.style.marginRight=
+"8px";
 
-
-label.appendChild(radio);
 
 label.appendChild(
-document.createTextNode(option)
+radio
+);
+
+label.appendChild(
+document.createTextNode(
+option
+)
 );
 
 
-box.appendChild(label);
+box.appendChild(
+label
+);
 
 });
 
 
-result.appendChild(box);
+result.appendChild(
+box
+);
 
 });
 
 
-const submit=document.createElement("button");
+const submit=
+document.createElement("button");
 
-submit.textContent="Submit Quiz";
+submit.textContent=
+"Submit Quiz";
 
-submit.style.marginTop="20px";
+submit.style.marginTop=
+"20px";
 
 
-submit.onclick=function(){
+submit.onclick=
+function(){
 
 let score=0;
 
 
-quiz.questions.forEach(function(question,index){
+quiz.questions.forEach(
+function(question,index){
 
 const selected=
 document.querySelector(
-'input[name="quiz'+index+'"]:checked'
+'input[name="quiz'+
+index+
+'"]:checked'
 );
 
 
 if(
 selected &&
-Number(selected.value) ===
+Number(selected.value)===
 Number(question.answer)
 ){
 
@@ -888,16 +1425,25 @@ score++;
 
 const percentage=
 Math.round(
-(score/quiz.questions.length)*100
+(score/
+quiz.questions.length)*
+100
+);
+
+
+recordQuizScore(
+percentage
 );
 
 
 const scoreBox=
 document.createElement("div");
 
-scoreBox.className="message ai";
+scoreBox.className=
+"message ai";
 
-scoreBox.style.marginTop="20px";
+scoreBox.style.marginTop=
+"20px";
 
 scoreBox.textContent=
 "Your Score: "+
@@ -909,12 +1455,30 @@ percentage+
 "%)";
 
 
-result.appendChild(scoreBox);
+result.appendChild(
+scoreBox
+);
+
+
+const progressMessage=
+document.createElement("div");
+
+progressMessage.className=
+"message ai";
+
+progressMessage.textContent=
+"📊 Your quiz score has been added to Progress!";
+
+result.appendChild(
+progressMessage
+);
 
 };
 
 
-result.appendChild(submit);
+result.appendChild(
+submit
+);
 
 
 }catch(error){
@@ -932,24 +1496,34 @@ result.innerHTML=
 
 
 /* =========================
-   FLASHCARDS
+FLASHCARDS
 ========================= */
 
 async function generateFlashcards(){
 
 const topic=
-document.getElementById("flashTopic").value.trim();
+document.getElementById(
+"flashTopic"
+).value.trim();
 
 const number=
-document.getElementById("flashNumber").value;
+Number(
+document.getElementById(
+"flashNumber"
+).value
+);
 
 const result=
-document.getElementById("flashResult");
+document.getElementById(
+"flashResult"
+);
 
 
 if(!topic){
 
-alert("Please enter a study topic.");
+alert(
+"Please enter a study topic."
+);
 
 return;
 
@@ -984,12 +1558,14 @@ Use exactly:
 
 try{
 
-const response=await fetch("/api/chat",{
+const response=
+await fetch("/api/chat",{
 
 method:"POST",
 
 headers:{
-"Content-Type":"application/json"
+"Content-Type":
+"application/json"
 },
 
 body:JSON.stringify({
@@ -999,14 +1575,18 @@ message:prompt
 });
 
 
-const data=await response.json();
+const data=
+await response.json();
 
 
 if(!response.ok){
 
 result.innerHTML=
 '<div class="message ai">'+
-(data.error || "Flashcard generation failed.")+
+(
+data.error ||
+"Flashcard generation failed."
+)+
 '</div>';
 
 return;
@@ -1014,61 +1594,99 @@ return;
 }
 
 
-let text=data.answer || "";
+let text=
+data.answer || "";
 
-text=text
-.replace(/```json/gi,"")
-.replace(/```/g,"")
+
+text=
+text
+.replace(
+/```json/gi,
+""
+)
+.replace(
+/```/g,
+""
+)
 .trim();
 
 
-const first=text.indexOf("{");
+const first=
+text.indexOf("{");
 
-const last=text.lastIndexOf("}");
+const last=
+text.lastIndexOf("}");
 
 
-if(first===-1 || last===-1){
+if(
+first===-1||
+last===-1
+){
 
-throw new Error("Invalid AI response.");
+throw new Error(
+"Invalid AI response."
+);
 
 }
 
 
 const flashData=
 JSON.parse(
-text.substring(first,last+1)
+text.substring(
+first,
+last+1
+)
 );
 
 
 result.innerHTML="";
 
 
-flashData.cards.forEach(function(card){
+flashData.cards.forEach(
+function(card){
 
 const flash=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-flash.className="flashcard";
+flash.className=
+"flashcard";
 
-flash.textContent=card.front;
+flash.textContent=
+card.front;
 
 
 let front=true;
 
 
-flash.onclick=function(){
+flash.onclick=
+function(){
 
-front=!front;
+if(front){
 
 flash.textContent=
-front
-?card.front
-:card.back;
+card.back;
+
+front=false;
+
+recordFlashcards(1);
+
+}else{
+
+flash.textContent=
+card.front;
+
+front=true;
+
+}
 
 };
 
 
-result.appendChild(flash);
+result.appendChild(
+flash
+);
 
 });
 
@@ -1088,27 +1706,37 @@ result.innerHTML=
 
 
 /* =========================
-   STUDY PLANNER
+STUDY PLANNER
 ========================= */
 
 async function generatePlanner(){
 
 const topics=
-document.getElementById("plannerTopics").value.trim();
+document.getElementById(
+"plannerTopics"
+).value.trim();
 
 const days=
-document.getElementById("plannerDays").value;
+document.getElementById(
+"plannerDays"
+).value;
 
 const time=
-document.getElementById("plannerTime").value;
+document.getElementById(
+"plannerTime"
+).value;
 
 const result=
-document.getElementById("plannerResult");
+document.getElementById(
+"plannerResult"
+);
 
 
 if(!topics){
 
-alert("Please enter your subjects.");
+alert(
+"Please enter your subjects."
+);
 
 return;
 
@@ -1150,332 +1778,15 @@ Create exactly ${days} days.
 
 try{
 
-const response=await fetch("/api/chat",{
+const response=
+await fetch("/api/chat",{
 
 method:"POST",
 
 headers:{
-"Content-Type":"application/json"
+"Content-Type":
+"application/json"
 },
 
 body:JSON.stringify({
-message:prompt
-})
-
-});
-
-
-const data=await response.json();
-
-
-if(!response.ok){
-
-result.innerHTML=
-'<div class="message ai">'+
-(data.error || "Planner generation failed.")+
-'</div>';
-
-return;
-
-}
-
-
-let text=data.answer || "";
-
-text=text
-.replace(/```json/gi,"")
-.replace(/```/g,"")
-.trim();
-
-
-const first=text.indexOf("{");
-
-const last=text.lastIndexOf("}");
-
-
-if(first===-1 || last===-1){
-
-throw new Error("Invalid AI response.");
-
-}
-
-
-const planData=
-JSON.parse(
-text.substring(first,last+1)
-);
-
-
-result.innerHTML="";
-
-
-planData.days.forEach(function(day){
-
-const box=document.createElement("div");
-
-box.className="plan-day";
-
-
-const title=document.createElement("h3");
-
-title.textContent=
-"Day "+
-day.day+
-" — "+
-day.focus;
-
-
-box.appendChild(title);
-
-
-const list=document.createElement("ul");
-
-
-day.tasks.forEach(function(task){
-
-const item=document.createElement("li");
-
-item.textContent=task;
-
-item.style.margin="7px 0";
-
-list.appendChild(item);
-
-});
-
-
-box.appendChild(list);
-
-result.appendChild(box);
-
-});
-
-
-}catch(error){
-
-console.error(error);
-
-result.innerHTML=
-'<div class="message ai">'+
-"Study plan generation failed. Please try again."+
-'</div>';
-
-}
-
-}
-
-
-/* =========================
-   NOTES
-========================= */
-
-function getNotes(){
-
-try{
-
-return JSON.parse(
-localStorage.getItem("studyCoachNotes") || "[]"
-);
-
-}catch(error){
-
-return [];
-
-}
-
-}
-
-
-function saveNote(){
-
-const title=
-document.getElementById("noteTitle").value.trim();
-
-const subject=
-document.getElementById("noteSubject").value.trim();
-
-const text=
-document.getElementById("noteText").value.trim();
-
-
-if(!title){
-
-alert("Please enter a note title.");
-
-return;
-
-}
-
-
-if(!text){
-
-alert("Please write your notes.");
-
-return;
-
-}
-
-
-const notes=getNotes();
-
-
-notes.unshift({
-
-id:Date.now(),
-
-title:title,
-
-subject:subject || "General",
-
-text:text,
-
-date:new Date().toLocaleDateString()
-
-});
-
-
-localStorage.setItem(
-"studyCoachNotes",
-JSON.stringify(notes)
-);
-
-
-document.getElementById("noteTitle").value="";
-
-document.getElementById("noteSubject").value="";
-
-document.getElementById("noteText").value="";
-
-
-renderNotes();
-
-
-alert("Note saved successfully!");
-
-}
-
-
-function renderNotes(){
-
-const list=
-document.getElementById("notesList");
-
-const search=
-document.getElementById("searchNotes")
-.value
-.toLowerCase()
-.trim();
-
-
-const notes=getNotes();
-
-
-const filtered=
-notes.filter(function(note){
-
-return(
-note.title.toLowerCase().includes(search) ||
-note.subject.toLowerCase().includes(search) ||
-note.text.toLowerCase().includes(search)
-);
-
-});
-
-
-list.innerHTML="";
-
-
-if(filtered.length===0){
-
-list.innerHTML=
-'<div class="message ai">'+
-"No notes yet. Create your first note above."+
-'</div>';
-
-return;
-
-}
-
-
-filtered.forEach(function(note){
-
-const box=
-document.createElement("div");
-
-box.className="note";
-
-
-const title=
-document.createElement("h3");
-
-title.textContent=note.title;
-
-
-const small=
-document.createElement("small");
-
-small.textContent=
-note.subject+
-" • "+
-note.date;
-
-
-const content=
-document.createElement("div");
-
-content.className="note-content";
-
-content.textContent=note.text;
-
-
-const deleteButton=
-document.createElement("button");
-
-deleteButton.className="delete";
-
-deleteButton.textContent="🗑️ Delete";
-
-
-deleteButton.onclick=function(){
-
-const updated=
-getNotes().filter(function(item){
-
-return item.id !== note.id;
-
-});
-
-
-localStorage.setItem(
-"studyCoachNotes",
-JSON.stringify(updated)
-);
-
-
-renderNotes();
-
-};
-
-
-box.appendChild(title);
-
-box.appendChild(small);
-
-box.appendChild(content);
-
-box.appendChild(deleteButton);
-
-
-list.appendChild(box);
-
-});
-
-}
-
-
-renderNotes();
-
-</script>
-
-</body>
-  </html>
+m
