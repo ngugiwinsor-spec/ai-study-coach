@@ -31,7 +31,8 @@ button{border:0;border-radius:10px;background:#172033;color:white;padding:12px 1
 .chat-input{display:flex;gap:8px}
 .chat-input textarea{flex:1;min-height:50px;resize:vertical;padding:12px;border:1px solid #cbd5e1;border-radius:10px}
 .form{display:grid;gap:14px;margin-top:18px}
-.form input,.form select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px;background:white}
+.form input,.form select,.form textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px;background:white}
+.form textarea{min-height:90px;resize:vertical}
 .question{background:#f8fafc;padding:18px;border-radius:12px;margin-top:15px}
 .option{display:block;background:white;border:1px solid #cbd5e1;padding:12px;border-radius:10px;margin-top:8px}
 .result{margin-top:20px;padding:15px;border-radius:10px;background:#eef2ff;font-weight:bold}
@@ -44,6 +45,11 @@ button{border:0;border-radius:10px;background:#172033;color:white;padding:12px 1
 .flash-front h3,.flash-back h3{margin-bottom:15px}
 .controls{display:flex;justify-content:center;gap:10px;margin-top:20px}
 .counter{text-align:center;margin-top:15px;color:#64748b}
+.plan-day{background:#f8fafc;padding:18px;border-radius:12px;margin-top:15px}
+.plan-day h3{margin-bottom:8px}
+.plan-day ul{padding-left:20px}
+.plan-day li{margin:7px 0;line-height:1.4}
+.loading{margin-top:15px}
 footer{text-align:center;padding:30px;color:#64748b;font-size:13px}
 </style>
 </head>
@@ -82,10 +88,10 @@ footer{text-align:center;padding:30px;color:#64748b;font-size:13px}
 <p>Turn your topics into flashcards.</p>
 </div>
 
-<div class="card" onclick="alert('Study Planner will be added soon!')">
+<div class="card" id="plannerCard">
 <div class="icon">📅</div>
 <h3>Study Planner</h3>
-<p>Plan your study sessions.</p>
+<p>Create a personalized study schedule.</p>
 </div>
 
 <div class="card" onclick="alert('My Notes will be added soon!')">
@@ -132,6 +138,7 @@ Hi! I'm your AI Study Coach. Ask me anything you're studying and I'll help you u
 <p>Create a quiz to test your knowledge.</p>
 
 <div class="form">
+
 <label>Study topic</label>
 <input id="quizTopic" placeholder="e.g. Photosynthesis">
 
@@ -167,6 +174,7 @@ Creating your quiz...
 <p>Generate flashcards to help you remember important concepts.</p>
 
 <div class="form">
+
 <label>Study topic</label>
 <input id="flashcardTopic" placeholder="e.g. Humanism in Psychology">
 
@@ -187,6 +195,55 @@ Creating your flashcards...
 <div id="flashcardArea"></div>
 </div>
 
+<!-- STUDY PLANNER -->
+
+<div class="tool" id="plannerBox">
+<h2>📅 Study Planner</h2>
+<p>Tell your AI Study Coach what you need to study and it will build a personalized plan.</p>
+
+<div class="form">
+
+<label>Subjects or topics</label>
+<textarea id="plannerTopics" placeholder="e.g. Physiological Psychology, Trauma & Grief Counseling, Research Methods"></textarea>
+
+<label>How many days do you have?</label>
+<select id="plannerDays">
+<option value="3">3 days</option>
+<option value="5">5 days</option>
+<option value="7" selected>7 days</option>
+<option value="14">14 days</option>
+<option value="30">30 days</option>
+</select>
+
+<label>Study time per day</label>
+<select id="plannerTime">
+<option value="30">30 minutes</option>
+<option value="60" selected>1 hour</option>
+<option value="90">1.5 hours</option>
+<option value="120">2 hours</option>
+<option value="180">3 hours</option>
+</select>
+
+<label>Your goal</label>
+<select id="plannerGoal">
+<option value="understand">Understand the topics</option>
+<option value="exam">Prepare for an exam</option>
+<option value="revision">Revise what I already learned</option>
+<option value="mastery">Master the subjects</option>
+</select>
+
+<button id="generatePlanButton">Create My Study Plan</button>
+
+</div>
+
+<div id="plannerLoading" class="message ai" style="display:none">
+Building your personalized study plan...
+</div>
+
+<div id="plannerResult"></div>
+
+</div>
+
 </main>
 
 <footer>
@@ -195,16 +252,18 @@ AI Study Coach • Built for students
 
 <script>
 
-const API_URL = "/api/api/chat";
+const API_URL="/api/api/chat";
 
-const chatBox = document.getElementById("chatBox");
-const quizBox = document.getElementById("quizBox");
-const flashcardBox = document.getElementById("flashcardBox");
+const chatBox=document.getElementById("chatBox");
+const quizBox=document.getElementById("quizBox");
+const flashcardBox=document.getElementById("flashcardBox");
+const plannerBox=document.getElementById("plannerBox");
 
 function hideTools(){
 chatBox.style.display="none";
 quizBox.style.display="none";
 flashcardBox.style.display="none";
+plannerBox.style.display="none";
 }
 
 function showTool(tool){
@@ -229,6 +288,10 @@ showTool(quizBox);
 
 document.getElementById("flashcardCard").addEventListener("click",function(){
 showTool(flashcardBox);
+});
+
+document.getElementById("plannerCard").addEventListener("click",function(){
+showTool(plannerBox);
 });
 
 
@@ -292,8 +355,7 @@ messages.scrollTop=messages.scrollHeight;
 
 /* QUIZ */
 
-document.getElementById("generateQuizButton")
-.addEventListener("click",generateQuiz);
+document.getElementById("generateQuizButton").addEventListener("click",generateQuiz);
 
 async function generateQuiz(){
 
@@ -404,6 +466,7 @@ content.appendChild(box);
 const submit=document.createElement("button");
 submit.textContent="Submit Quiz";
 submit.style.marginTop="20px";
+
 submit.onclick=function(){
 
 let score=0;
@@ -434,8 +497,7 @@ content.appendChild(submit);
 
 /* FLASHCARDS */
 
-document.getElementById("generateFlashcardsButton")
-.addEventListener("click",generateFlashcards);
+document.getElementById("generateFlashcardsButton").addEventListener("click",generateFlashcards);
 
 let cards=[];
 let currentCard=0;
@@ -595,7 +657,148 @@ area.appendChild(controls);
 
 }
 
+
+/* STUDY PLANNER */
+
+document.getElementById("generatePlanButton").addEventListener("click",generatePlan);
+
+async function generatePlan(){
+
+const topics=document.getElementById("plannerTopics").value.trim();
+const days=document.getElementById("plannerDays").value;
+const time=document.getElementById("plannerTime").value;
+const goal=document.getElementById("plannerGoal").value;
+
+const result=document.getElementById("plannerResult");
+const loading=document.getElementById("plannerLoading");
+
+if(!topics){
+alert("Please enter at least one subject or topic.");
+return;
+}
+
+result.innerHTML="";
+loading.style.display="block";
+
+const prompt=`
+Create a realistic personalized study plan.
+
+Subjects/topics:
+${topics}
+
+Number of days: ${days}
+Study time per day: ${time} minutes
+Goal: ${goal}
+
+Return ONLY valid JSON using exactly this structure:
+
+{
+"plan":[
+{
+"day":1,
+"title":"Day 1",
+"focus":"Main topic or topics",
+"tasks":[
+"Specific study task",
+"Practice task",
+"Review task"
+]
+}
+]
+}
+
+Create exactly ${days} days.
+
+Make the schedule realistic for ${time} minutes per day.
+Use active recall, practice questions, review, and spaced repetition where appropriate.
+`;
+
+try{
+
+const response=await fetch(API_URL,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:prompt})
+});
+
+const data=await response.json();
+
+loading.style.display="none";
+
+if(!response.ok){
+
+result.innerHTML=
+'<div class="message ai">'+
+(data.error||"Unable to create study plan.")+
+"</div>";
+
+return;
+}
+
+let text=data.answer.trim()
+.replace(/^```json/i,"")
+.replace(/^```/i,"")
+.replace(/```$/i,"");
+
+const planData=JSON.parse(text);
+
+displayPlan(planData.plan);
+
+}catch(error){
+
+loading.style.display="none";
+
+result.innerHTML=
+'<div class="message ai">'+
+"Unable to create the study plan. Please try again."+
+"</div>";
+
+}
+}
+
+
+function displayPlan(plan){
+
+const result=document.getElementById("plannerResult");
+
+result.innerHTML="";
+
+plan.forEach(day=>{
+
+const box=document.createElement("div");
+
+box.className="plan-day";
+
+const title=document.createElement("h3");
+
+title.textContent=
+day.title+
+" — "+
+day.focus;
+
+box.appendChild(title);
+
+const list=document.createElement("ul");
+
+day.tasks.forEach(task=>{
+
+const item=document.createElement("li");
+
+item.textContent=task;
+
+list.appendChild(item);
+
+});
+
+box.appendChild(list);
+
+result.appendChild(box);
+
+});
+
+}
+
 </script>
 
 </body>
-                                     </html>
+  </html>
