@@ -9,390 +9,446 @@
 *{box-sizing:border-box}
 
 body{
-  margin:0;
-  font-family:Inter,Arial,sans-serif;
-  background:#f5f7fb;
-  color:#18212f;
+margin:0;
+font-family:Inter,Arial,sans-serif;
+background:#f5f7fb;
+color:#18212f
 }
 
 header{
-  background:#172033;
-  color:white;
-  padding:26px 18px;
+background:#172033;
+color:white;
+padding:26px 18px
 }
 
 .header{
-  max-width:920px;
-  margin:auto;
+max-width:920px;
+margin:auto
 }
 
 .header h1{
-  margin:0;
-  font-size:26px;
+margin:0;
+font-size:26px
 }
 
 .header p{
-  margin:7px 0 0;
-  color:#b9c3d1;
-  font-size:14px;
+margin:7px 0 0;
+color:#b9c3d1;
+font-size:14px
 }
 
 .container{
-  max-width:920px;
-  margin:auto;
-  padding:18px 14px 50px;
+max-width:920px;
+margin:auto;
+padding:18px 14px 50px
 }
-
-/* NAVIGATION */
 
 .tabs{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  margin-bottom:18px;
-  padding-bottom:5px;
+display:flex;
+gap:7px;
+overflow-x:auto;
+margin-bottom:18px;
+padding-bottom:5px
 }
 
-.tabs::-webkit-scrollbar{
-  display:none;
-}
+.tabs::-webkit-scrollbar{display:none}
 
 .tab{
-  border:1px solid #e1e6ee;
-  background:white;
-  color:#536174;
-  padding:10px 14px;
-  border-radius:10px;
-  white-space:nowrap;
-  font-weight:600;
-  font-size:13px;
-  cursor:pointer;
+border:1px solid #e1e6ee;
+background:white;
+color:#536174;
+padding:10px 14px;
+border-radius:10px;
+white-space:nowrap;
+font-weight:600;
+font-size:13px;
+cursor:pointer
 }
 
 .tab.active{
-  background:#172033;
-  color:white;
-  border-color:#172033;
+background:#172033;
+color:white;
+border-color:#172033
 }
 
-/* PANELS */
-
-.panel{
-  display:none;
-}
-
-.panel.active{
-  display:block;
-}
+.panel{display:none}
+.panel.active{display:block}
 
 .card{
-  background:white;
-  border:1px solid #e6eaf0;
-  border-radius:17px;
-  padding:22px;
-  box-shadow:0 3px 15px rgba(15,23,42,.04);
+background:white;
+border:1px solid #e6eaf0;
+border-radius:17px;
+padding:22px;
+box-shadow:0 3px 15px rgba(15,23,42,.04)
 }
 
 .feature-icon{
-  font-size:26px;
-  margin-bottom:8px;
+font-size:26px;
+margin-bottom:8px
 }
 
 .card h2{
-  margin:0 0 6px;
-  font-size:21px;
+margin:0 0 6px;
+font-size:21px
 }
 
 .subtitle{
-  color:#697586;
-  margin:0 0 22px;
-  line-height:1.5;
-  font-size:14px;
+color:#697586;
+margin:0 0 22px;
+line-height:1.5;
+font-size:14px
 }
 
 label{
-  display:block;
-  font-size:13px;
-  font-weight:700;
-  margin:15px 0 7px;
+display:block;
+font-size:13px;
+font-weight:700;
+margin:15px 0 7px
 }
 
-input,
-textarea,
-select{
-  width:100%;
-  border:1px solid #dce2ea;
-  border-radius:11px;
-  padding:12px;
-  font:inherit;
-  color:#18212f;
-  background:white;
-  outline:none;
+input,textarea,select{
+width:100%;
+border:1px solid #dce2ea;
+border-radius:11px;
+padding:12px;
+font:inherit;
+color:#18212f;
+background:white;
+outline:none
 }
 
 textarea{
-  min-height:120px;
-  resize:vertical;
+min-height:120px;
+resize:vertical
 }
 
-input:focus,
-textarea:focus,
-select:focus{
-  border-color:#7a8698;
+input:focus,textarea:focus,select:focus{
+border-color:#7a8698
 }
 
 .button{
-  width:100%;
-  border:0;
-  border-radius:11px;
-  background:#172033;
-  color:white;
-  padding:13px;
-  margin-top:17px;
-  font-weight:700;
-  cursor:pointer;
+width:100%;
+border:0;
+border-radius:11px;
+background:#172033;
+color:white;
+padding:13px;
+margin-top:17px;
+font-weight:700;
+cursor:pointer
 }
 
-.button:disabled{
-  opacity:.6;
+.button.secondary{
+background:white;
+color:#172033;
+border:1px solid #dce2ea
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:13px
 }
 
 /* AI RESPONSE */
 
 .response{
-  display:none;
-  margin-top:20px;
-  background:#f8fafc;
-  border:1px solid #e5eaf0;
-  border-radius:13px;
-  padding:18px;
-  line-height:1.7;
-  font-size:14px;
+display:none;
+margin-top:20px;
+background:#f8fafc;
+border:1px solid #e5eaf0;
+border-radius:13px;
+padding:18px;
+line-height:1.7;
+font-size:14px
 }
 
-.response.visible{
-  display:block;
-}
+.response.visible{display:block}
 
 .response p{
-  margin:0 0 12px;
+margin:0 0 12px
 }
 
-.response p:last-child{
-  margin-bottom:0;
+.response p:last-child{margin-bottom:0}
+
+/* QUIZ */
+
+.quiz-area{
+display:none;
+margin-top:20px
 }
 
-/* GRID */
+.quiz-area.visible{display:block}
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
+.quiz-progress{
+font-size:12px;
+font-weight:700;
+color:#718096;
+margin-bottom:10px
+}
+
+.quiz-question{
+padding:20px;
+border:1px solid #e3e8ef;
+border-radius:15px;
+background:#f8fafc
+}
+
+.quiz-text{
+font-size:18px;
+line-height:1.5;
+font-weight:700;
+margin-bottom:15px
+}
+
+.answer{
+width:100%;
+text-align:left;
+margin-top:9px;
+padding:13px;
+border:1px solid #dce2ea;
+background:white;
+border-radius:10px;
+cursor:pointer;
+font:inherit
+}
+
+.answer.correct{
+border-color:#3b8f5a;
+background:#edf8f0
+}
+
+.answer.wrong{
+border-color:#c95858;
+background:#fff0f0
+}
+
+.answer:disabled{
+cursor:default
+}
+
+.quiz-feedback{
+margin-top:14px;
+font-weight:700;
+font-size:14px
+}
+
+.quiz-next{
+display:none;
+margin-top:15px;
+width:100%;
+padding:13px;
+border:0;
+border-radius:11px;
+background:#172033;
+color:white;
+font-weight:700
+}
+
+.quiz-next.visible{display:block}
+
+.quiz-result{
+text-align:center;
+padding:28px 18px;
+background:#f8fafc;
+border:1px solid #e3e8ef;
+border-radius:15px
+}
+
+.quiz-result h3{
+font-size:25px;
+margin:0 0 8px
+}
+
+.quiz-score{
+font-size:40px;
+font-weight:800;
+margin:10px 0
 }
 
 /* FLASHCARDS */
 
 .flashcard-area{
-  display:none;
-  margin-top:20px;
+display:none;
+margin-top:20px
 }
 
-.flashcard-area.visible{
-  display:block;
-}
+.flashcard-area.visible{display:block}
 
 .flashcard{
-  min-height:230px;
-  border:1px solid #e1e6ee;
-  border-radius:17px;
-  background:#f8fafc;
-  padding:28px 22px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  text-align:center;
-  cursor:pointer;
+min-height:230px;
+border:1px solid #e1e6ee;
+border-radius:17px;
+background:#f8fafc;
+padding:28px 22px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+text-align:center;
+cursor:pointer
 }
 
 .flashcard-label{
-  font-size:11px;
-  font-weight:800;
-  color:#7a8698;
-  letter-spacing:1px;
-  margin-bottom:15px;
+font-size:11px;
+font-weight:800;
+color:#7a8698;
+letter-spacing:1px;
+margin-bottom:15px
 }
 
 .flashcard-text{
-  font-size:20px;
-  line-height:1.5;
-  font-weight:600;
+font-size:20px;
+line-height:1.5;
+font-weight:600
+}
+
+.flash-counter{
+text-align:center;
+font-size:12px;
+color:#718096;
+margin:10px 0
 }
 
 .flash-controls{
-  display:flex;
-  gap:10px;
-  margin-top:12px;
+display:flex;
+gap:10px
 }
 
 .flash-controls button{
-  flex:1;
-  padding:11px;
-  border:1px solid #dce2ea;
-  background:white;
-  border-radius:10px;
-  font-weight:600;
+flex:1;
+padding:11px;
+border:1px solid #dce2ea;
+background:white;
+border-radius:10px;
+font-weight:600
 }
 
-/* QUIZ */
+/* PLANNER */
 
-.quiz-area{
-  display:none;
-  margin-top:20px;
+.planner-output{
+display:none;
+margin-top:20px
 }
 
-.quiz-area.visible{
-  display:block;
+.planner-output.visible{display:block}
+
+.plan-day{
+border:1px solid #e3e8ef;
+border-radius:14px;
+margin-bottom:12px;
+overflow:hidden;
+background:white
 }
 
-.quiz-question{
-  padding:20px;
-  border:1px solid #e3e8ef;
-  border-radius:15px;
-  background:#f8fafc;
+.plan-day-header{
+padding:13px 15px;
+background:#f1f4f8;
+font-weight:800;
+font-size:14px
 }
 
-.quiz-number{
-  font-size:12px;
-  color:#7a8698;
-  font-weight:700;
-  margin-bottom:8px;
-}
-
-.quiz-text{
-  font-size:17px;
-  line-height:1.5;
-  font-weight:700;
-}
-
-.answer{
-  width:100%;
-  text-align:left;
-  margin-top:9px;
-  padding:13px;
-  border:1px solid #dce2ea;
-  background:white;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.answer.correct{
-  border-color:#3b8f5a;
-  background:#edf8f0;
-}
-
-.answer.wrong{
-  border-color:#c95858;
-  background:#fff0f0;
+.plan-day-content{
+padding:15px;
+line-height:1.65;
+font-size:14px;
+white-space:pre-wrap
 }
 
 /* NOTES */
 
 .note{
-  border:1px solid #e5e9ef;
-  border-radius:13px;
-  padding:16px;
-  margin-top:12px;
+border:1px solid #e5e9ef;
+border-radius:13px;
+padding:16px;
+margin-top:12px
 }
 
 .note h3{
-  margin:0 0 4px;
-  font-size:16px;
+margin:0 0 4px;
+font-size:16px
 }
 
 .note small{
-  color:#7a8698;
+color:#7a8698
 }
 
 .note p{
-  white-space:pre-wrap;
-  line-height:1.6;
-  font-size:14px;
+white-space:pre-wrap;
+line-height:1.6;
+font-size:14px
 }
 
 .delete{
-  border:0;
-  background:#dc4444;
-  color:white;
-  border-radius:8px;
-  padding:8px 11px;
-  font-size:12px;
+border:0;
+background:#dc4444;
+color:white;
+border-radius:8px;
+padding:8px 11px;
+font-size:12px
 }
 
 /* PROGRESS */
 
 .stats{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px
 }
 
 .stat{
-  padding:18px;
-  background:#f8fafc;
-  border:1px solid #e4e9ef;
-  border-radius:14px;
+padding:18px;
+background:#f8fafc;
+border:1px solid #e4e9ef;
+border-radius:14px
 }
 
 .stat-icon{
-  font-size:21px;
+font-size:21px
 }
 
 .stat-number{
-  font-size:25px;
-  font-weight:800;
-  margin-top:7px;
+font-size:25px;
+font-weight:800;
+margin-top:7px
 }
 
 .stat-label{
-  font-size:12px;
-  color:#718096;
-  margin-top:3px;
+font-size:12px;
+color:#718096;
+margin-top:3px
 }
 
 .progress-track{
-  height:8px;
-  background:#e2e7ed;
-  border-radius:20px;
-  margin-top:10px;
-  overflow:hidden;
+height:8px;
+background:#e2e7ed;
+border-radius:20px;
+margin-top:10px;
+overflow:hidden
 }
 
 .progress-fill{
-  height:100%;
-  width:0;
-  background:#172033;
+height:100%;
+width:0;
+background:#172033
 }
-
-/* MOBILE */
 
 @media(max-width:600px){
 
-  .container{
-    padding:15px 12px 40px;
-  }
+.container{
+padding:15px 12px 40px
+}
 
-  .card{
-    padding:18px;
-  }
+.card{
+padding:18px
+}
 
-  .grid,
-  .stats{
-    grid-template-columns:1fr;
-  }
+.grid,.stats{
+grid-template-columns:1fr
+}
 
-  .flashcard-text{
-    font-size:18px;
-  }
+.flashcard-text{
+font-size:18px
+}
 }
 </style>
 </head>
@@ -417,7 +473,6 @@ select:focus{
 <button class="tab" data-tab="progress">Progress</button>
 </div>
 
-
 <!-- AI TUTOR -->
 
 <section id="tutor" class="panel active">
@@ -425,13 +480,10 @@ select:focus{
 
 <div class="feature-icon">🤖</div>
 <h2>AI Tutor</h2>
-<p class="subtitle">
-Ask a question and get a simple explanation tailored for studying.
-</p>
+<p class="subtitle">Ask a question and get a simple explanation tailored for studying.</p>
 
 <label>Your question</label>
-<textarea id="tutorQuestion"
-placeholder="Example: Explain classical conditioning in simple terms."></textarea>
+<textarea id="tutorQuestion" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
 
 <button class="button" id="tutorButton">Ask AI Tutor</button>
 
@@ -440,7 +492,6 @@ placeholder="Example: Explain classical conditioning in simple terms."></textare
 </div>
 </section>
 
-
 <!-- QUIZ -->
 
 <section id="quiz" class="panel">
@@ -448,9 +499,7 @@ placeholder="Example: Explain classical conditioning in simple terms."></textare
 
 <div class="feature-icon">📝</div>
 <h2>Quiz</h2>
-<p class="subtitle">
-Generate questions and test what you know.
-</p>
+<p class="subtitle">Generate questions and test what you know.</p>
 
 <label>Topic</label>
 <input id="quizTopic" placeholder="Example: Photosynthesis">
@@ -483,7 +532,6 @@ Generate questions and test what you know.
 </div>
 </section>
 
-
 <!-- FLASHCARDS -->
 
 <section id="flashcards" class="panel">
@@ -491,9 +539,7 @@ Generate questions and test what you know.
 
 <div class="feature-icon">🧠</div>
 <h2>Flashcards</h2>
-<p class="subtitle">
-Create interactive cards for quick revision.
-</p>
+<p class="subtitle">Create interactive cards for quick revision.</p>
 
 <label>Topic</label>
 <input id="flashTopic" placeholder="Example: Humanistic psychology">
@@ -507,6 +553,8 @@ Create interactive cards for quick revision.
 <button class="button" id="flashButton">Create Flashcards</button>
 
 <div id="flashArea" class="flashcard-area">
+
+<div class="flash-counter" id="flashCounter"></div>
 
 <div class="flashcard" id="flashcard">
 <div class="flashcard-label" id="flashLabel">QUESTION</div>
@@ -523,7 +571,6 @@ Create interactive cards for quick revision.
 </div>
 </section>
 
-
 <!-- PLANNER -->
 
 <section id="planner" class="panel">
@@ -531,13 +578,10 @@ Create interactive cards for quick revision.
 
 <div class="feature-icon">📅</div>
 <h2>Study Planner</h2>
-<p class="subtitle">
-Build a realistic study schedule around your available time.
-</p>
+<p class="subtitle">Build a realistic study schedule around your available time.</p>
 
 <label>Subjects or topics</label>
-<textarea id="plannerTopics"
-placeholder="Example: Psychology, Biology, Statistics"></textarea>
+<textarea id="plannerTopics" placeholder="Example: Psychology, Biology, Statistics"></textarea>
 
 <div class="grid">
 
@@ -564,11 +608,10 @@ placeholder="Example: Psychology, Biology, Statistics"></textarea>
 
 <button class="button" id="plannerButton">Create Plan</button>
 
-<div id="plannerResponse" class="response"></div>
+<div id="plannerOutput" class="planner-output"></div>
 
 </div>
 </section>
-
 
 <!-- NOTES -->
 
@@ -577,9 +620,7 @@ placeholder="Example: Psychology, Biology, Statistics"></textarea>
 
 <div class="feature-icon">📖</div>
 <h2>Notes</h2>
-<p class="subtitle">
-Keep your important study notes in one place.
-</p>
+<p class="subtitle">Keep your important study notes in one place.</p>
 
 <label>Title</label>
 <input id="noteTitle" placeholder="Example: Classical Conditioning">
@@ -600,7 +641,6 @@ Keep your important study notes in one place.
 </div>
 </section>
 
-
 <!-- PROGRESS -->
 
 <section id="progress" class="panel">
@@ -608,9 +648,7 @@ Keep your important study notes in one place.
 
 <div class="feature-icon">📊</div>
 <h2>Progress</h2>
-<p class="subtitle">
-A simple overview of your study activity.
-</p>
+<p class="subtitle">A simple overview of your study activity.</p>
 
 <div class="stats">
 
@@ -636,9 +674,11 @@ A simple overview of your study activity.
 <div class="stat-icon">📈</div>
 <div class="stat-number" id="overall">0%</div>
 <div class="stat-label">Overall progress</div>
+
 <div class="progress-track">
 <div class="progress-fill" id="progressFill"></div>
 </div>
+
 </div>
 
 </div>
@@ -652,7 +692,6 @@ A simple overview of your study activity.
 </section>
 
 </div>
-
 
 <script>
 
@@ -670,13 +709,10 @@ tabs.forEach(t=>t.classList.remove("active"));
 panels.forEach(p=>p.classList.remove("active"));
 
 tab.classList.add("active");
+document.getElementById(tab.dataset.tab).classList.add("active");
 
-document
-.getElementById(tab.dataset.tab)
-.classList.add("active");
-
-if(tab.dataset.tab==="progress") updateProgress();
-if(tab.dataset.tab==="notes") renderNotes();
+if(tab.dataset.tab==="progress")updateProgress();
+if(tab.dataset.tab==="notes")renderNotes();
 
 });
 });
@@ -704,8 +740,6 @@ return data.answer;
 }
 
 
-/* CLEAN AI TEXT */
-
 function cleanText(text){
 
 return text
@@ -718,13 +752,12 @@ return text
 
 }
 
+
 function showResponse(element,text){
 
 element.innerHTML="";
 
-const clean=cleanText(text);
-
-clean
+cleanText(text)
 .split(/\n\s*\n/)
 .filter(x=>x.trim())
 .forEach(paragraph=>{
@@ -744,10 +777,7 @@ element.classList.add("visible");
 
 document.getElementById("tutorButton").onclick=async()=>{
 
-const question=document
-.getElementById("tutorQuestion")
-.value.trim();
-
+const question=document.getElementById("tutorQuestion").value.trim();
 const output=document.getElementById("tutorResponse");
 
 if(!question){
@@ -761,15 +791,11 @@ output.classList.add("visible");
 try{
 
 const answer=await askAI(question);
-
 showResponse(output,answer);
 
 }catch(error){
 
-showResponse(
-output,
-"Unable to connect to the AI right now."
-);
+showResponse(output,"Unable to connect to the AI right now.");
 
 }
 
@@ -778,20 +804,15 @@ output,
 
 /* QUIZ */
 
+let quizQuestions=[];
+let quizIndex=0;
+let quizScore=0;
+
 document.getElementById("quizButton").onclick=async()=>{
 
-const topic=document
-.getElementById("quizTopic")
-.value.trim();
-
-const count=document
-.getElementById("quizCount")
-.value;
-
-const difficulty=document
-.getElementById("quizDifficulty")
-.value;
-
+const topic=document.getElementById("quizTopic").value.trim();
+const count=document.getElementById("quizCount").value;
+const difficulty=document.getElementById("quizDifficulty").value;
 const area=document.getElementById("quizArea");
 
 if(!topic)return;
@@ -806,7 +827,7 @@ Create exactly ${count} multiple choice questions about ${topic}.
 
 Difficulty: ${difficulty}.
 
-Return ONLY JSON in this format:
+Return ONLY valid JSON in this format:
 
 [
 {
@@ -824,52 +845,10 @@ const cleaned=answer
 .replace(/```/g,"")
 .trim();
 
-const questions=JSON.parse(cleaned);
+quizQuestions=JSON.parse(cleaned);
 
-let current=0;
-
-function renderQuiz(){
-
-const q=questions[current];
-
-area.innerHTML="";
-
-const box=document.createElement("div");
-box.className="quiz-question";
-
-const number=document.createElement("div");
-number.className="quiz-number";
-number.textContent=`Question ${current+1} of ${questions.length}`;
-
-const question=document.createElement("div");
-question.className="quiz-text";
-question.textContent=q.question;
-
-box.append(number,question);
-
-q.options.forEach((option,index)=>{
-
-const button=document.createElement("button");
-button.className="answer";
-button.textContent=option;
-
-button.onclick=()=>{
-
-if(index===q.answer){
-button.classList.add("correct");
-}else{
-button.classList.add("wrong");
-}
-
-};
-
-box.appendChild(button);
-
-});
-
-area.appendChild(box);
-
-}
+quizIndex=0;
+quizScore=0;
 
 renderQuiz();
 
@@ -880,6 +859,112 @@ area.textContent="Couldn't create the quiz. Please try again.";
 }
 
 };
+
+
+function renderQuiz(){
+
+const area=document.getElementById("quizArea");
+
+if(quizIndex>=quizQuestions.length){
+
+const percentage=Math.round(
+quizScore/quizQuestions.length*100
+);
+
+area.innerHTML=`
+<div class="quiz-result">
+<h3>Quiz Complete</h3>
+<div class="quiz-score">${percentage}%</div>
+<p>You scored ${quizScore} out of ${quizQuestions.length}.</p>
+<button class="button" id="retryQuiz">Try Again</button>
+</div>
+`;
+
+const progress=getProgress();
+progress.quizzes++;
+saveProgress(progress);
+
+document.getElementById("retryQuiz").onclick=()=>{
+quizIndex=0;
+quizScore=0;
+renderQuiz();
+};
+
+return;
+
+}
+
+const q=quizQuestions[quizIndex];
+
+area.innerHTML="";
+
+const progress=document.createElement("div");
+progress.className="quiz-progress";
+progress.textContent=
+`Question ${quizIndex+1} of ${quizQuestions.length}`;
+
+const box=document.createElement("div");
+box.className="quiz-question";
+
+const question=document.createElement("div");
+question.className="quiz-text";
+question.textContent=q.question;
+
+box.appendChild(question);
+
+const feedback=document.createElement("div");
+feedback.className="quiz-feedback";
+
+const next=document.createElement("button");
+next.className="quiz-next";
+next.textContent=
+quizIndex===quizQuestions.length-1
+?"Finish Quiz"
+:"Next Question";
+
+q.options.forEach((option,index)=>{
+
+const button=document.createElement("button");
+button.className="answer";
+button.textContent=option;
+
+button.onclick=()=>{
+
+document.querySelectorAll(".answer")
+.forEach(b=>b.disabled=true);
+
+if(index===q.answer){
+
+button.classList.add("correct");
+feedback.textContent="Correct! ✓";
+quizScore++;
+
+}else{
+
+button.classList.add("wrong");
+feedback.textContent="Not quite. The correct answer is "+q.options[q.answer]+".";
+
+document.querySelectorAll(".answer")[q.answer]
+.classList.add("correct");
+
+}
+
+next.classList.add("visible");
+
+};
+
+box.appendChild(button);
+
+});
+
+next.onclick=()=>{
+quizIndex++;
+renderQuiz();
+};
+
+area.append(progress,box,feedback,next);
+
+}
 
 
 /* FLASHCARDS */
@@ -900,12 +985,14 @@ flashShowingAnswer?"ANSWER":"QUESTION";
 document.getElementById("flashText").textContent=
 flashShowingAnswer?card.answer:card.question;
 
+document.getElementById("flashCounter").textContent=
+`Card ${flashIndex+1} of ${flashcards.length}`;
+
 }
 
 document.getElementById("flashcard").onclick=()=>{
 
 flashShowingAnswer=!flashShowingAnswer;
-
 renderFlashcard();
 
 };
@@ -916,7 +1003,6 @@ flashIndex=
 (flashIndex-1+flashcards.length)%flashcards.length;
 
 flashShowingAnswer=false;
-
 renderFlashcard();
 
 };
@@ -927,7 +1013,6 @@ flashIndex=
 (flashIndex+1)%flashcards.length;
 
 flashShowingAnswer=false;
-
 renderFlashcard();
 
 };
@@ -935,17 +1020,11 @@ renderFlashcard();
 
 document.getElementById("flashButton").onclick=async()=>{
 
-const topic=document
-.getElementById("flashTopic")
-.value.trim();
-
-const count=document
-.getElementById("flashCount")
-.value;
+const topic=document.getElementById("flashTopic").value.trim();
+const count=document.getElementById("flashCount").value;
+const area=document.getElementById("flashArea");
 
 if(!topic)return;
-
-const area=document.getElementById("flashArea");
 
 area.classList.add("visible");
 
@@ -956,7 +1035,7 @@ try{
 const answer=await askAI(`
 Create exactly ${count} flashcards about ${topic}.
 
-Return ONLY JSON in this format:
+Return ONLY valid JSON:
 
 [
 {
@@ -992,46 +1071,74 @@ document.getElementById("flashText").textContent=
 
 document.getElementById("plannerButton").onclick=async()=>{
 
-const topics=document
-.getElementById("plannerTopics")
-.value.trim();
-
-const days=document
-.getElementById("plannerDays")
-.value;
-
-const time=document
-.getElementById("plannerTime")
-.value;
-
-const output=document.getElementById("plannerResponse");
+const topics=document.getElementById("plannerTopics").value.trim();
+const days=document.getElementById("plannerDays").value;
+const time=document.getElementById("plannerTime").value;
+const output=document.getElementById("plannerOutput");
 
 if(!topics)return;
 
-output.textContent="Creating your study plan...";
+output.innerHTML="Creating your study plan...";
 output.classList.add("visible");
 
 try{
 
 const answer=await askAI(`
-Create a ${days}-day study plan for:
+Create a ${days}-day study plan for these subjects:
 
 ${topics}
 
-The student has ${time} minutes available each day.
+The student has ${time} minutes each day.
 
-Keep it simple and practical.
-Clearly separate each day.
+Return ONLY valid JSON in this format:
+
+[
+{
+"day":"Day 1",
+"focus":"Topic or subject",
+"sessions":["Session 1","Session 2"]
+}
+]
+
+Keep each day realistic and concise.
 `);
 
-showResponse(output,answer);
+const cleaned=answer
+.replace(/```json/g,"")
+.replace(/```/g,"")
+.trim();
+
+const plan=JSON.parse(cleaned);
+
+output.innerHTML="";
+
+plan.forEach(day=>{
+
+const box=document.createElement("div");
+box.className="plan-day";
+
+const header=document.createElement("div");
+header.className="plan-day-header";
+header.textContent=day.day+" · "+day.focus;
+
+const content=document.createElement("div");
+content.className="plan-day-content";
+
+content.textContent=day.sessions
+.map((session,index)=>
+`Session ${index+1}: ${session}`
+)
+.join("\n");
+
+box.append(header,content);
+output.appendChild(box);
+
+});
 
 }catch(error){
 
-showResponse(
-output,
-"Couldn't create the study plan. Please try again."
-);
+output.textContent=
+"Couldn't create the study plan. Please try again.";
 
 }
 
@@ -1061,10 +1168,8 @@ function renderNotes(){
 
 const list=document.getElementById("notesList");
 
-const search=document
-.getElementById("noteSearch")
-.value
-.toLowerCase();
+const search=document.getElementById("noteSearch")
+.value.toLowerCase();
 
 list.innerHTML="";
 
@@ -1088,11 +1193,11 @@ subject.textContent=note.subject;
 const text=document.createElement("p");
 text.textContent=note.text;
 
-const deleteButton=document.createElement("button");
-deleteButton.className="delete";
-deleteButton.textContent="Delete";
+const button=document.createElement("button");
+button.className="delete";
+button.textContent="Delete";
 
-deleteButton.onclick=()=>{
+button.onclick=()=>{
 
 saveNotes(
 getNotes().filter(n=>n.id!==note.id)
@@ -1102,8 +1207,7 @@ renderNotes();
 
 };
 
-box.append(title,subject,text,deleteButton);
-
+box.append(title,subject,text,button);
 list.appendChild(box);
 
 });
@@ -1113,105 +1217,4 @@ list.appendChild(box);
 document.getElementById("saveNote").onclick=()=>{
 
 const title=document.getElementById("noteTitle").value.trim();
-const subject=document.getElementById("noteSubject").value.trim();
-const text=document.getElementById("noteText").value.trim();
-
-if(!title||!text)return;
-
-const notes=getNotes();
-
-notes.unshift({
-id:Date.now(),
-title,
-subject:subject||"General",
-text
-});
-
-saveNotes(notes);
-
-document.getElementById("noteTitle").value="";
-document.getElementById("noteSubject").value="";
-document.getElementById("noteText").value="";
-
-renderNotes();
-
-};
-
-document.getElementById("noteSearch").oninput=renderNotes;
-
-
-/* PROGRESS */
-
-function getProgress(){
-
-return JSON.parse(
-localStorage.getItem("studyProgress")||
-'{"minutes":0,"quizzes":0,"cards":0}'
-);
-
-}
-
-function saveProgress(data){
-
-localStorage.setItem(
-"studyProgress",
-JSON.stringify(data)
-);
-
-}
-
-function updateProgress(){
-
-const data=getProgress();
-
-document.getElementById("minutes").textContent=data.minutes;
-document.getElementById("quizzes").textContent=data.quizzes;
-document.getElementById("cards").textContent=data.cards;
-
-const progress=Math.min(
-100,
-Math.round(
-(
-Math.min(data.minutes/300*100,100)+
-Math.min(data.quizzes/10*100,100)+
-Math.min(data.cards/50*100,100)
-)/3
-)
-);
-
-document.getElementById("overall").textContent=
-progress+"%";
-
-document.getElementById("progressFill").style.width=
-progress+"%";
-
-}
-
-document.getElementById("addTime").onclick=()=>{
-
-const input=document.getElementById("studyTime");
-
-const minutes=Number(input.value);
-
-if(!minutes||minutes<1)return;
-
-const data=getProgress();
-
-data.minutes+=minutes;
-
-saveProgress(data);
-
-input.value="";
-
-updateProgress();
-
-};
-
-updateProgress();
-renderNotes();
-
-});
-</script>
-
-</body>
-  </html>
+  
