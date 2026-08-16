@@ -7,54 +7,392 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f6f7fb;color:#172033}
-header{background:#172033;color:#fff;padding:28px 18px}
-.header-inner{max-width:900px;margin:auto}
-header h1{margin:0 0 6px;font-size:27px}
-header p{margin:0;color:#cbd5e1}
-.container{max-width:900px;margin:auto;padding:20px 14px 50px}
 
-.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:18px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:11px 15px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#475569;font-weight:600;white-space:nowrap;cursor:pointer}
-.tab.active{background:#172033;color:#fff;border-color:#172033}
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:#f5f7fb;
+  color:#18212f;
+}
 
-.panel{display:none}
-.panel.active{display:block}
+header{
+  background:#172033;
+  color:white;
+  padding:26px 18px;
+}
 
-.card{background:#fff;border:1px solid #e7eaf0;border-radius:18px;padding:22px;box-shadow:0 4px 18px rgba(15,23,42,.05)}
-.icon{font-size:28px;margin-bottom:8px}
-h2{margin:0 0 6px}
-.description{margin:0 0 22px;color:#64748b;line-height:1.5}
+.header{
+  max-width:920px;
+  margin:auto;
+}
 
-label{display:block;font-size:14px;font-weight:600;margin:16px 0 7px}
-textarea,input,select{width:100%;padding:13px;border:1px solid #d9dee8;border-radius:12px;font:inherit;background:#fff;color:#172033}
-textarea{min-height:130px;resize:vertical}
+.header h1{
+  margin:0;
+  font-size:26px;
+}
 
-.primary{width:100%;margin-top:17px;padding:14px;border:0;border-radius:12px;background:#172033;color:#fff;font-weight:700;font-size:15px;cursor:pointer}
+.header p{
+  margin:7px 0 0;
+  color:#b9c3d1;
+  font-size:14px;
+}
 
-.output{display:none;margin-top:20px;padding:18px;border-radius:14px;background:#f8fafc;border:1px solid #e8edf3;line-height:1.7;white-space:pre-wrap;color:#334155}
-.output.show{display:block}
-.loading{color:#64748b}
+.container{
+  max-width:920px;
+  margin:auto;
+  padding:18px 14px 50px;
+}
 
-.two-column{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* NAVIGATION */
 
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.stat{padding:18px;background:#f8fafc;border:1px solid #e8edf3;border-radius:14px}
-.stat-number{font-size:27px;font-weight:700;margin:7px 0 3px}
-.stat-label{font-size:13px;color:#64748b}
-.progress-bar{height:8px;background:#e2e8f0;border-radius:20px;margin-top:10px;overflow:hidden}
-.progress-fill{height:100%;width:0;background:#172033}
+.tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-bottom:18px;
+  padding-bottom:5px;
+}
 
-.note{margin-top:14px;padding:17px;background:#f8fafc;border:1px solid #e8edf3;border-radius:14px}
-.note h3{margin:0 0 5px}
-.note small{color:#64748b}
-.note p{white-space:pre-wrap;line-height:1.6}
-.delete{background:#dc2626;color:#fff;border:0;padding:9px 13px;border-radius:9px;cursor:pointer}
+.tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.tab{
+  border:1px solid #e1e6ee;
+  background:white;
+  color:#536174;
+  padding:10px 14px;
+  border-radius:10px;
+  white-space:nowrap;
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:#172033;
+  color:white;
+  border-color:#172033;
+}
+
+/* PANELS */
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+.card{
+  background:white;
+  border:1px solid #e6eaf0;
+  border-radius:17px;
+  padding:22px;
+  box-shadow:0 3px 15px rgba(15,23,42,.04);
+}
+
+.feature-icon{
+  font-size:26px;
+  margin-bottom:8px;
+}
+
+.card h2{
+  margin:0 0 6px;
+  font-size:21px;
+}
+
+.subtitle{
+  color:#697586;
+  margin:0 0 22px;
+  line-height:1.5;
+  font-size:14px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin:15px 0 7px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid #dce2ea;
+  border-radius:11px;
+  padding:12px;
+  font:inherit;
+  color:#18212f;
+  background:white;
+  outline:none;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:#7a8698;
+}
+
+.button{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  background:#172033;
+  color:white;
+  padding:13px;
+  margin-top:17px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.button:disabled{
+  opacity:.6;
+}
+
+/* AI RESPONSE */
+
+.response{
+  display:none;
+  margin-top:20px;
+  background:#f8fafc;
+  border:1px solid #e5eaf0;
+  border-radius:13px;
+  padding:18px;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.response.visible{
+  display:block;
+}
+
+.response p{
+  margin:0 0 12px;
+}
+
+.response p:last-child{
+  margin-bottom:0;
+}
+
+/* GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+/* FLASHCARDS */
+
+.flashcard-area{
+  display:none;
+  margin-top:20px;
+}
+
+.flashcard-area.visible{
+  display:block;
+}
+
+.flashcard{
+  min-height:230px;
+  border:1px solid #e1e6ee;
+  border-radius:17px;
+  background:#f8fafc;
+  padding:28px 22px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:center;
+  cursor:pointer;
+}
+
+.flashcard-label{
+  font-size:11px;
+  font-weight:800;
+  color:#7a8698;
+  letter-spacing:1px;
+  margin-bottom:15px;
+}
+
+.flashcard-text{
+  font-size:20px;
+  line-height:1.5;
+  font-weight:600;
+}
+
+.flash-controls{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.flash-controls button{
+  flex:1;
+  padding:11px;
+  border:1px solid #dce2ea;
+  background:white;
+  border-radius:10px;
+  font-weight:600;
+}
+
+/* QUIZ */
+
+.quiz-area{
+  display:none;
+  margin-top:20px;
+}
+
+.quiz-area.visible{
+  display:block;
+}
+
+.quiz-question{
+  padding:20px;
+  border:1px solid #e3e8ef;
+  border-radius:15px;
+  background:#f8fafc;
+}
+
+.quiz-number{
+  font-size:12px;
+  color:#7a8698;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.quiz-text{
+  font-size:17px;
+  line-height:1.5;
+  font-weight:700;
+}
+
+.answer{
+  width:100%;
+  text-align:left;
+  margin-top:9px;
+  padding:13px;
+  border:1px solid #dce2ea;
+  background:white;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.answer.correct{
+  border-color:#3b8f5a;
+  background:#edf8f0;
+}
+
+.answer.wrong{
+  border-color:#c95858;
+  background:#fff0f0;
+}
+
+/* NOTES */
+
+.note{
+  border:1px solid #e5e9ef;
+  border-radius:13px;
+  padding:16px;
+  margin-top:12px;
+}
+
+.note h3{
+  margin:0 0 4px;
+  font-size:16px;
+}
+
+.note small{
+  color:#7a8698;
+}
+
+.note p{
+  white-space:pre-wrap;
+  line-height:1.6;
+  font-size:14px;
+}
+
+.delete{
+  border:0;
+  background:#dc4444;
+  color:white;
+  border-radius:8px;
+  padding:8px 11px;
+  font-size:12px;
+}
+
+/* PROGRESS */
+
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.stat{
+  padding:18px;
+  background:#f8fafc;
+  border:1px solid #e4e9ef;
+  border-radius:14px;
+}
+
+.stat-icon{
+  font-size:21px;
+}
+
+.stat-number{
+  font-size:25px;
+  font-weight:800;
+  margin-top:7px;
+}
+
+.stat-label{
+  font-size:12px;
+  color:#718096;
+  margin-top:3px;
+}
+
+.progress-track{
+  height:8px;
+  background:#e2e7ed;
+  border-radius:20px;
+  margin-top:10px;
+  overflow:hidden;
+}
+
+.progress-fill{
+  height:100%;
+  width:0;
+  background:#172033;
+}
+
+/* MOBILE */
 
 @media(max-width:600px){
-  .two-column,.stats{grid-template-columns:1fr}
-  .card{padding:18px}
+
+  .container{
+    padding:15px 12px 40px;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .grid,
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .flashcard-text{
+    font-size:18px;
+  }
 }
 </style>
 </head>
@@ -62,102 +400,149 @@ textarea{min-height:130px;resize:vertical}
 <body>
 
 <header>
-<div class="header-inner">
+<div class="header">
 <h1>📚 AI Study Coach</h1>
-<p>Learn smarter. Stay organized. Make progress.</p>
+<p>Your personal space to learn, revise and stay organized.</p>
 </div>
 </header>
 
 <div class="container">
 
 <div class="tabs">
-<button class="tab active" data-tab="tutor">🤖 AI Tutor</button>
-<button class="tab" data-tab="quiz">📝 Quiz</button>
-<button class="tab" data-tab="flashcards">🧠 Flashcards</button>
-<button class="tab" data-tab="planner">📅 Planner</button>
-<button class="tab" data-tab="notes">📖 Notes</button>
-<button class="tab" data-tab="progress">📊 Progress</button>
+<button class="tab active" data-tab="tutor">AI Tutor</button>
+<button class="tab" data-tab="quiz">Quiz</button>
+<button class="tab" data-tab="flashcards">Flashcards</button>
+<button class="tab" data-tab="planner">Planner</button>
+<button class="tab" data-tab="notes">Notes</button>
+<button class="tab" data-tab="progress">Progress</button>
 </div>
+
+
+<!-- AI TUTOR -->
 
 <section id="tutor" class="panel active">
 <div class="card">
-<div class="icon">🤖</div>
+
+<div class="feature-icon">🤖</div>
 <h2>AI Tutor</h2>
-<p class="description">Ask anything about your studies and get a clear explanation.</p>
+<p class="subtitle">
+Ask a question and get a simple explanation tailored for studying.
+</p>
 
-<label for="tutorQuestion">Your question</label>
-<textarea id="tutorQuestion" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
+<label>Your question</label>
+<textarea id="tutorQuestion"
+placeholder="Example: Explain classical conditioning in simple terms."></textarea>
 
-<button class="primary" id="tutorButton">Ask AI Tutor</button>
-<div id="tutorOutput" class="output"></div>
+<button class="button" id="tutorButton">Ask AI Tutor</button>
+
+<div id="tutorResponse" class="response"></div>
+
 </div>
 </section>
 
+
+<!-- QUIZ -->
+
 <section id="quiz" class="panel">
 <div class="card">
-<div class="icon">📝</div>
-<h2>Quiz Generator</h2>
-<p class="description">Test your knowledge with an AI-generated quiz.</p>
 
-<label for="quizTopic">Topic</label>
+<div class="feature-icon">📝</div>
+<h2>Quiz</h2>
+<p class="subtitle">
+Generate questions and test what you know.
+</p>
+
+<label>Topic</label>
 <input id="quizTopic" placeholder="Example: Photosynthesis">
 
-<div class="two-column">
+<div class="grid">
+
 <div>
-<label for="quizCount">Questions</label>
+<label>Questions</label>
 <select id="quizCount">
-<option value="5">5 questions</option>
-<option value="10">10 questions</option>
+<option value="5">5</option>
+<option value="10">10</option>
 </select>
 </div>
 
 <div>
-<label for="quizDifficulty">Difficulty</label>
+<label>Difficulty</label>
 <select id="quizDifficulty">
 <option>Easy</option>
 <option selected>Medium</option>
 <option>Hard</option>
 </select>
 </div>
+
 </div>
 
-<button class="primary" id="quizButton">Generate Quiz</button>
-<div id="quizOutput" class="output"></div>
+<button class="button" id="quizButton">Generate Quiz</button>
+
+<div id="quizArea" class="quiz-area"></div>
+
 </div>
 </section>
+
+
+<!-- FLASHCARDS -->
 
 <section id="flashcards" class="panel">
 <div class="card">
-<div class="icon">🧠</div>
-<h2>Flashcards</h2>
-<p class="description">Turn any topic into quick revision cards.</p>
 
-<label for="flashTopic">Topic</label>
+<div class="feature-icon">🧠</div>
+<h2>Flashcards</h2>
+<p class="subtitle">
+Create interactive cards for quick revision.
+</p>
+
+<label>Topic</label>
 <input id="flashTopic" placeholder="Example: Humanistic psychology">
 
-<label for="flashCount">Number of cards</label>
+<label>Number of cards</label>
 <select id="flashCount">
-<option value="5">5 cards</option>
-<option value="10">10 cards</option>
+<option value="5">5</option>
+<option value="10">10</option>
 </select>
 
-<button class="primary" id="flashButton">Create Flashcards</button>
-<div id="flashOutput" class="output"></div>
+<button class="button" id="flashButton">Create Flashcards</button>
+
+<div id="flashArea" class="flashcard-area">
+
+<div class="flashcard" id="flashcard">
+<div class="flashcard-label" id="flashLabel">QUESTION</div>
+<div class="flashcard-text" id="flashText"></div>
+</div>
+
+<div class="flash-controls">
+<button id="previousCard">Previous</button>
+<button id="nextCard">Next</button>
+</div>
+
+</div>
+
 </div>
 </section>
 
+
+<!-- PLANNER -->
+
 <section id="planner" class="panel">
 <div class="card">
-<div class="icon">📅</div>
+
+<div class="feature-icon">📅</div>
 <h2>Study Planner</h2>
-<p class="description">Create a realistic study schedule.</p>
+<p class="subtitle">
+Build a realistic study schedule around your available time.
+</p>
 
-<label for="plannerTopics">What are you studying?</label>
-<textarea id="plannerTopics" placeholder="Example: Psychology, Statistics, Biology"></textarea>
+<label>Subjects or topics</label>
+<textarea id="plannerTopics"
+placeholder="Example: Psychology, Biology, Statistics"></textarea>
 
-<div class="two-column">
+<div class="grid">
+
 <div>
-<label for="plannerDays">Duration</label>
+<label>Days</label>
 <select id="plannerDays">
 <option value="3">3 days</option>
 <option value="5">5 days</option>
@@ -166,123 +551,146 @@ textarea{min-height:130px;resize:vertical}
 </div>
 
 <div>
-<label for="plannerTime">Daily study time</label>
+<label>Daily time</label>
 <select id="plannerTime">
-<option value="30">30 minutes</option>
+<option value="30">30 min</option>
 <option value="60" selected>1 hour</option>
 <option value="90">1.5 hours</option>
 <option value="120">2 hours</option>
 </select>
 </div>
+
 </div>
 
-<button class="primary" id="plannerButton">Create Study Plan</button>
-<div id="plannerOutput" class="output"></div>
+<button class="button" id="plannerButton">Create Plan</button>
+
+<div id="plannerResponse" class="response"></div>
+
 </div>
 </section>
+
+
+<!-- NOTES -->
 
 <section id="notes" class="panel">
 <div class="card">
-<div class="icon">📖</div>
-<h2>My Notes</h2>
-<p class="description">Save important information for later.</p>
 
-<label for="noteTitle">Title</label>
+<div class="feature-icon">📖</div>
+<h2>Notes</h2>
+<p class="subtitle">
+Keep your important study notes in one place.
+</p>
+
+<label>Title</label>
 <input id="noteTitle" placeholder="Example: Classical Conditioning">
 
-<label for="noteSubject">Subject</label>
+<label>Subject</label>
 <input id="noteSubject" placeholder="Example: Psychology">
 
-<label for="noteText">Notes</label>
+<label>Notes</label>
 <textarea id="noteText" placeholder="Write your notes here..."></textarea>
 
-<button class="primary" id="saveNoteButton">Save Note</button>
+<button class="button" id="saveNote">Save Note</button>
 
-<label for="noteSearch">Search notes</label>
-<input id="noteSearch" placeholder="Search...">
+<label>Search notes</label>
+<input id="noteSearch" placeholder="Search your notes">
 
-<div id="notesOutput"></div>
+<div id="notesList"></div>
+
 </div>
 </section>
+
+
+<!-- PROGRESS -->
 
 <section id="progress" class="panel">
 <div class="card">
-<div class="icon">📊</div>
-<h2>My Progress</h2>
-<p class="description">Track your study activity.</p>
+
+<div class="feature-icon">📊</div>
+<h2>Progress</h2>
+<p class="subtitle">
+A simple overview of your study activity.
+</p>
 
 <div class="stats">
+
 <div class="stat">
-<div>⏱️</div>
-<div class="stat-number" id="studyMinutes">0</div>
-<div class="stat-label">Minutes Studied</div>
+<div class="stat-icon">⏱️</div>
+<div class="stat-number" id="minutes">0</div>
+<div class="stat-label">Minutes studied</div>
 </div>
 
 <div class="stat">
-<div>📝</div>
-<div class="stat-number" id="quizAverage">0%</div>
-<div class="stat-label">Quiz Activity</div>
+<div class="stat-icon">📝</div>
+<div class="stat-number" id="quizzes">0</div>
+<div class="stat-label">Quizzes completed</div>
 </div>
 
 <div class="stat">
-<div>🧠</div>
-<div class="stat-number" id="flashcardsDone">0</div>
-<div class="stat-label">Flashcards</div>
+<div class="stat-icon">🧠</div>
+<div class="stat-number" id="cards">0</div>
+<div class="stat-label">Flashcards reviewed</div>
 </div>
 
 <div class="stat">
-<div>📈</div>
-<div class="stat-number" id="overallProgress">0%</div>
-<div class="stat-label">Overall Progress</div>
-<div class="progress-bar">
+<div class="stat-icon">📈</div>
+<div class="stat-number" id="overall">0%</div>
+<div class="stat-label">Overall progress</div>
+<div class="progress-track">
 <div class="progress-fill" id="progressFill"></div>
 </div>
 </div>
+
 </div>
 
-<label for="minutesInput">Add study time</label>
-<input id="minutesInput" type="number" min="1" placeholder="Minutes studied">
+<label>Add study time</label>
+<input id="studyTime" type="number" min="1" placeholder="Minutes">
 
-<button class="primary" id="addMinutesButton">Add Study Time</button>
+<button class="button" id="addTime">Add Study Time</button>
 
-<div class="output show" style="margin-top:20px">
-<strong>Your progress</strong>
-<p id="progressMessage">Start studying to build your progress!</p>
-</div>
-
-<button id="resetProgressButton" class="delete" style="margin-top:18px">Reset Progress</button>
 </div>
 </section>
 
 </div>
 
+
 <script>
-document.addEventListener("DOMContentLoaded",function(){
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+/* TABS */
 
 const tabs=document.querySelectorAll(".tab");
 const panels=document.querySelectorAll(".panel");
 
 tabs.forEach(tab=>{
 tab.addEventListener("click",()=>{
-const target=tab.dataset.tab;
 
 tabs.forEach(t=>t.classList.remove("active"));
 panels.forEach(p=>p.classList.remove("active"));
 
 tab.classList.add("active");
-document.getElementById(target).classList.add("active");
 
-if(target==="progress") updateProgress();
-if(target==="notes") renderNotes();
+document
+.getElementById(tab.dataset.tab)
+.classList.add("active");
+
+if(tab.dataset.tab==="progress") updateProgress();
+if(tab.dataset.tab==="notes") renderNotes();
+
 });
 });
 
+
+/* AI */
 
 async function askAI(message){
 
 const response=await fetch("/api/chat",{
 method:"POST",
-headers:{"Content-Type":"application/json"},
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify({message})
 });
 
@@ -296,183 +704,419 @@ return data.answer;
 }
 
 
-function showOutput(element,text,loading=false){
-element.textContent=text;
-element.classList.add("show");
-element.classList.toggle("loading",loading);
+/* CLEAN AI TEXT */
+
+function cleanText(text){
+
+return text
+.replace(/#{1,6}\s?/g,"")
+.replace(/\*\*\*/g,"")
+.replace(/\*\*/g,"")
+.replace(/\*/g,"")
+.replace(/---/g,"")
+.trim();
+
+}
+
+function showResponse(element,text){
+
+element.innerHTML="";
+
+const clean=cleanText(text);
+
+clean
+.split(/\n\s*\n/)
+.filter(x=>x.trim())
+.forEach(paragraph=>{
+
+const p=document.createElement("p");
+p.textContent=paragraph.trim();
+element.appendChild(p);
+
+});
+
+element.classList.add("visible");
+
 }
 
 
 /* AI TUTOR */
 
-document.getElementById("tutorButton").addEventListener("click",async()=>{
+document.getElementById("tutorButton").onclick=async()=>{
 
-const question=document.getElementById("tutorQuestion").value.trim();
-const output=document.getElementById("tutorOutput");
+const question=document
+.getElementById("tutorQuestion")
+.value.trim();
+
+const output=document.getElementById("tutorResponse");
 
 if(!question){
-showOutput(output,"Please enter a question.");
+showResponse(output,"Please enter a question.");
 return;
 }
 
-showOutput(output,"Thinking...",true);
+output.textContent="Thinking...";
+output.classList.add("visible");
 
 try{
+
 const answer=await askAI(question);
-showOutput(output,answer);
+
+showResponse(output,answer);
+
 }catch(error){
-showOutput(output,"Couldn't connect to the AI: "+error.message);
+
+showResponse(
+output,
+"Unable to connect to the AI right now."
+);
+
 }
 
-});
+};
 
 
 /* QUIZ */
 
-document.getElementById("quizButton").addEventListener("click",async()=>{
+document.getElementById("quizButton").onclick=async()=>{
 
-const topic=document.getElementById("quizTopic").value.trim();
-const count=document.getElementById("quizCount").value;
-const difficulty=document.getElementById("quizDifficulty").value;
-const output=document.getElementById("quizOutput");
+const topic=document
+.getElementById("quizTopic")
+.value.trim();
 
-if(!topic){
-showOutput(output,"Please enter a topic.");
-return;
-}
+const count=document
+.getElementById("quizCount")
+.value;
 
-showOutput(output,"Creating your quiz...",true);
+const difficulty=document
+.getElementById("quizDifficulty")
+.value;
+
+const area=document.getElementById("quizArea");
+
+if(!topic)return;
+
+area.innerHTML="Creating your quiz...";
+area.classList.add("visible");
 
 try{
 
 const answer=await askAI(`
-Create ${count} multiple-choice questions about ${topic}.
+Create exactly ${count} multiple choice questions about ${topic}.
 
 Difficulty: ${difficulty}.
 
-For each question provide:
-- Question
-- Four answer choices
-- Correct answer
+Return ONLY JSON in this format:
 
-Make it clear and educational.
+[
+{
+"question":"Question",
+"options":["A","B","C","D"],
+"answer":0
+}
+]
+
+The answer value must be the number of the correct option starting from 0.
 `);
 
-showOutput(output,answer);
+const cleaned=answer
+.replace(/```json/g,"")
+.replace(/```/g,"")
+.trim();
 
-const progress=getProgress();
-progress.quizCount++;
-saveProgress(progress);
+const questions=JSON.parse(cleaned);
 
-}catch(error){
-showOutput(output,"Quiz generation failed: "+error.message);
+let current=0;
+
+function renderQuiz(){
+
+const q=questions[current];
+
+area.innerHTML="";
+
+const box=document.createElement("div");
+box.className="quiz-question";
+
+const number=document.createElement("div");
+number.className="quiz-number";
+number.textContent=`Question ${current+1} of ${questions.length}`;
+
+const question=document.createElement("div");
+question.className="quiz-text";
+question.textContent=q.question;
+
+box.append(number,question);
+
+q.options.forEach((option,index)=>{
+
+const button=document.createElement("button");
+button.className="answer";
+button.textContent=option;
+
+button.onclick=()=>{
+
+if(index===q.answer){
+button.classList.add("correct");
+}else{
+button.classList.add("wrong");
 }
 
+};
+
+box.appendChild(button);
+
 });
+
+area.appendChild(box);
+
+}
+
+renderQuiz();
+
+}catch(error){
+
+area.textContent="Couldn't create the quiz. Please try again.";
+
+}
+
+};
 
 
 /* FLASHCARDS */
 
-document.getElementById("flashButton").addEventListener("click",async()=>{
+let flashcards=[];
+let flashIndex=0;
+let flashShowingAnswer=false;
 
-const topic=document.getElementById("flashTopic").value.trim();
-const count=document.getElementById("flashCount").value;
-const output=document.getElementById("flashOutput");
+function renderFlashcard(){
 
-if(!topic){
-showOutput(output,"Please enter a topic.");
-return;
+if(!flashcards.length)return;
+
+const card=flashcards[flashIndex];
+
+document.getElementById("flashLabel").textContent=
+flashShowingAnswer?"ANSWER":"QUESTION";
+
+document.getElementById("flashText").textContent=
+flashShowingAnswer?card.answer:card.question;
+
 }
 
-showOutput(output,"Creating your flashcards...",true);
+document.getElementById("flashcard").onclick=()=>{
+
+flashShowingAnswer=!flashShowingAnswer;
+
+renderFlashcard();
+
+};
+
+document.getElementById("previousCard").onclick=()=>{
+
+flashIndex=
+(flashIndex-1+flashcards.length)%flashcards.length;
+
+flashShowingAnswer=false;
+
+renderFlashcard();
+
+};
+
+document.getElementById("nextCard").onclick=()=>{
+
+flashIndex=
+(flashIndex+1)%flashcards.length;
+
+flashShowingAnswer=false;
+
+renderFlashcard();
+
+};
+
+
+document.getElementById("flashButton").onclick=async()=>{
+
+const topic=document
+.getElementById("flashTopic")
+.value.trim();
+
+const count=document
+.getElementById("flashCount")
+.value;
+
+if(!topic)return;
+
+const area=document.getElementById("flashArea");
+
+area.classList.add("visible");
+
+document.getElementById("flashText").textContent="Creating...";
 
 try{
 
 const answer=await askAI(`
-Create ${count} study flashcards about ${topic}.
+Create exactly ${count} flashcards about ${topic}.
 
-For each card provide:
-FRONT: question or key term
-BACK: clear and accurate answer.
+Return ONLY JSON in this format:
+
+[
+{
+"question":"Question or term",
+"answer":"Clear answer"
+}
+]
 `);
 
-showOutput(output,answer);
+const cleaned=answer
+.replace(/```json/g,"")
+.replace(/```/g,"")
+.trim();
 
-const progress=getProgress();
-progress.flashcards+=Number(count);
-saveProgress(progress);
+flashcards=JSON.parse(cleaned);
+
+flashIndex=0;
+flashShowingAnswer=false;
+
+renderFlashcard();
 
 }catch(error){
-showOutput(output,"Flashcard generation failed: "+error.message);
+
+document.getElementById("flashText").textContent=
+"Couldn't create the flashcards. Please try again.";
+
 }
 
-});
+};
 
 
 /* PLANNER */
 
-document.getElementById("plannerButton").addEventListener("click",async()=>{
+document.getElementById("plannerButton").onclick=async()=>{
 
-const topics=document.getElementById("plannerTopics").value.trim();
-const days=document.getElementById("plannerDays").value;
-const time=document.getElementById("plannerTime").value;
-const output=document.getElementById("plannerOutput");
+const topics=document
+.getElementById("plannerTopics")
+.value.trim();
 
-if(!topics){
-showOutput(output,"Please enter your subjects or topics.");
-return;
-}
+const days=document
+.getElementById("plannerDays")
+.value;
 
-showOutput(output,"Creating your study plan...",true);
+const time=document
+.getElementById("plannerTime")
+.value;
+
+const output=document.getElementById("plannerResponse");
+
+if(!topics)return;
+
+output.textContent="Creating your study plan...";
+output.classList.add("visible");
 
 try{
 
 const answer=await askAI(`
-Create a ${days}-day study plan.
+Create a ${days}-day study plan for:
 
-Subjects:
 ${topics}
 
-Study time:
-${time} minutes per day.
+The student has ${time} minutes available each day.
 
-Make it realistic and balanced.
-Clearly label each day.
+Keep it simple and practical.
+Clearly separate each day.
 `);
 
-showOutput(output,answer);
+showResponse(output,answer);
 
 }catch(error){
-showOutput(output,"Study plan failed: "+error.message);
+
+showResponse(
+output,
+"Couldn't create the study plan. Please try again."
+);
+
 }
 
-});
+};
 
 
 /* NOTES */
 
 function getNotes(){
-try{
-return JSON.parse(localStorage.getItem("studyNotes")||"[]");
-}catch{
-return [];
-}
+
+return JSON.parse(
+localStorage.getItem("studyNotes")||"[]"
+);
+
 }
 
 function saveNotes(notes){
-localStorage.setItem("studyNotes",JSON.stringify(notes));
+
+localStorage.setItem(
+"studyNotes",
+JSON.stringify(notes)
+);
+
 }
 
-document.getElementById("saveNoteButton").addEventListener("click",()=>{
+function renderNotes(){
+
+const list=document.getElementById("notesList");
+
+const search=document
+.getElementById("noteSearch")
+.value
+.toLowerCase();
+
+list.innerHTML="";
+
+getNotes()
+.filter(n=>
+n.title.toLowerCase().includes(search)||
+n.subject.toLowerCase().includes(search)||
+n.text.toLowerCase().includes(search)
+)
+.forEach(note=>{
+
+const box=document.createElement("div");
+box.className="note";
+
+const title=document.createElement("h3");
+title.textContent=note.title;
+
+const subject=document.createElement("small");
+subject.textContent=note.subject;
+
+const text=document.createElement("p");
+text.textContent=note.text;
+
+const deleteButton=document.createElement("button");
+deleteButton.className="delete";
+deleteButton.textContent="Delete";
+
+deleteButton.onclick=()=>{
+
+saveNotes(
+getNotes().filter(n=>n.id!==note.id)
+);
+
+renderNotes();
+
+};
+
+box.append(title,subject,text,deleteButton);
+
+list.appendChild(box);
+
+});
+
+}
+
+document.getElementById("saveNote").onclick=()=>{
 
 const title=document.getElementById("noteTitle").value.trim();
 const subject=document.getElementById("noteSubject").value.trim();
 const text=document.getElementById("noteText").value.trim();
 
-if(!title||!text){
-alert("Please enter a title and your notes.");
-return;
-}
+if(!title||!text)return;
 
 const notes=getNotes();
 
@@ -491,141 +1135,77 @@ document.getElementById("noteText").value="";
 
 renderNotes();
 
-});
+};
 
-document.getElementById("noteSearch").addEventListener("input",renderNotes);
-
-function renderNotes(){
-
-const output=document.getElementById("notesOutput");
-const search=document.getElementById("noteSearch").value.toLowerCase();
-
-output.innerHTML="";
-
-const notes=getNotes().filter(note=>
-note.title.toLowerCase().includes(search)||
-note.subject.toLowerCase().includes(search)||
-note.text.toLowerCase().includes(search)
-);
-
-if(!notes.length){
-output.innerHTML='<div class="output show">No notes found.</div>';
-return;
-}
-
-notes.forEach(note=>{
-
-const box=document.createElement("div");
-box.className="note";
-
-const title=document.createElement("h3");
-title.textContent=note.title;
-
-const subject=document.createElement("small");
-subject.textContent=note.subject;
-
-const text=document.createElement("p");
-text.textContent=note.text;
-
-const button=document.createElement("button");
-button.className="delete";
-button.textContent="Delete";
-
-button.addEventListener("click",()=>{
-saveNotes(getNotes().filter(n=>n.id!==note.id));
-renderNotes();
-});
-
-box.append(title,subject,text,button);
-output.appendChild(box);
-
-});
-
-}
+document.getElementById("noteSearch").oninput=renderNotes;
 
 
 /* PROGRESS */
 
 function getProgress(){
 
-try{
 return JSON.parse(
 localStorage.getItem("studyProgress")||
-'{"minutes":0,"quizCount":0,"flashcards":0}'
+'{"minutes":0,"quizzes":0,"cards":0}'
 );
-}catch{
-return {minutes:0,quizCount:0,flashcards:0};
-}
 
 }
 
-function saveProgress(progress){
-localStorage.setItem("studyProgress",JSON.stringify(progress));
+function saveProgress(data){
+
+localStorage.setItem(
+"studyProgress",
+JSON.stringify(data)
+);
+
 }
 
 function updateProgress(){
 
-const progress=getProgress();
+const data=getProgress();
 
-document.getElementById("studyMinutes").textContent=progress.minutes;
-document.getElementById("flashcardsDone").textContent=progress.flashcards;
+document.getElementById("minutes").textContent=data.minutes;
+document.getElementById("quizzes").textContent=data.quizzes;
+document.getElementById("cards").textContent=data.cards;
 
-const quizAverage=progress.quizCount>0?100:0;
-
-document.getElementById("quizAverage").textContent=quizAverage+"%";
-
-const overall=Math.min(
+const progress=Math.min(
 100,
 Math.round(
 (
-Math.min(progress.minutes/300*100,100)+
-quizAverage+
-Math.min(progress.flashcards/50*100,100)
+Math.min(data.minutes/300*100,100)+
+Math.min(data.quizzes/10*100,100)+
+Math.min(data.cards/50*100,100)
 )/3
 )
 );
 
-document.getElementById("overallProgress").textContent=overall+"%";
-document.getElementById("progressFill").style.width=overall+"%";
+document.getElementById("overall").textContent=
+progress+"%";
 
-document.getElementById("progressMessage").textContent=
-overall===0
-?"Start studying to build your progress!"
-:overall<50
-?"Good start. Keep going! 💪"
-:overall<80
-?"You're making great progress! 🔥"
-:"Excellent work! 🏆";
+document.getElementById("progressFill").style.width=
+progress+"%";
 
 }
 
-document.getElementById("addMinutesButton").addEventListener("click",()=>{
+document.getElementById("addTime").onclick=()=>{
 
-const input=document.getElementById("minutesInput");
+const input=document.getElementById("studyTime");
+
 const minutes=Number(input.value);
 
-if(!minutes||minutes<1){
-alert("Enter the number of minutes studied.");
-return;
-}
+if(!minutes||minutes<1)return;
 
-const progress=getProgress();
-progress.minutes+=minutes;
+const data=getProgress();
 
-saveProgress(progress);
+data.minutes+=minutes;
+
+saveProgress(data);
+
 input.value="";
+
 updateProgress();
 
-});
-
-document.getElementById("resetProgressButton").addEventListener("click",()=>{
-
-if(confirm("Reset all your progress?")){
-localStorage.removeItem("studyProgress");
-updateProgress();
-}
-
-});
+};
 
 updateProgress();
 renderNotes();
