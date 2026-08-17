@@ -480,7 +480,6 @@ output.textContent="Couldn't create the study plan. Please try again.";
 function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
 function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
 
-
 function renderNotes(){
 const list=document.getElementById("notesList");
 const search=document.getElementById("search").value.toLowerCase();
@@ -515,7 +514,8 @@ renderNotes();
 box.append(title,subject,text,del);
 list.appendChild(box);
 });
-  }
+}
+
 document.getElementById("saveNote").onclick=function(){
 const title=document.getElementById("noteTitle").value.trim();
 const subject=document.getElementById("noteSubject").value.trim();
