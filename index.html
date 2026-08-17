@@ -503,6 +503,38 @@ subject.textContent=note.subject;
 const text=document.createElement("p");
 text.textContent=note.text;
 
+const edit=document.createElement("button");
+edit.className="edit";
+edit.textContent="Edit";
+edit.onclick=function(){
+
+const newTitle=prompt("Edit title:",note.title);
+if(newTitle===null)return;
+
+const newSubject=prompt("Edit subject:",note.subject);
+if(newSubject===null)return;
+
+const newText=prompt("Edit note:",note.text);
+if(newText===null)return;
+
+const notes=getNotes();
+
+const updated=notes.map(function(n){
+if(n.id===note.id){
+return {
+id:n.id,
+title:newTitle,
+subject:newSubject,
+text:newText
+};
+}
+return n;
+});
+
+saveNotes(updated);
+renderNotes();
+};
+
 const del=document.createElement("button");
 del.className="delete";
 del.textContent="Delete";
@@ -511,11 +543,10 @@ saveNotes(getNotes().filter(function(n){return n.id!==note.id}));
 renderNotes();
 };
 
-box.append(title,subject,text,del);
+box.append(title,subject,text,edit,del);
 list.appendChild(box);
 });
-}
-
+  }
 document.getElementById("saveNote").onclick=function(){
 const title=document.getElementById("noteTitle").value.trim();
 const subject=document.getElementById("noteSubject").value.trim();
