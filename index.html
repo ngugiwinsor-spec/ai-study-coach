@@ -6,9 +6,7 @@
 <title>AI Study Coach</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -23,8 +21,7 @@ header{
   padding:25px 18px;
 }
 
-.header,
-.container{
+.header,.container{
   max-width:920px;
   margin:auto;
 }
@@ -112,9 +109,7 @@ label{
   margin:15px 0 7px;
 }
 
-input,
-textarea,
-select{
+input,textarea,select{
   width:100%;
   padding:12px;
   border:1px solid #dce2ea;
@@ -449,15 +444,10 @@ button{
   background:#172033;
 }
 
-
 @media(max-width:600px){
+  .card{padding:18px}
 
-  .card{
-    padding:18px;
-  }
-
-  .grid,
-  .stats{
+  .grid,.stats{
     grid-template-columns:1fr;
   }
 }
@@ -476,12 +466,12 @@ button{
 <div class="container">
 
   <div class="tabs">
-    <button class="tab active" data-tab="tutor">AI Tutor</button>
-    <button class="tab" data-tab="quiz">Quiz</button>
-    <button class="tab" data-tab="flashcards">Flashcards</button>
-    <button class="tab" data-tab="planner">Planner</button>
-    <button class="tab" data-tab="notes">Notes</button>
-    <button class="tab" data-tab="progress">Progress</button>
+    <button type="button" class="tab active" data-tab="tutor">AI Tutor</button>
+    <button type="button" class="tab" data-tab="quiz">Quiz</button>
+    <button type="button" class="tab" data-tab="flashcards">Flashcards</button>
+    <button type="button" class="tab" data-tab="planner">Planner</button>
+    <button type="button" class="tab" data-tab="notes">Notes</button>
+    <button type="button" class="tab" data-tab="progress">Progress</button>
   </div>
 
 
@@ -505,7 +495,7 @@ button{
         placeholder="Example: Explain classical conditioning in simple terms."
       ></textarea>
 
-      <button class="main-btn" id="ask">
+      <button type="button" class="main-btn" id="ask">
         Ask AI Tutor
       </button>
 
@@ -558,7 +548,7 @@ button{
 
       </div>
 
-      <button class="main-btn" id="makeQuiz">
+      <button type="button" class="main-btn" id="makeQuiz">
         Generate Quiz
       </button>
 
@@ -595,7 +585,7 @@ button{
         <option value="10">10</option>
       </select>
 
-      <button class="main-btn" id="makeFlash">
+      <button type="button" class="main-btn" id="makeFlash">
         Create Flashcards
       </button>
 
@@ -615,11 +605,11 @@ button{
 
         <div class="flash-buttons">
 
-          <button id="previous">
+          <button type="button" id="previous">
             Previous
           </button>
 
-          <button id="next">
+          <button type="button" id="next">
             Next
           </button>
 
@@ -658,19 +648,9 @@ button{
           <label>Days</label>
 
           <select id="days">
-
-            <option value="3">
-              3 days
-            </option>
-
-            <option value="5">
-              5 days
-            </option>
-
-            <option value="7" selected>
-              7 days
-            </option>
-
+            <option value="3">3 days</option>
+            <option value="5">5 days</option>
+            <option value="7" selected>7 days</option>
           </select>
 
         </div>
@@ -680,30 +660,17 @@ button{
           <label>Daily time</label>
 
           <select id="time">
-
-            <option value="30">
-              30 minutes
-            </option>
-
-            <option value="60" selected>
-              1 hour
-            </option>
-
-            <option value="90">
-              1.5 hours
-            </option>
-
-            <option value="120">
-              2 hours
-            </option>
-
+            <option value="30">30 minutes</option>
+            <option value="60" selected>1 hour</option>
+            <option value="90">1.5 hours</option>
+            <option value="120">2 hours</option>
           </select>
 
         </div>
 
       </div>
 
-      <button class="main-btn" id="makePlan">
+      <button type="button" class="main-btn" id="makePlan">
         Create Plan
       </button>
 
@@ -749,7 +716,7 @@ button{
         placeholder="Write your notes here..."
       ></textarea>
 
-      <button class="main-btn" id="saveNote">
+      <button type="button" class="main-btn" id="saveNote">
         Save Note
       </button>
 
@@ -783,57 +750,28 @@ button{
       <div class="stats">
 
         <div class="stat">
-
           <div>⏱️</div>
-
-          <div id="minutes" class="stat-number">
-            0
-          </div>
-
-          <div class="stat-label">
-            Minutes studied
-          </div>
-
+          <div id="minutes" class="stat-number">0</div>
+          <div class="stat-label">Minutes studied</div>
         </div>
 
-
         <div class="stat">
-
           <div>📝</div>
-
-          <div id="quizTotal" class="stat-number">
-            0
-          </div>
-
-          <div class="stat-label">
-            Quizzes completed
-          </div>
-
+          <div id="quizTotal" class="stat-number">0</div>
+          <div class="stat-label">Quizzes completed</div>
         </div>
-
 
         <div class="stat">
-
           <div>🧠</div>
-
-          <div id="cardTotal" class="stat-number">
-            0
-          </div>
-
-          <div class="stat-label">
-            Flashcards reviewed
-          </div>
-
+          <div id="cardTotal" class="stat-number">0</div>
+          <div class="stat-label">Flashcards reviewed</div>
         </div>
-
 
         <div class="stat">
 
           <div>📈</div>
 
-          <div id="overall" class="stat-number">
-            0%
-          </div>
+          <div id="overall" class="stat-number">0%</div>
 
           <div class="stat-label">
             Overall progress
@@ -847,9 +785,7 @@ button{
 
       </div>
 
-      <label>
-        Add study time
-      </label>
+      <label>Add study time</label>
 
       <input
         id="studyMinutes"
@@ -858,7 +794,7 @@ button{
         placeholder="Minutes"
       >
 
-      <button class="main-btn" id="addMinutes">
+      <button type="button" class="main-btn" id="addMinutes">
         Add Study Time
       </button>
 
@@ -869,345 +805,317 @@ button{
 
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function(){
 
+  /* ------------------------------
+     HELPERS
+  ------------------------------ */
 
-/* CLEAN AI RESPONSE */
-
-function clean(text){
-
-  return String(text)
-    .replace(/#{1,6}\s*/g,"")
-    .replace(/\*\*\*/g,"")
-    .replace(/\*\*/g,"")
-    .replace(/\*/g,"")
-    .replace(/```[a-zA-Z]*/g,"")
-    .replace(/```/g,"")
-    .trim();
-
-}
-
-
-/* TABS */
-
-document.querySelectorAll(".tab").forEach(function(tab){
-
-  tab.addEventListener("click",function(){
-
-    document.querySelectorAll(".tab").forEach(function(t){
-      t.classList.remove("active");
-    });
-
-    document.querySelectorAll(".panel").forEach(function(panel){
-      panel.classList.remove("active");
-    });
-
-    tab.classList.add("active");
-
-    const selectedPanel =
-      document.getElementById(tab.dataset.tab);
-
-    if(selectedPanel){
-      selectedPanel.classList.add("active");
-    }
-
-    if(tab.dataset.tab === "progress"){
-      updateProgress();
-    }
-
-    if(tab.dataset.tab === "notes"){
-      renderNotes();
-    }
-
-  });
-
-});
-
-
-/* AI CONNECTION */
-
-async function askAI(message){
-
-  const response = await fetch("/api/chat",{
-    method:"POST",
-
-    headers:{
-      "Content-Type":"application/json"
-    },
-
-    body:JSON.stringify({
-      message:message
-    })
-  });
-
-  const data = await response.json();
-
-  if(!response.ok){
-    throw new Error("AI request failed");
+  function clean(text){
+    return String(text || "")
+      .replace(/#{1,6}\s*/g,"")
+      .replace(/\*\*\*/g,"")
+      .replace(/\*\*/g,"")
+      .replace(/\*/g,"")
+      .replace(/```[a-zA-Z]*/g,"")
+      .replace(/```/g,"")
+      .trim();
   }
 
-  return data.answer;
 
-}
+  /* ------------------------------
+     TABS
+  ------------------------------ */
 
+  const tabs = document.querySelectorAll(".tab");
+  const panels = document.querySelectorAll(".panel");
 
-/* AI TUTOR */
+  tabs.forEach(function(tab){
 
-document.getElementById("ask").onclick = async function(){
+    tab.addEventListener("click", function(event){
 
-  const question =
-    document.getElementById("question").value.trim();
+      event.preventDefault();
 
-  const output =
-    document.getElementById("answer");
+      const target = tab.getAttribute("data-tab");
 
-  if(!question){
-
-    output.textContent =
-      "Please enter a question.";
-
-    output.classList.add("show");
-
-    return;
-  }
-
-  output.textContent = "Thinking...";
-
-  output.classList.add("show");
-
-  try{
-
-    const result = await askAI(question);
-
-    output.innerHTML = "";
-
-    clean(result)
-      .split(/\n\s*\n/)
-      .filter(Boolean)
-      .forEach(function(part){
-
-        const p = document.createElement("p");
-
-        p.textContent = part.trim();
-
-        output.appendChild(p);
-
+      tabs.forEach(function(item){
+        item.classList.remove("active");
       });
 
-  }catch(error){
+      panels.forEach(function(panel){
+        panel.classList.remove("active");
+      });
 
-    output.textContent =
-      "Unable to connect to the AI right now.";
+      tab.classList.add("active");
 
+      const panel = document.getElementById(target);
+
+      if(panel){
+        panel.classList.add("active");
+      }
+
+      if(target === "notes"){
+        renderNotes();
+      }
+
+      if(target === "progress"){
+        updateProgress();
+      }
+
+    });
+
+  });
+
+
+  /* ------------------------------
+     AI CONNECTION
+  ------------------------------ */
+
+  async function askAI(message){
+
+    const response = await fetch("/api/chat", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        message:message
+      })
+    });
+
+    if(!response.ok){
+      throw new Error("AI request failed");
+    }
+
+    const data = await response.json();
+
+    if(!data.answer){
+      throw new Error("No AI answer received");
+    }
+
+    return data.answer;
   }
 
-};
+
+  /* ------------------------------
+     AI TUTOR
+  ------------------------------ */
+
+  document.getElementById("ask").addEventListener("click", async function(){
+
+    const question =
+      document.getElementById("question").value.trim();
+
+    const output =
+      document.getElementById("answer");
+
+    if(!question){
+
+      output.textContent =
+        "Please enter a question.";
+
+      output.classList.add("show");
+
+      return;
+    }
+
+    output.textContent = "Thinking...";
+    output.classList.add("show");
+
+    try{
+
+      const result = await askAI(question);
+
+      output.innerHTML = "";
+
+      clean(result)
+        .split(/\n\s*\n/)
+        .filter(Boolean)
+        .forEach(function(part){
+
+          const p = document.createElement("p");
+          p.textContent = part.trim();
+
+          output.appendChild(p);
+
+        });
+
+    }catch(error){
+
+      output.textContent =
+        "Unable to connect to the AI right now.";
+
+    }
+
+  });
 
 
-/* QUIZ */
+  /* ------------------------------
+     QUIZ
+  ------------------------------ */
 
-let questions = [];
-let current = 0;
-let score = 0;
+  let questions = [];
+  let current = 0;
+  let score = 0;
 
 
-document.getElementById("makeQuiz").onclick = async function(){
+  document.getElementById("makeQuiz").addEventListener("click", async function(){
 
-  const topic =
-    document.getElementById("quizTopic").value.trim();
+    const topic =
+      document.getElementById("quizTopic").value.trim();
 
-  const count =
-    document.getElementById("quizCount").value;
+    const count =
+      document.getElementById("quizCount").value;
 
-  const difficulty =
-    document.getElementById("difficulty").value;
+    const difficulty =
+      document.getElementById("difficulty").value;
 
-  const area =
-    document.getElementById("quizArea");
+    const area =
+      document.getElementById("quizArea");
 
-  if(!topic){
+    if(!topic){
+
+      area.textContent =
+        "Please enter a topic.";
+
+      area.classList.add("show");
+
+      return;
+    }
 
     area.textContent =
-      "Please enter a topic.";
+      "Creating your quiz...";
 
     area.classList.add("show");
 
-    return;
-  }
+    try{
 
-  area.textContent =
-    "Creating your quiz...";
+      const result = await askAI(
+        "Create exactly " + count +
+        " multiple choice questions about " + topic +
+        ". Difficulty: " + difficulty +
+        ". Return ONLY valid JSON in this exact format: " +
+        '[{"question":"Question","options":["A","B","C","D"],"answer":0}]'
+      );
 
-  area.classList.add("show");
+      const cleaned =
+        result
+          .replace(/```json/gi,"")
+          .replace(/```/g,"")
+          .trim();
 
-  try{
+      questions = JSON.parse(cleaned);
 
-    const result = await askAI(
+      if(!Array.isArray(questions) || !questions.length){
+        throw new Error("Invalid quiz");
+      }
 
-      "Create exactly " + count +
-      " multiple choice questions about " + topic +
-      ". Difficulty: " + difficulty +
-      ". Return ONLY valid JSON in this exact format: " +
-      '[{"question":"Question","options":["A","B","C","D"],"answer":0}]'
+      current = 0;
+      score = 0;
 
-    );
+      showQuestion();
 
-    const cleaned =
-      result
-        .replace(/```json/g,"")
-        .replace(/```/g,"")
-        .trim();
+    }catch(error){
 
-    questions = JSON.parse(cleaned);
+      area.textContent =
+        "Couldn't create the quiz. Please try again.";
 
-    current = 0;
-    score = 0;
+    }
 
-    showQuestion();
-
-  }catch(error){
-
-    area.textContent =
-      "Couldn't create the quiz. Please try again.";
-
-  }
-
-};
+  });
 
 
-function showQuestion(){
+  function showQuestion(){
 
-  const area =
-    document.getElementById("quizArea");
+    const area =
+      document.getElementById("quizArea");
 
+    if(current >= questions.length){
 
-  if(current >= questions.length){
+      const percent =
+        Math.round((score / questions.length) * 100);
 
-    const percent =
-      questions.length
-      ? Math.round((score / questions.length) * 100)
-      : 0;
+      area.innerHTML =
+        '<div class="result">' +
+          '<h2>Quiz Complete</h2>' +
+          '<div class="score">' + percent + '%</div>' +
+          '<p>You scored ' + score +
+          ' out of ' + questions.length + '.</p>' +
+          '<button type="button" class="main-btn" id="retry">' +
+          'Try Again' +
+          '</button>' +
+        '</div>';
 
-    area.innerHTML =
-      '<div class="result">' +
+      const data = getProgress();
+      data.quizTotal++;
+      saveProgress(data);
 
-      '<h2>Quiz Complete</h2>' +
-
-      '<div class="score">' +
-      percent +
-      '%</div>' +
-
-      '<p>You scored ' +
-      score +
-      ' out of ' +
-      questions.length +
-      '.</p>' +
-
-      '<button class="main-btn" id="retry">' +
-      'Try Again' +
-      '</button>' +
-
-      '</div>';
-
-
-    const data = getProgress();
-
-    data.quizTotal++;
-
-    saveProgress(data);
-
-
-    document.getElementById("retry").onclick =
-      function(){
-
+      document.getElementById("retry").addEventListener("click", function(){
         current = 0;
         score = 0;
-
         showQuestion();
+      });
 
-      };
+      return;
+    }
 
-    return;
+    const q = questions[current];
 
-  }
+    area.innerHTML = "";
 
+    const box =
+      document.createElement("div");
 
-  const q = questions[current];
+    box.className = "question-box";
 
-  area.innerHTML = "";
+    const counter =
+      document.createElement("div");
 
+    counter.className = "counter";
 
-  const box =
-    document.createElement("div");
+    counter.textContent =
+      "Question " +
+      (current + 1) +
+      " of " +
+      questions.length;
 
-  box.className =
-    "question-box";
+    const question =
+      document.createElement("div");
 
+    question.className = "question";
+    question.textContent = q.question;
 
-  const counter =
-    document.createElement("div");
+    const feedback =
+      document.createElement("div");
 
-  counter.className =
-    "counter";
+    feedback.className = "feedback";
 
-  counter.textContent =
-    "Question " +
-    (current + 1) +
-    " of " +
-    questions.length;
-
-
-  const question =
-    document.createElement("div");
-
-  question.className =
-    "question";
-
-  question.textContent =
-    q.question;
-
-
-  const feedback =
-    document.createElement("div");
-
-  feedback.className =
-    "feedback";
-
-
-  const next =
-    document.createElement("button");
-
-  next.className =
-    "next";
-
-  next.textContent =
-    current === questions.length - 1
-    ? "Finish Quiz"
-    : "Next Question";
-
-
-  q.options.forEach(function(option,index){
-
-    const button =
+    const next =
       document.createElement("button");
 
-    button.className =
-      "answer";
+    next.type = "button";
+    next.className = "next";
 
-    button.textContent =
-      option;
+    next.textContent =
+      current === questions.length - 1
+      ? "Finish Quiz"
+      : "Next Question";
 
+    q.options.forEach(function(option,index){
 
-    button.onclick =
-      function(){
+      const button =
+        document.createElement("button");
 
-        document
-          .querySelectorAll(".answer")
-          .forEach(function(button){
-            button.disabled = true;
+      button.type = "button";
+      button.className = "answer";
+      button.textContent = option;
+
+      button.addEventListener("click", function(){
+
+        box.querySelectorAll(".answer")
+          .forEach(function(item){
+            item.disabled = true;
           });
-
 
         if(index === Number(q.answer)){
 
@@ -1224,11 +1132,10 @@ function showQuestion(){
 
           feedback.textContent =
             "Not quite. Correct answer: " +
-            q.options[q.answer];
+            q.options[Number(q.answer)];
 
           const correctButton =
-            document.querySelectorAll(".answer")
-            [Number(q.answer)];
+            box.querySelectorAll(".answer")[Number(q.answer)];
 
           if(correctButton){
             correctButton.classList.add("correct");
@@ -1238,82 +1145,27 @@ function showQuestion(){
 
         next.classList.add("show");
 
-      };
+      });
 
+      box.appendChild(button);
 
-    box.appendChild(button);
+    });
 
-  });
-
-
-  next.onclick =
-    function(){
+    next.addEventListener("click", function(){
 
       current++;
-
       showQuestion();
 
-    };
+    });
+
+    box.prepend(counter,question);
+
+    area.appendChild(box);
+    area.appendChild(feedback);
+    area.appendChild(next);
+  }
 
 
-  box.prepend(
-    counter,
-    question
-  );
-
-  area.append(
-    box,
-    feedback,
-    next
-  );
-
-}
-
-
-/* FLASHCARDS */
-
-let flashcards = [];
-let flashIndex = 0;
-let showingAnswer = false;
-
-
-document.getElementById("makeFlash").onclick =
-  async function(){
-
-    const topic =
-      document.getElementById("flashTopic")
-      .value
-      .trim();
-
-    const count =
-      document.getElementById("flashCount")
-      .value;
-
-    if(!topic){
-      return;
-    }
-
-
-    document
-      .getElementById("flashArea")
-      .classList
-      .add("show");
-
-
-    document
-      .getElementById("flashText")
-      .textContent =
-      "Creating...";
-
-
-    try{
-
-      const result =
-        await askAI(
-
-          "Create exactly " +
-          count +
-          " flashcards about " +
-          topic +
-          ". Return ONLY valid JSON in this exact format: " +
-          '[{"question":"Question","answer":"Answer
+  /* ------------------------------
+     FLASHCARDS
+  ---------------------------
