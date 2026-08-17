@@ -4,578 +4,1316 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Study Coach</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#18212f}
-header{background:#172033;color:white;padding:25px 18px}
-.header,.container{max-width:920px;margin:auto}
-h1{margin:0;font-size:26px}
-.header p{margin:7px 0 0;color:#b9c3d1;font-size:14px}
-.container{padding:18px 14px 50px}
-.tabs{display:flex;gap:7px;overflow-x:auto;margin-bottom:18px}
-.tabs::-webkit-scrollbar{display:none}
-.tab{border:1px solid #e1e6ee;background:white;color:#536174;padding:10px 14px;border-radius:10px;white-space:nowrap;font-weight:bold}
-.tab.active{background:#172033;color:white}
-.panel{display:none}.panel.active{display:block}
-.card{background:white;border:1px solid #e6eaf0;border-radius:17px;padding:22px;box-shadow:0 3px 15px rgba(15,23,42,.04)}
-.icon{font-size:26px;margin-bottom:8px}
-h2{margin:0 0 6px;font-size:21px}
-.subtitle{color:#697586;font-size:14px;line-height:1.5;margin:0 0 22px}
-label{display:block;font-size:13px;font-weight:bold;margin:15px 0 7px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #dce2ea;border-radius:11px;font:inherit;background:white}
-textarea{min-height:120px;resize:vertical}
-button{font:inherit;cursor:pointer}
-.main-btn{width:100%;border:0;border-radius:11px;background:#172033;color:white;padding:13px;margin-top:17px;font-weight:bold}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.response{display:none;margin-top:20px;background:#f8fafc;border:1px solid #e5eaf0;border-radius:13px;padding:18px;line-height:1.7;font-size:14px}
-.response.show{display:block}
-.response p{margin:0 0 12px}
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#18212f;
+}
+
+header{
+  background:#172033;
+  color:white;
+  padding:25px 18px;
+}
+
+.header,
+.container{
+  max-width:920px;
+  margin:auto;
+}
+
+h1{
+  margin:0;
+  font-size:26px;
+}
+
+.header p{
+  margin:7px 0 0;
+  color:#b9c3d1;
+  font-size:14px;
+}
+
+.container{
+  padding:18px 14px 50px;
+}
+
+.tabs{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  margin-bottom:18px;
+  padding-bottom:2px;
+}
+
+.tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.tab{
+  border:1px solid #e1e6ee;
+  background:white;
+  color:#536174;
+  padding:10px 14px;
+  border-radius:10px;
+  white-space:nowrap;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.tab.active{
+  background:#172033;
+  color:white;
+}
+
+.panel{
+  display:none;
+}
+
+.panel.active{
+  display:block;
+}
+
+.card{
+  background:white;
+  border:1px solid #e6eaf0;
+  border-radius:17px;
+  padding:22px;
+  box-shadow:0 3px 15px rgba(15,23,42,.04);
+}
+
+.icon{
+  font-size:26px;
+  margin-bottom:8px;
+}
+
+h2{
+  margin:0 0 6px;
+  font-size:21px;
+}
+
+.subtitle{
+  color:#697586;
+  font-size:14px;
+  line-height:1.5;
+  margin:0 0 22px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:bold;
+  margin:15px 0 7px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  padding:12px;
+  border:1px solid #dce2ea;
+  border-radius:11px;
+  font:inherit;
+  background:white;
+  outline:none;
+}
+
+textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
+button{
+  font:inherit;
+  cursor:pointer;
+}
+
+.main-btn{
+  width:100%;
+  border:0;
+  border-radius:11px;
+  background:#172033;
+  color:white;
+  padding:13px;
+  margin-top:17px;
+  font-weight:bold;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+
+/* AI */
+
+.response{
+  display:none;
+  margin-top:20px;
+  background:#f8fafc;
+  border:1px solid #e5eaf0;
+  border-radius:13px;
+  padding:18px;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.response.show{
+  display:block;
+}
+
+.response p{
+  margin:0 0 12px;
+}
+
 
 /* QUIZ */
-.quiz{display:none;margin-top:20px}.quiz.show{display:block}
-.question-box{background:#f8fafc;border:1px solid #e3e8ef;border-radius:15px;padding:20px}
-.counter{font-size:12px;font-weight:bold;color:#718096;margin-bottom:10px}
-.question{font-size:18px;font-weight:bold;line-height:1.5;margin-bottom:15px}
-.answer{display:block;width:100%;text-align:left;padding:13px;margin-top:9px;border:1px solid #dce2ea;background:white;border-radius:10px}
-.answer.correct{background:#edf8f0;border-color:#3b8f5a}
-.answer.wrong{background:#fff0f0;border-color:#c95858}
-.answer:disabled{cursor:default}
-.feedback{font-weight:bold;margin-top:14px;font-size:14px}
-.next{display:none;width:100%;border:0;border-radius:11px;background:#172033;color:white;padding:13px;margin-top:15px;font-weight:bold}
-.next.show{display:block}
-.result{text-align:center;background:#f8fafc;border:1px solid #e3e8ef;border-radius:15px;padding:25px}
-.score{font-size:40px;font-weight:bold;margin:10px}
+
+.quiz{
+  display:none;
+  margin-top:20px;
+}
+
+.quiz.show{
+  display:block;
+}
+
+.question-box{
+  background:#f8fafc;
+  border:1px solid #e3e8ef;
+  border-radius:15px;
+  padding:20px;
+}
+
+.counter{
+  font-size:12px;
+  font-weight:bold;
+  color:#718096;
+  margin-bottom:10px;
+}
+
+.question{
+  font-size:18px;
+  font-weight:bold;
+  line-height:1.5;
+  margin-bottom:15px;
+}
+
+.answer{
+  display:block;
+  width:100%;
+  text-align:left;
+  padding:13px;
+  margin-top:9px;
+  border:1px solid #dce2ea;
+  background:white;
+  border-radius:10px;
+}
+
+.answer.correct{
+  background:#edf8f0;
+  border-color:#3b8f5a;
+}
+
+.answer.wrong{
+  background:#fff0f0;
+  border-color:#c95858;
+}
+
+.answer:disabled{
+  cursor:default;
+}
+
+.feedback{
+  font-weight:bold;
+  margin-top:14px;
+  font-size:14px;
+}
+
+.next{
+  display:none;
+  width:100%;
+  border:0;
+  border-radius:11px;
+  background:#172033;
+  color:white;
+  padding:13px;
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.next.show{
+  display:block;
+}
+
+.result{
+  text-align:center;
+  background:#f8fafc;
+  border:1px solid #e3e8ef;
+  border-radius:15px;
+  padding:25px;
+}
+
+.score{
+  font-size:40px;
+  font-weight:bold;
+  margin:10px;
+}
+
 
 /* FLASHCARDS */
-.flash-area{display:none;margin-top:20px}.flash-area.show{display:block}
-.flash-counter{text-align:center;font-size:12px;color:#718096;margin-bottom:10px}
-.flashcard{min-height:230px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:#f8fafc;border:1px solid #e1e6ee;border-radius:17px;padding:25px}
-.flash-label{font-size:11px;font-weight:bold;letter-spacing:1px;color:#7a8698;margin-bottom:15px}
-.flash-text{font-size:20px;font-weight:bold;line-height:1.5}
-.flash-buttons{display:flex;gap:10px;margin-top:12px}
-.flash-buttons button{flex:1;padding:11px;border:1px solid #dce2ea;background:white;border-radius:10px;font-weight:bold}
+
+.flash-area{
+  display:none;
+  margin-top:20px;
+}
+
+.flash-area.show{
+  display:block;
+}
+
+.flash-counter{
+  text-align:center;
+  font-size:12px;
+  color:#718096;
+  margin-bottom:10px;
+}
+
+.flashcard{
+  min-height:230px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:#f8fafc;
+  border:1px solid #e1e6ee;
+  border-radius:17px;
+  padding:25px;
+  cursor:pointer;
+}
+
+.flash-label{
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1px;
+  color:#7a8698;
+  margin-bottom:15px;
+}
+
+.flash-text{
+  font-size:20px;
+  font-weight:bold;
+  line-height:1.5;
+}
+
+.flash-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+
+.flash-buttons button{
+  flex:1;
+  padding:11px;
+  border:1px solid #dce2ea;
+  background:white;
+  border-radius:10px;
+  font-weight:bold;
+}
+
 
 /* PLANNER */
-.plan{display:none;margin-top:20px}.plan.show{display:block}
-.plan-day{border:1px solid #e3e8ef;border-radius:14px;overflow:hidden;margin-bottom:12px;background:white}
-.plan-title{background:#f1f4f8;padding:13px 15px;font-weight:bold}
-.plan-body{padding:15px;line-height:1.7;font-size:14px}
+
+.plan{
+  display:none;
+  margin-top:20px;
+}
+
+.plan.show{
+  display:block;
+}
+
+.plan-day{
+  border:1px solid #e3e8ef;
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:12px;
+  background:white;
+}
+
+.plan-title{
+  background:#f1f4f8;
+  padding:13px 15px;
+  font-weight:bold;
+}
+
+.plan-body{
+  padding:15px;
+  line-height:1.7;
+  font-size:14px;
+  white-space:pre-line;
+}
+
 
 /* NOTES */
-.note{border:1px solid #e5e9ef;border-radius:13px;padding:16px;margin-top:12px}
-.note h3{margin:0 0 4px;font-size:16px}.note small{color:#718096}
-.note p{white-space:pre-wrap;line-height:1.6;font-size:14px}
-.delete{background:#dc4444;color:white;border:0;padding:8px 11px;border-radius:8px;font-size:12px}
+
+.notes-list{
+  margin-top:20px;
+}
+
+.note{
+  border:1px solid #e3e8ef;
+  border-radius:14px;
+  padding:16px;
+  margin-top:12px;
+  background:white;
+}
+
+.note h3{
+  margin:0 0 5px;
+  font-size:16px;
+}
+
+.note small{
+  color:#718096;
+}
+
+.note p{
+  white-space:pre-wrap;
+  line-height:1.6;
+  font-size:14px;
+  margin:12px 0;
+}
+
+.delete{
+  background:#dc4444;
+  color:white;
+  border:0;
+  padding:8px 11px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.empty-notes{
+  text-align:center;
+  color:#718096;
+  padding:25px 10px;
+  font-size:14px;
+}
+
 
 /* PROGRESS */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat{padding:18px;background:#f8fafc;border:1px solid #e4e9ef;border-radius:14px}
-.stat-number{font-size:25px;font-weight:bold;margin-top:7px}
-.stat-label{font-size:12px;color:#718096}
-.track{height:8px;background:#e2e7ed;border-radius:20px;margin-top:10px;overflow:hidden}
-.fill{height:100%;width:0;background:#172033}
 
-@media(max-width:600px){.card{padding:18px}.grid,.stats{grid-template-columns:1fr}}
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.stat{
+  padding:18px;
+  background:#f8fafc;
+  border:1px solid #e4e9ef;
+  border-radius:14px;
+}
+
+.stat-number{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:7px;
+}
+
+.stat-label{
+  font-size:12px;
+  color:#718096;
+}
+
+.track{
+  height:8px;
+  background:#e2e7ed;
+  border-radius:20px;
+  margin-top:10px;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  width:0;
+  background:#172033;
+}
+
+
+@media(max-width:600px){
+
+  .card{
+    padding:18px;
+  }
+
+  .grid,
+  .stats{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 
 <body>
+
 <header>
-<div class="header">
-<h1>📚 AI Study Coach</h1>
-<p>Your personal space to learn, revise and stay organized.</p>
-</div>
+  <div class="header">
+    <h1>📚 AI Study Coach</h1>
+    <p>Your personal space to learn, revise and stay organized.</p>
+  </div>
 </header>
 
 <div class="container">
-<div class="tabs">
-<button class="tab active" data-tab="tutor">AI Tutor</button>
-<button class="tab" data-tab="quiz">Quiz</button>
-<button class="tab" data-tab="flashcards">Flashcards</button>
-<button class="tab" data-tab="planner">Planner</button>
-<button class="tab" data-tab="notes">Notes</button>
-<button class="tab" data-tab="progress">Progress</button>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="tutor">AI Tutor</button>
+    <button class="tab" data-tab="quiz">Quiz</button>
+    <button class="tab" data-tab="flashcards">Flashcards</button>
+    <button class="tab" data-tab="planner">Planner</button>
+    <button class="tab" data-tab="notes">Notes</button>
+    <button class="tab" data-tab="progress">Progress</button>
+  </div>
+
+
+  <!-- AI TUTOR -->
+
+  <section id="tutor" class="panel active">
+    <div class="card">
+
+      <div class="icon">🤖</div>
+
+      <h2>AI Tutor</h2>
+
+      <p class="subtitle">
+        Ask a question and get a simple explanation tailored for studying.
+      </p>
+
+      <label>Your question</label>
+
+      <textarea
+        id="question"
+        placeholder="Example: Explain classical conditioning in simple terms."
+      ></textarea>
+
+      <button class="main-btn" id="ask">
+        Ask AI Tutor
+      </button>
+
+      <div id="answer" class="response"></div>
+
+    </div>
+  </section>
+
+
+  <!-- QUIZ -->
+
+  <section id="quiz" class="panel">
+    <div class="card">
+
+      <div class="icon">📝</div>
+
+      <h2>Quiz</h2>
+
+      <p class="subtitle">
+        Generate questions and test what you know.
+      </p>
+
+      <label>Topic</label>
+
+      <input
+        id="quizTopic"
+        placeholder="Example: Photosynthesis"
+      >
+
+      <div class="grid">
+
+        <div>
+          <label>Questions</label>
+
+          <select id="quizCount">
+            <option value="5">5</option>
+            <option value="10">10</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Difficulty</label>
+
+          <select id="difficulty">
+            <option>Easy</option>
+            <option selected>Medium</option>
+            <option>Hard</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button class="main-btn" id="makeQuiz">
+        Generate Quiz
+      </button>
+
+      <div id="quizArea" class="quiz"></div>
+
+    </div>
+  </section>
+
+
+  <!-- FLASHCARDS -->
+
+  <section id="flashcards" class="panel">
+    <div class="card">
+
+      <div class="icon">🧠</div>
+
+      <h2>Flashcards</h2>
+
+      <p class="subtitle">
+        Create interactive cards for quick revision.
+      </p>
+
+      <label>Topic</label>
+
+      <input
+        id="flashTopic"
+        placeholder="Example: Humanistic psychology"
+      >
+
+      <label>Number of cards</label>
+
+      <select id="flashCount">
+        <option value="5">5</option>
+        <option value="10">10</option>
+      </select>
+
+      <button class="main-btn" id="makeFlash">
+        Create Flashcards
+      </button>
+
+      <div id="flashArea" class="flash-area">
+
+        <div id="flashCounter" class="flash-counter"></div>
+
+        <div id="flashcard" class="flashcard">
+
+          <div id="flashLabel" class="flash-label">
+            QUESTION
+          </div>
+
+          <div id="flashText" class="flash-text"></div>
+
+        </div>
+
+        <div class="flash-buttons">
+
+          <button id="previous">
+            Previous
+          </button>
+
+          <button id="next">
+            Next
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- STUDY PLANNER -->
+
+  <section id="planner" class="panel">
+    <div class="card">
+
+      <div class="icon">📅</div>
+
+      <h2>Study Planner</h2>
+
+      <p class="subtitle">
+        Build a simple study schedule around your available time.
+      </p>
+
+      <label>Subjects or topics</label>
+
+      <textarea
+        id="plannerTopics"
+        placeholder="Example: Psychology, Biology, Statistics"
+      ></textarea>
+
+      <div class="grid">
+
+        <div>
+
+          <label>Days</label>
+
+          <select id="days">
+
+            <option value="3">
+              3 days
+            </option>
+
+            <option value="5">
+              5 days
+            </option>
+
+            <option value="7" selected>
+              7 days
+            </option>
+
+          </select>
+
+        </div>
+
+        <div>
+
+          <label>Daily time</label>
+
+          <select id="time">
+
+            <option value="30">
+              30 minutes
+            </option>
+
+            <option value="60" selected>
+              1 hour
+            </option>
+
+            <option value="90">
+              1.5 hours
+            </option>
+
+            <option value="120">
+              2 hours
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <button class="main-btn" id="makePlan">
+        Create Plan
+      </button>
+
+      <div id="plan" class="plan"></div>
+
+    </div>
+  </section>
+
+
+  <!-- NOTES -->
+
+  <section id="notes" class="panel">
+    <div class="card">
+
+      <div class="icon">📖</div>
+
+      <h2>Notes</h2>
+
+      <p class="subtitle">
+        Keep your important study notes organized in one simple place.
+      </p>
+
+      <label>Note title</label>
+
+      <input
+        id="noteTitle"
+        type="text"
+        placeholder="Example: Classical Conditioning"
+      >
+
+      <label>Subject</label>
+
+      <input
+        id="noteSubject"
+        type="text"
+        placeholder="Example: Psychology"
+      >
+
+      <label>Your notes</label>
+
+      <textarea
+        id="noteText"
+        placeholder="Write your notes here..."
+      ></textarea>
+
+      <button class="main-btn" id="saveNote">
+        Save Note
+      </button>
+
+      <label>Search notes</label>
+
+      <input
+        id="searchNotes"
+        type="text"
+        placeholder="Search your notes..."
+      >
+
+      <div id="notesList" class="notes-list"></div>
+
+    </div>
+  </section>
+
+
+  <!-- PROGRESS -->
+
+  <section id="progress" class="panel">
+    <div class="card">
+
+      <div class="icon">📊</div>
+
+      <h2>Progress</h2>
+
+      <p class="subtitle">
+        A simple overview of your study activity.
+      </p>
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <div>⏱️</div>
+
+          <div id="minutes" class="stat-number">
+            0
+          </div>
+
+          <div class="stat-label">
+            Minutes studied
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div>📝</div>
+
+          <div id="quizTotal" class="stat-number">
+            0
+          </div>
+
+          <div class="stat-label">
+            Quizzes completed
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div>🧠</div>
+
+          <div id="cardTotal" class="stat-number">
+            0
+          </div>
+
+          <div class="stat-label">
+            Flashcards reviewed
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div>📈</div>
+
+          <div id="overall" class="stat-number">
+            0%
+          </div>
+
+          <div class="stat-label">
+            Overall progress
+          </div>
+
+          <div class="track">
+            <div id="fill" class="fill"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <label>
+        Add study time
+      </label>
+
+      <input
+        id="studyMinutes"
+        type="number"
+        min="1"
+        placeholder="Minutes"
+      >
+
+      <button class="main-btn" id="addMinutes">
+        Add Study Time
+      </button>
+
+    </div>
+  </section>
+
 </div>
 
-<section id="tutor" class="panel active">
-<div class="card">
-<div class="icon">🤖</div>
-<h2>AI Tutor</h2>
-<p class="subtitle">Ask a question and get a simple explanation tailored for studying.</p>
-<label>Your question</label>
-<textarea id="question" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
-<button class="main-btn" id="ask">Ask AI Tutor</button>
-<div id="answer" class="response"></div>
-</div>
-</section>
-
-<section id="quiz" class="panel">
-<div class="card">
-<div class="icon">📝</div>
-<h2>Quiz</h2>
-<p class="subtitle">Generate questions and test what you know.</p>
-<label>Topic</label>
-<input id="quizTopic" placeholder="Example: Photosynthesis">
-<div class="grid">
-<div><label>Questions</label><select id="quizCount"><option value="5">5</option><option value="10">10</option></select></div>
-<div><label>Difficulty</label><select id="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
-</div>
-<button class="main-btn" id="makeQuiz">Generate Quiz</button>
-<div id="quizArea" class="quiz"></div>
-</div>
-</section>
-
-<section id="flashcards" class="panel">
-<div class="card">
-<div class="icon">🧠</div>
-<h2>Flashcards</h2>
-<p class="subtitle">Create interactive cards for quick revision.</p>
-<label>Topic</label>
-<input id="flashTopic" placeholder="Example: Humanistic psychology">
-<label>Number of cards</label>
-<select id="flashCount"><option value="5">5</option><option value="10">10</option></select>
-<button class="main-btn" id="makeFlash">Create Flashcards</button>
-<div id="flashArea" class="flash-area">
-<div id="flashCounter" class="flash-counter"></div>
-<div id="flashcard" class="flashcard">
-<div id="flashLabel" class="flash-label">QUESTION</div>
-<div id="flashText" class="flash-text"></div>
-</div>
-<div class="flash-buttons">
-<button id="previous">Previous</button>
-<button id="next">Next</button>
-</div>
-</div>
-</div>
-</section>
-
-<section id="planner" class="panel">
-<div class="card">
-<div class="icon">📅</div>
-<h2>Study Planner</h2>
-<p class="subtitle">Build a simple study schedule around your available time.</p>
-<label>Subjects or topics</label>
-<textarea id="plannerTopics" placeholder="Example: Psychology, Biology, Statistics"></textarea>
-<div class="grid">
-<div><label>Days</label><select id="days"><option value="3">3 days</option><option value="5">5 days</option><option value="7" selected>7 days</option></select></div>
-<div><label>Daily time</label><select id="time"><option value="30">30 minutes</option><option value="60" selected>1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></div>
-</div>
-<button class="main-btn" id="makePlan">Create Plan</button>
-<div id="plan" class="plan"></div>
-</div>
-</section>
-
-<section id="notes" class="panel">
-<div class="card">
-<div class="icon">📖</div>
-<h2>Notes</h2>
-<p class="subtitle">Keep your important study notes in one place.</p>
-<label>Title</label><input id="noteTitle" placeholder="Example: Classical Conditioning">
-<label>Subject</label><input id="noteSubject" placeholder="Example: Psychology">
-<label>Notes</label><textarea id="noteText" placeholder="Write your notes here..."></textarea>
-<button class="main-btn" id="saveNote">Save Note</button>
-<label>Search notes</label><input id="search" placeholder="Search your notes">
-<div id="notes"></div>
-</div>
-</section>
-
-<section id="progress" class="panel">
-<div class="card">
-<div class="icon">📊</div>
-<h2>Progress</h2>
-<p class="subtitle">A simple overview of your study activity.</p>
-<div class="stats">
-<div class="stat"><div>⏱️</div><div id="minutes" class="stat-number">0</div><div class="stat-label">Minutes studied</div></div>
-<div class="stat"><div>📝</div><div id="quizTotal" class="stat-number">0</div><div class="stat-label">Quizzes completed</div></div>
-<div class="stat"><div>🧠</div><div id="cardTotal" class="stat-number">0</div><div class="stat-label">Flashcards reviewed</div></div>
-<div class="stat"><div>📈</div><div id="overall" class="stat-number">0%</div><div class="stat-label">Overall progress</div><div class="track"><div id="fill" class="fill"></div></div></div>
-</div>
-<label>Add study time</label>
-<input id="studyMinutes" type="number" min="1" placeholder="Minutes">
-<button class="main-btn" id="addMinutes">Add Study Time</button>
-</div>
-</section>
-</div>
 
 <script>
-document.addEventListener("DOMContentLoaded",function(){
+
+document.addEventListener("DOMContentLoaded", function(){
+
+
+/* CLEAN AI RESPONSE */
 
 function clean(text){
-return String(text)
-.replace(/#{1,6}\s*/g,"")
-.replace(/\*\*\*/g,"")
-.replace(/\*\*/g,"")
-.replace(/\*/g,"")
-.replace(/```[a-zA-Z]*/g,"")
-.replace(/```/g,"")
-.trim();
+
+  return String(text)
+    .replace(/#{1,6}\s*/g,"")
+    .replace(/\*\*\*/g,"")
+    .replace(/\*\*/g,"")
+    .replace(/\*/g,"")
+    .replace(/```[a-zA-Z]*/g,"")
+    .replace(/```/g,"")
+    .trim();
+
 }
+
 
 /* TABS */
+
 document.querySelectorAll(".tab").forEach(function(tab){
-tab.addEventListener("click",function(){
-document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});
-document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active")});
-tab.classList.add("active");
-document.getElementById(tab.dataset.tab).classList.add("active");
-if(tab.dataset.tab==="progress")updateProgress();
-if(tab.dataset.tab==="notes")renderNotes();
-});
+
+  tab.addEventListener("click",function(){
+
+    document.querySelectorAll(".tab").forEach(function(t){
+      t.classList.remove("active");
+    });
+
+    document.querySelectorAll(".panel").forEach(function(panel){
+      panel.classList.remove("active");
+    });
+
+    tab.classList.add("active");
+
+    const selectedPanel =
+      document.getElementById(tab.dataset.tab);
+
+    if(selectedPanel){
+      selectedPanel.classList.add("active");
+    }
+
+    if(tab.dataset.tab === "progress"){
+      updateProgress();
+    }
+
+    if(tab.dataset.tab === "notes"){
+      renderNotes();
+    }
+
+  });
+
 });
 
-/* KEEP THE WORKING API CONNECTION */
+
+/* AI CONNECTION */
+
 async function askAI(message){
-const response=await fetch("/api/chat",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({message:message})
-});
-const data=await response.json();
-if(!response.ok)throw new Error("AI request failed");
-return data.answer;
+
+  const response = await fetch("/api/chat",{
+    method:"POST",
+
+    headers:{
+      "Content-Type":"application/json"
+    },
+
+    body:JSON.stringify({
+      message:message
+    })
+  });
+
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error("AI request failed");
+  }
+
+  return data.answer;
+
 }
+
 
 /* AI TUTOR */
-document.getElementById("ask").onclick=async function(){
-const question=document.getElementById("question").value.trim();
-const output=document.getElementById("answer");
-if(!question){
-output.textContent="Please enter a question.";
-output.classList.add("show");
-return;
-}
-output.textContent="Thinking...";
-output.classList.add("show");
-try{
-const result=await askAI(question);
-output.innerHTML="";
-clean(result).split(/\n\s*\n/).filter(Boolean).forEach(function(part){
-const p=document.createElement("p");
-p.textContent=part.trim();
-output.appendChild(p);
-});
-}catch(e){
-output.textContent="Unable to connect to the AI right now.";
-}
+
+document.getElementById("ask").onclick = async function(){
+
+  const question =
+    document.getElementById("question").value.trim();
+
+  const output =
+    document.getElementById("answer");
+
+  if(!question){
+
+    output.textContent =
+      "Please enter a question.";
+
+    output.classList.add("show");
+
+    return;
+  }
+
+  output.textContent = "Thinking...";
+
+  output.classList.add("show");
+
+  try{
+
+    const result = await askAI(question);
+
+    output.innerHTML = "";
+
+    clean(result)
+      .split(/\n\s*\n/)
+      .filter(Boolean)
+      .forEach(function(part){
+
+        const p = document.createElement("p");
+
+        p.textContent = part.trim();
+
+        output.appendChild(p);
+
+      });
+
+  }catch(error){
+
+    output.textContent =
+      "Unable to connect to the AI right now.";
+
+  }
+
 };
+
 
 /* QUIZ */
-let questions=[];
-let current=0;
-let score=0;
 
-document.getElementById("makeQuiz").onclick=async function(){
-const topic=document.getElementById("quizTopic").value.trim();
-const count=document.getElementById("quizCount").value;
-const difficulty=document.getElementById("difficulty").value;
-const area=document.getElementById("quizArea");
+let questions = [];
+let current = 0;
+let score = 0;
 
-if(!topic){
-area.textContent="Please enter a topic.";
-area.classList.add("show");
-return;
-}
 
-area.textContent="Creating your quiz...";
-area.classList.add("show");
+document.getElementById("makeQuiz").onclick = async function(){
 
-try{
-const result=await askAI(
-"Create exactly "+count+" multiple choice questions about "+topic+
-". Difficulty: "+difficulty+
-". Return ONLY valid JSON in this exact format: "+
-'[{"question":"Question","options":["A","B","C","D"],"answer":0}]'
-);
+  const topic =
+    document.getElementById("quizTopic").value.trim();
 
-questions=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
-current=0;
-score=0;
-showQuestion();
+  const count =
+    document.getElementById("quizCount").value;
 
-}catch(e){
-area.textContent="Couldn't create the quiz. Please try again.";
-}
+  const difficulty =
+    document.getElementById("difficulty").value;
+
+  const area =
+    document.getElementById("quizArea");
+
+  if(!topic){
+
+    area.textContent =
+      "Please enter a topic.";
+
+    area.classList.add("show");
+
+    return;
+  }
+
+  area.textContent =
+    "Creating your quiz...";
+
+  area.classList.add("show");
+
+  try{
+
+    const result = await askAI(
+
+      "Create exactly " + count +
+      " multiple choice questions about " + topic +
+      ". Difficulty: " + difficulty +
+      ". Return ONLY valid JSON in this exact format: " +
+      '[{"question":"Question","options":["A","B","C","D"],"answer":0}]'
+
+    );
+
+    const cleaned =
+      result
+        .replace(/```json/g,"")
+        .replace(/```/g,"")
+        .trim();
+
+    questions = JSON.parse(cleaned);
+
+    current = 0;
+    score = 0;
+
+    showQuestion();
+
+  }catch(error){
+
+    area.textContent =
+      "Couldn't create the quiz. Please try again.";
+
+  }
+
 };
+
 
 function showQuestion(){
-const area=document.getElementById("quizArea");
 
-if(current>=questions.length){
-const percent=Math.round((score/questions.length)*100);
-area.innerHTML=
-'<div class="result"><h2>Quiz Complete</h2><div class="score">'+percent+'%</div>'+
-'<p>You scored '+score+' out of '+questions.length+'.</p>'+
-'<button class="main-btn" id="retry">Try Again</button></div>';
+  const area =
+    document.getElementById("quizArea");
 
-let data=getProgress();
-data.quizTotal++;
-saveProgress(data);
 
-document.getElementById("retry").onclick=function(){
-current=0;
-score=0;
-showQuestion();
-};
-return;
+  if(current >= questions.length){
+
+    const percent =
+      questions.length
+      ? Math.round((score / questions.length) * 100)
+      : 0;
+
+    area.innerHTML =
+      '<div class="result">' +
+
+      '<h2>Quiz Complete</h2>' +
+
+      '<div class="score">' +
+      percent +
+      '%</div>' +
+
+      '<p>You scored ' +
+      score +
+      ' out of ' +
+      questions.length +
+      '.</p>' +
+
+      '<button class="main-btn" id="retry">' +
+      'Try Again' +
+      '</button>' +
+
+      '</div>';
+
+
+    const data = getProgress();
+
+    data.quizTotal++;
+
+    saveProgress(data);
+
+
+    document.getElementById("retry").onclick =
+      function(){
+
+        current = 0;
+        score = 0;
+
+        showQuestion();
+
+      };
+
+    return;
+
+  }
+
+
+  const q = questions[current];
+
+  area.innerHTML = "";
+
+
+  const box =
+    document.createElement("div");
+
+  box.className =
+    "question-box";
+
+
+  const counter =
+    document.createElement("div");
+
+  counter.className =
+    "counter";
+
+  counter.textContent =
+    "Question " +
+    (current + 1) +
+    " of " +
+    questions.length;
+
+
+  const question =
+    document.createElement("div");
+
+  question.className =
+    "question";
+
+  question.textContent =
+    q.question;
+
+
+  const feedback =
+    document.createElement("div");
+
+  feedback.className =
+    "feedback";
+
+
+  const next =
+    document.createElement("button");
+
+  next.className =
+    "next";
+
+  next.textContent =
+    current === questions.length - 1
+    ? "Finish Quiz"
+    : "Next Question";
+
+
+  q.options.forEach(function(option,index){
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "answer";
+
+    button.textContent =
+      option;
+
+
+    button.onclick =
+      function(){
+
+        document
+          .querySelectorAll(".answer")
+          .forEach(function(button){
+            button.disabled = true;
+          });
+
+
+        if(index === Number(q.answer)){
+
+          button.classList.add("correct");
+
+          feedback.textContent =
+            "Correct ✓";
+
+          score++;
+
+        }else{
+
+          button.classList.add("wrong");
+
+          feedback.textContent =
+            "Not quite. Correct answer: " +
+            q.options[q.answer];
+
+          const correctButton =
+            document.querySelectorAll(".answer")
+            [Number(q.answer)];
+
+          if(correctButton){
+            correctButton.classList.add("correct");
+          }
+
+        }
+
+        next.classList.add("show");
+
+      };
+
+
+    box.appendChild(button);
+
+  });
+
+
+  next.onclick =
+    function(){
+
+      current++;
+
+      showQuestion();
+
+    };
+
+
+  box.prepend(
+    counter,
+    question
+  );
+
+  area.append(
+    box,
+    feedback,
+    next
+  );
+
 }
 
-const q=questions[current];
-area.innerHTML="";
-
-const box=document.createElement("div");
-box.className="question-box";
-
-const counter=document.createElement("div");
-counter.className="counter";
-counter.textContent="Question "+(current+1)+" of "+questions.length;
-
-const question=document.createElement("div");
-question.className="question";
-question.textContent=q.question;
-
-const feedback=document.createElement("div");
-feedback.className="feedback";
-
-const next=document.createElement("button");
-next.className="next";
-next.textContent=current===questions.length-1?"Finish Quiz":"Next Question";
-
-q.options.forEach(function(option,index){
-const button=document.createElement("button");
-button.className="answer";
-button.textContent=option;
-
-button.onclick=function(){
-document.querySelectorAll(".answer").forEach(function(b){b.disabled=true});
-
-if(index===Number(q.answer)){
-button.classList.add("correct");
-feedback.textContent="Correct ✓";
-score++;
-}else{
-button.classList.add("wrong");
-feedback.textContent="Not quite. Correct answer: "+q.options[q.answer];
-document.querySelectorAll(".answer")[Number(q.answer)].classList.add("correct");
-}
-
-next.classList.add("show");
-};
-
-box.appendChild(button);
-});
-
-next.onclick=function(){
-current++;
-showQuestion();
-};
-
-box.prepend(counter,question);
-area.append(box,feedback,next);
-}
 
 /* FLASHCARDS */
-let flashcards=[];
-let flashIndex=0;
-let showingAnswer=false;
 
-document.getElementById("makeFlash").onclick=async function(){
-const topic=document.getElementById("flashTopic").value.trim();
-const count=document.getElementById("flashCount").value;
-if(!topic)return;
+let flashcards = [];
+let flashIndex = 0;
+let showingAnswer = false;
 
-document.getElementById("flashArea").classList.add("show");
-document.getElementById("flashText").textContent="Creating...";
 
-try{
-const result=await askAI(
-"Create exactly "+count+" flashcards about "+topic+
-". Return ONLY valid JSON in this exact format: "+
-'[{"question":"Question","answer":"Answer"}]'
-);
+document.getElementById("makeFlash").onclick =
+  async function(){
 
-flashcards=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
-flashIndex=0;
-showingAnswer=false;
-showFlashcard();
-}catch(e){
-document.getElementById("flashText").textContent="Couldn't create the flashcards.";
-}
-};
+    const topic =
+      document.getElementById("flashTopic")
+      .value
+      .trim();
 
-function showFlashcard(){
-if(!flashcards.length)return;
-const card=flashcards[flashIndex];
-document.getElementById("flashLabel").textContent=showingAnswer?"ANSWER":"QUESTION";
-document.getElementById("flashText").textContent=showingAnswer?clean(card.answer):clean(card.question);
-document.getElementById("flashCounter").textContent="Card "+(flashIndex+1)+" of "+flashcards.length;
-}
+    const count =
+      document.getElementById("flashCount")
+      .value;
 
-document.getElementById("flashcard").onclick=function(){
-showingAnswer=!showingAnswer;
-showFlashcard();
-};
+    if(!topic){
+      return;
+    }
 
-document.getElementById("previous").onclick=function(){
-flashIndex=(flashIndex-1+flashcards.length)%flashcards.length;
-showingAnswer=false;
-showFlashcard();
-};
 
-document.getElementById("next").onclick=function(){
-flashIndex=(flashIndex+1)%flashcards.length;
-showingAnswer=false;
-showFlashcard();
-};
+    document
+      .getElementById("flashArea")
+      .classList
+      .add("show");
 
-/* STUDY PLANNER */
-document.getElementById("makePlan").onclick=async function(){
-const topics=document.getElementById("plannerTopics").value.trim();
-const days=document.getElementById("days").value;
-const time=document.getElementById("time").value;
-const output=document.getElementById("plan");
 
-if(!topics){
-output.textContent="Please enter your subjects or topics.";
-output.classList.add("show");
-return;
-}
+    document
+      .getElementById("flashText")
+      .textContent =
+      "Creating...";
 
-output.textContent="Creating your study plan...";
-output.classList.add("show");
 
-try{
-const result=await askAI(
-"Create a "+days+"-day study plan for "+topics+
-". The student has "+time+" minutes per day. "+
-"Return ONLY valid JSON in this exact format: "+
-'[{"day":"Day 1","focus":"Topic","sessions":["Study session","Revision session"]}]'
-);
+    try{
 
-const plan=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
-output.innerHTML="";
+      const result =
+        await askAI(
 
-plan.forEach(function(day){
-const box=document.createElement("div");
-box.className="plan-day";
-
-const title=document.createElement("div");
-title.className="plan-title";
-title.textContent=day.day+" · "+day.focus;
-
-const body=document.createElement("div");
-body.className="plan-body";
-body.textContent=day.sessions.map(function(s,i){
-return "Session "+(i+1)+": "+s;
-}).join("\n");
-
-box.append(title,body);
-output.appendChild(box);
-});
-}catch(e){
-output.textContent="Couldn't create the study plan. Please try again.";
-}
-};
-
-/* NOTES */
-function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
-function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
-
-function renderNotes(){
-const list=document.getElementById("notes");
-const search=document.getElementById("search").value.toLowerCase();
-list.innerHTML="";
-
-getNotes().filter(function(n){
-return n.title.toLowerCase().includes(search)||
-n.subject.toLowerCase().includes(search)||
-n.text.toLowerCase().includes(search);
-}).forEach(function(note){
-
-const box=document.createElement("div");
-box.className="note";
-
-const title=document.createElement("h3");
-title.textContent=note.title;
-
-const subject=document.createElement("small");
-subject.textContent=note.subject;
-
-const text=document.createElement("p");
-text.textContent=note.text;
-
-const del=document.createElement("button");
-del.className="delete";
-del.textContent="Delete";
-del.onclick=function(){
-saveNotes(getNotes().filter(function(n){return n.id!==note.id}));
-renderNotes();
-};
-
-box.append(title,subject,text,del);
-list.appendChild(box);
-});
-}
-
-document.getElementById("saveNote").onclick=function(){
-const title=document.getElementById("noteTitle").value.trim();
-const subject=document.getElementById("noteSubject").value.trim();
-const text=document.getElementById("noteText").value.trim();
-if(!title||!text)return;
-
-const notes=getNotes();
-notes.unshift({id:Date.now(),title:title,subject:subject||"General",text:text});
-saveNotes(notes);
-
-document.getElementById("noteTitle").value="";
-document.getElementById("noteSubject").value="";
-document.getElementById("noteText").value="";
-renderNotes();
-};
-
-document.getElementById("search").oninput=renderNotes;
-
-/* PROGRESS */
-function getProgress(){
-return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0}');
-}
-
-function saveProgress(data){
-localStorage.setItem("studyProgress",JSON.stringify(data));
-}
-
-function updateProgress(){
-const data=getProgress();
-
-document.getElementById("minutes").textContent=data.minutes;
-document.getElementById("quizTotal").textContent=data.quizTotal;
-document.getElementById("cardTotal").textContent=data.cardTotal;
-
-const percent=Math.min(100,Math.round(
-(Math.min(data.minutes/300*100,100)+
-Math.min(data.quizTotal/10*100,100)+
-Math.min(data.cardTotal/50*100,100))/3
-));
-
-document.getElementById("overall").textContent=percent+"%";
-document.getElementById("fill").style.width=percent+"%";
-}
-
-document.getElementById("addMinutes").onclick=function(){
-const input=document.getElementById("studyMinutes");
-const minutes=Number(input.value);
-if(!minutes)return;
-
-const data=getProgress();
-data.minutes+=minutes;
-saveProgress(data);
-input.value="";
-updateProgress();
-};
-
-updateProgress();
-renderNotes();
-
-});
-</script>
-</body>
-  </html>
+          "Create exactly " +
+          count +
+          " flashcards about " +
+          topic +
+          ". Return ONLY valid JSON in this exact format: " +
+          '[{"question":"Question","answer":"Answer
