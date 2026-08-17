@@ -175,7 +175,7 @@ button{font:inherit;cursor:pointer}
 <label>Notes</label><textarea id="noteText" placeholder="Write your notes here..."></textarea>
 <button class="main-btn" id="saveNote">Save Note</button>
 <label>Search notes</label><input id="search" placeholder="Search your notes">
-<div id="notes"></div>
+<div id="notesList"></div>
 </div>
 </section>
 
@@ -481,7 +481,7 @@ function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
 function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
 
 function renderNotes(){
-const list=document.getElementById("notes");
+const list=document.getElementById("notesList");
 const search=document.getElementById("search").value.toLowerCase();
 list.innerHTML="";
 
