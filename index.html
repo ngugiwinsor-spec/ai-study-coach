@@ -212,7 +212,9 @@ button{font:inherit;cursor:pointer}
 </div>
 <label>Add study time</label>
 <input id="studyMinutes" type="number" min="1" placeholder="Minutes">
-<button class="main-btn" id="addMinutes">Add Study Time</button>
+<button class="main-btn" id="addMinutes">Add Study Time</button><label>Daily study goal</label>
+<input id="dailyGoal" type="number" min="1" placeholder="Goal in minutes">
+<div id="goalProgress">0 / 60 minutes today</div>
 </div>
 </section>
 </div>
@@ -625,7 +627,7 @@ document.getElementById("search").oninput=renderNotes;
 
 /* PROGRESS */
 function getProgress(){
-return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0,"streak":0}');
+return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0,"streak":0,"dailyGoal":60}');
   }
 
 function saveProgress(data){
@@ -640,7 +642,10 @@ document.getElementById("quizTotal").textContent=data.quizTotal;
 document.getElementById("cardTotal").textContent=data.cardTotal;document.getElementById("streak").textContent=data.streak||0;document.getElementById("homeMinutes").textContent=data.minutes;
 document.getElementById("homeQuizzes").textContent=data.quizTotal;
 document.getElementById("homeCards").textContent=data.cardTotal;
-document.getElementById("homeStreak").textContent=data.streak||0;
+document.getElementById("homeStreak").textContent=data.streak||0;document.getElementById("dailyGoal").value=data.dailyGoal||60;const goal=data.dailyGoal||60;
+const todayMinutes=data.todayMinutes||0;
+const goalPercent=Math.min(100,Math.round(todayMinutes/goal*100));
+document.getElementById("goalProgress").textContent=todayMinutes+" / "+goal+" minutes";
 
 const percent=Math.min(100,Math.round(
 (Math.min(data.minutes/300*100,100)+
@@ -658,9 +663,19 @@ const minutes=Number(input.value);
 if(!minutes)return;
 
 const data=getProgress();
-data.minutes+=minutes;
+
+const goal=Number(document.getElementById("dailyGoal").value);
+if(goal>0)data.dailyGoal=goal;
 
 const today=new Date().toISOString().split("T")[0];
+
+if(data.lastStudyDay!==today){
+data.todayMinutes=0;
+data.lastStudyDay=today;
+}
+
+data.todayMinutes=(data.todayMinutes||0)+minutes;
+data.minutes+=minutes;
 
 if(data.lastStudyDate!==today){
 data.streak=(data.streak||0)+1;
