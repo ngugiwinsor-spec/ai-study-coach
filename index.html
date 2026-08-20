@@ -423,7 +423,9 @@ if(!flashcards.length)return;
 const card=flashcards[flashIndex];
 document.getElementById("flashLabel").textContent=showingAnswer?"ANSWER":"QUESTION";
 document.getElementById("flashText").textContent=showingAnswer?clean(card.answer):clean(card.question);
-document.getElementById("flashCounter").textContent="Card "+(flashIndex+1)+" of "+flashcards.length;
+document.getElementById("flashCounter").textContent="Card "+(flashIndex+1)+" of "+flashcards.length;if(flashIndex===flashcards.length-1 && showingAnswer){
+document.getElementById("flashCounter").textContent+=" 🎉 Complete!";
+  }
 }
 
 document.getElementById("flashcard").onclick=function(){
