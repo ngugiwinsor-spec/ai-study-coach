@@ -521,9 +521,7 @@ getNotes().filter(function(n){
 if(filter==="pinned" && !n.pinned) return false;
 if(filter==="unpinned" && n.pinned) return false;
 
-return String(n.title||"").toLowerCase().includes(search)||
-String(n.subject||"").toLowerCase().includes(search)||
-String(n.text||"").toLowerCase().includes(search);
+return JSON.stringify(n).toLowerCase().includes(search);
 }).sort(function(a,b){
 
 if(sort==="newest") return (b.createdAt||0)-(a.createdAt||0);
