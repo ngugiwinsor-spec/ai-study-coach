@@ -534,7 +534,23 @@ return n;
 saveNotes(updated);
 renderNotes();
 };
+const pin=document.createElement("button");
+pin.textContent=note.pinned ? "📌 Unpin" : "📌 Pin";
 
+pin.onclick=function(){
+
+const notes=getNotes();
+
+notes.forEach(function(n){
+if(n.id===note.id){
+n.pinned=!n.pinned;
+}
+});
+
+saveNotes(notes);
+renderNotes();
+
+};
 const del=document.createElement("button");
 del.className="delete";
 del.textContent="Delete";
@@ -543,7 +559,7 @@ saveNotes(getNotes().filter(function(n){return n.id!==note.id}));
 renderNotes();
 };
 
-box.append(title,subject,text,edit,del);
+box.append(title,subject,text,edit,pin,del);
 list.appendChild(box);
 });
   }
@@ -554,7 +570,7 @@ const text=document.getElementById("noteText").value.trim();
 if(!title||!text)return;
 
 const notes=getNotes();
-notes.unshift({id:Date.now(),title:title,subject:subject||"General",text:text});
+notes.unshift({id:Date.now(),title:title,subject:subject||"General",text:text,pinned:false});
 saveNotes(notes);
 
 document.getElementById("noteTitle").value="";
