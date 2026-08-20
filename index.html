@@ -427,7 +427,12 @@ document.getElementById("flashCounter").textContent="Card "+(flashIndex+1)+" of 
 }
 
 document.getElementById("flashcard").onclick=function(){
-showingAnswer=!showingAnswer;
+showingAnswer=!showingAnswer;if(showingAnswer){
+let data=getProgress();
+data.cardTotal++;
+saveProgress(data);
+updateProgress();
+  }
 showFlashcard();
 };
 
