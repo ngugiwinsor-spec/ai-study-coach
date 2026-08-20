@@ -610,8 +610,8 @@ document.getElementById("search").oninput=renderNotes;
 
 /* PROGRESS */
 function getProgress(){
-return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0}');
-}
+return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0,"streak":0}');
+  }
 
 function saveProgress(data){
 localStorage.setItem("studyProgress",JSON.stringify(data));
