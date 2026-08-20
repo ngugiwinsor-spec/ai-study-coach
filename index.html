@@ -497,12 +497,25 @@ function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))
 function renderNotes(){
 const list=document.getElementById("notesList");
 const search=document.getElementById("search").value.toLowerCase();
+const filter=document.getElementById("noteFilter").value;
+const sort=document.getElementById("noteSort").value;
 list.innerHTML="";
-
 getNotes().filter(function(n){
+if(filter==="pinned" && !n.pinned) return false;
+if(filter==="unpinned" && n.pinned) return false;
+
 return n.title.toLowerCase().includes(search)||
 n.subject.toLowerCase().includes(search)||
 n.text.toLowerCase().includes(search);
+}).sort(function(a,b){
+
+if(sort==="newest") return (b.createdAt||0)-(a.createdAt||0);
+if(sort==="oldest") return (a.createdAt||0)-(b.createdAt||0);
+if(sort==="az") return a.title.localeCompare(b.title);
+if(sort==="za") return b.title.localeCompare(a.title);
+
+return 0;
+
 }).forEach(function(note){
 
 const box=document.createElement("div");
@@ -636,7 +649,9 @@ updateProgress();
 updateProgress();
 renderNotes();
 
-});
+document.getElementById("search").addEventListener("input",renderNotes);
+document.getElementById("noteFilter").addEventListener("change",renderNotes);
+document.getElementById("noteSort").addEventListener("change",renderNotes);});
 </script>
 </body>
   </html>
