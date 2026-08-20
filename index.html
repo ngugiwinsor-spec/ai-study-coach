@@ -175,6 +175,20 @@ button{font:inherit;cursor:pointer}
 <label>Notes</label><textarea id="noteText" placeholder="Write your notes here..."></textarea>
 <button class="main-btn" id="saveNote">Save Note</button>
 <label>Search notes</label><input id="search" placeholder="Search your notes">
+
+<select id="noteFilter">
+<option value="all">All Notes</option>
+<option value="pinned">Pinned Notes</option>
+<option value="unpinned">Unpinned Notes</option>
+</select>
+
+<select id="noteSort">
+<option value="newest">Newest First</option>
+<option value="oldest">Oldest First</option>
+<option value="az">A–Z</option>
+<option value="za">Z–A</option>
+</select>
+
 <div id="notesList"></div>
 </div>
 </section>
