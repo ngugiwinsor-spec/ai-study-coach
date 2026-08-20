@@ -101,7 +101,13 @@ button{font:inherit;cursor:pointer}
 <div class="card">
 <div class="icon">🤖</div>
 <h2>AI Tutor</h2>
-<p class="subtitle">Ask a question and get a simple explanation tailored for studying.</p>
+<p class="subtitle">Ask a question and get a simple explanation tailored for studying.</p><div class="card" id="studySnapshot">
+<h3>📊 Study Snapshot</h3>
+<p>⏱️ Minutes studied: <span id="homeMinutes">0</span></p>
+<p>📝 Quizzes completed: <span id="homeQuizzes">0</span></p>
+<p>🧠 Flashcards reviewed: <span id="homeCards">0</span></p>
+<p>🔥 Study streak: <span id="homeStreak">0</span></p>
+</div>
 <label>Your question</label>
 <textarea id="question" placeholder="Example: Explain classical conditioning in simple terms."></textarea>
 <button class="main-btn" id="ask">Ask AI Tutor</button>
@@ -631,7 +637,10 @@ const data=getProgress();
 
 document.getElementById("minutes").textContent=data.minutes;
 document.getElementById("quizTotal").textContent=data.quizTotal;
-document.getElementById("cardTotal").textContent=data.cardTotal;document.getElementById("streak").textContent=data.streak||0;
+document.getElementById("cardTotal").textContent=data.cardTotal;document.getElementById("streak").textContent=data.streak||0;document.getElementById("homeMinutes").textContent=data.minutes;
+document.getElementById("homeQuizzes").textContent=data.quizTotal;
+document.getElementById("homeCards").textContent=data.cardTotal;
+document.getElementById("homeStreak").textContent=data.streak||0;
 
 const percent=Math.min(100,Math.round(
 (Math.min(data.minutes/300*100,100)+
