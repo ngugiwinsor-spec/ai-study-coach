@@ -315,10 +315,12 @@ function showQuestion(){
 const area=document.getElementById("quizArea");
 
 if(current>=questions.length){
-const percent=Math.round((score/questions.length)*100);
+const percent=Math.round((score/questions.length)*100);let message="Keep practicing! 💪";
+if(percent>=80) message="Excellent work! 🔥";
+else if(percent>=60) message="Good job! 👍";
 area.innerHTML=
 '<div class="result"><h2>Quiz Complete</h2><div class="score">'+percent+'%</div>'+
-'<p>You scored '+score+' out of '+questions.length+'.</p>'+
+'<p>You scored '+score+' out of '+questions.length+'.</p>'+'<p>'+message+'</p>'+
 '<button class="main-btn" id="retry">Try Again</button></div>';
 
 let data=getProgress();
