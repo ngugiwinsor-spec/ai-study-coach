@@ -622,7 +622,7 @@ const data=getProgress();
 
 document.getElementById("minutes").textContent=data.minutes;
 document.getElementById("quizTotal").textContent=data.quizTotal;
-document.getElementById("cardTotal").textContent=data.cardTotal;
+document.getElementById("cardTotal").textContent=data.cardTotal;document.getElementById("streak").textContent=data.streak||0;
 
 const percent=Math.min(100,Math.round(
 (Math.min(data.minutes/300*100,100)+
@@ -641,6 +641,14 @@ if(!minutes)return;
 
 const data=getProgress();
 data.minutes+=minutes;
+
+const today=new Date().toISOString().split("T")[0];
+
+if(data.lastStudyDate!==today){
+data.streak=(data.streak||0)+1;
+data.lastStudyDate=today;
+}
+
 saveProgress(data);
 input.value="";
 updateProgress();
