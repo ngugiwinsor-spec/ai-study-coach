@@ -252,6 +252,7 @@ tab.classList.add("active");
 document.getElementById(tab.dataset.tab).classList.add("active");
 if(tab.dataset.tab==="progress")updateProgress();
 if(tab.dataset.tab==="notes")renderNotes();
+if(tab.dataset.tab==="planner")loadSavedPlan();
 });
 });
 
