@@ -536,12 +536,16 @@ output.textContent="Couldn't create the study plan. Please try again.";
 }
 };
   function loadSavedPlan(){
+cofunction loadSavedPlan(){
 const saved=localStorage.getItem("studyPlan");
 if(!saved)return;
 
 try{
 const plan=JSON.parse(saved);
 const output=document.getElementById("plan");
+
+if(!output)return;
+
 output.innerHTML="";
 
 plan.forEach(function(day){
@@ -561,8 +565,13 @@ return "Session "+(i+1)+": "+s;
 box.append(title,body);
 output.appendChild(box);
 });
-}catch(e){}
+
+output.classList.add("show");
+
+}catch(e){
+console.log("Could not load saved study plan");
 }
+  }
 
 loadSavedPlan();
 /* NOTES */
