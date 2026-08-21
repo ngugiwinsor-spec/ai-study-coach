@@ -91,6 +91,15 @@ button{font:inherit;cursor:pointer}
 @media(max-width:600px){.card{padding:18px}.grid,.stats{grid-template-columns:1fr}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+const SUPABASE_URL = "https://svxfjjxxncjuwvyuguue.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_zJQ33OqFywvp-Yj5rr3Urg_4ipuw0Ow";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+  </script>
 </head>
 
 <body>
