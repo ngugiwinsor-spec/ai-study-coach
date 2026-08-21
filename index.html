@@ -279,31 +279,26 @@ return;
 output.textContent="Thinking...";
 output.classList.add("show");
 try{
-const result=await askAI(question);
-output.innerHTML="";
-output.innerHTML = "";
+try{
+  const result = await askAI(question);
 
-const formatted = result
-  .replace(/^#{1,6}\s*/gm, "")
-  .replace(/\*\*(.*?)\*\*/g, "$1")
-  .replace(/__(.*?)__/g, "$1")
-  .replace(/^\s*[-*•]\s+/gm, "• ")
-  .replace(/`{1,3}/g, "");
+  const formatted = result
+    .replace(/^#{1,6}\s*/gm, "")
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/__(.*?)__/g, "$1")
+    .replace(/^\s*[-*•]\s+/gm, "• ")
+    .replace(/`{1,3}/g, "");
 
-output.innerHTML = "";
+  output.innerHTML = "";
 
-formatted
-  .split(/\n\s*\n/)
-  .filter(Boolean)
-  .forEach(function(part){
-    const p = document.createElement("p");
-    p.textContent = part.trim();
-    output.appendChild(p);
-  });
-const p=document.createElement("p");
-p.textContent=part.trim();
-output.appendChild(p);
-});
+  formatted
+    .split(/\n\s*\n/)
+    .filter(Boolean)
+    .forEach(function(part){
+      const p = document.createElement("p");
+      p.textContent = part.trim();
+      output.appendChild(p);
+    });
 }catch(e){
 output.textContent="Unable to connect to the AI right now.";
 }
