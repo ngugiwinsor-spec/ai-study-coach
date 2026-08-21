@@ -529,11 +529,8 @@ return "Session "+(i+1)+": "+s;
 box.append(title,body);
 output.appendChild(box);
 });
-
-}catch(e){
-output.textContent="Couldn't create the study plan. Please try again.";
-}
-};
+/* STUDY PLANNER */
+document.getElementById("makePlan").onclick=async function(){
 const topics=document.getElementById("plannerTopics").value.trim();
 const days=document.getElementById("days").value;
 const time=document.getElementById("time").value;
@@ -556,7 +553,12 @@ const result=await askAI(
 '[{"day":"Day 1","focus":"Topic","sessions":["Study session","Revision session"]}]'
 );
 
-const plan=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
+const plan=JSON.parse(
+result.replace(/```json/g,"").replace(/```/g,"").trim()
+);
+
+localStorage.setItem("studyPlan",JSON.stringify(plan));
+
 output.innerHTML="";
 
 plan.forEach(function(day){
@@ -576,6 +578,7 @@ return "Session "+(i+1)+": "+s;
 box.append(title,body);
 output.appendChild(box);
 });
+
 }catch(e){
 output.textContent="Couldn't create the study plan. Please try again.";
 }
