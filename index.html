@@ -281,7 +281,7 @@ output.classList.add("show");
 try{
 const result=await askAI(question);
 output.innerHTML="";
-clean(result).split(/\n\s*\n/).filter(Boolean).forEach(function(part){
+result.split(/\n\s*\n/).filter(Boolean).forEach(function(part){
 const p=document.createElement("p");
 p.textContent=part.trim();
 output.appendChild(p);
