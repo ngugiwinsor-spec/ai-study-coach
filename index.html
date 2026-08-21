@@ -529,61 +529,11 @@ return "Session "+(i+1)+": "+s;
 box.append(title,body);
 output.appendChild(box);
 });
-/* STUDY PLANNER */
-document.getElementById("makePlan").onclick=async function(){
-const topics=document.getElementById("plannerTopics").value.trim();
-const days=document.getElementById("days").value;
-const time=document.getElementById("time").value;
-const output=document.getElementById("plan");
-
-if(!topics){
-output.textContent="Please enter your subjects or topics.";
-output.classList.add("show");
-return;
-}
-
-output.textContent="Creating your study plan...";
-output.classList.add("show");
-
-try{
-const result=await askAI(
-"Create a "+days+"-day study plan for "+topics+
-". The student has "+time+" minutes per day. "+
-"Return ONLY valid JSON in this exact format: "+
-'[{"day":"Day 1","focus":"Topic","sessions":["Study session","Revision session"]}]'
-);
-
-const plan=JSON.parse(
-result.replace(/```json/g,"").replace(/```/g,"").trim()
-);
-
-localStorage.setItem("studyPlan",JSON.stringify(plan));
-
-output.innerHTML="";
-
-plan.forEach(function(day){
-const box=document.createElement("div");
-box.className="plan-day";
-
-const title=document.createElement("div");
-title.className="plan-title";
-title.textContent=day.day+" · "+day.focus;
-
-const body=document.createElement("div");
-body.className="plan-body";
-body.textContent=day.sessions.map(function(s,i){
-return "Session "+(i+1)+": "+s;
-}).join("\n");
-
-box.append(title,body);
-output.appendChild(box);
-});
 
 }catch(e){
 output.textContent="Couldn't create the study plan. Please try again.";
 }
 };
-
 /* NOTES */
 function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
 function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
