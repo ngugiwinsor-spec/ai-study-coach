@@ -719,6 +719,18 @@ signUpBtn.style.display = "block";
 loginBtn.style.display = "block";
 }
 });
+document.getElementById("logoutBtn").onclick = async function(){
+const { error } = await supabaseClient.auth.signOut();
+
+const message = document.getElementById("authMessage");
+
+if(error){
+message.textContent = error.message;
+return;
+}
+
+message.textContent = "You have been logged out.";
+};  
   /* NOTES */
 function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
 function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
