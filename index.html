@@ -281,7 +281,22 @@ output.classList.add("show");
 try{
 const result=await askAI(question);
 output.innerHTML="";
-result.split(/\n\s*\n/).filter(Boolean).forEach(function(part){
+output.innerHTML = "";
+
+const formatted = result
+  .replace(/^#{1,6}\s*/gm, "")
+  .replace(/\*\*/g, "")
+  .replace(/\*/g, "")
+  .replace(/^\s*[-•]\s*/gm, "• ");
+
+formatted
+  .split(/\n\s*\n/)
+  .filter(Boolean)
+  .forEach(function(part){
+    const p = document.createElement("p");
+    p.textContent = part.trim();
+    output.appendChild(p);
+  });
 const p=document.createElement("p");
 p.textContent=part.trim();
 output.appendChild(p);
