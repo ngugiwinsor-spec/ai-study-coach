@@ -646,7 +646,39 @@ console.log("Could not load saved study plan");
   }
 
 loadSavedPlan();
+document.getElementById("signUpBtn").onclick = async function(){
+const email = document.getElementById("authEmail").value.trim();
+const password = document.getElementById("authPassword").value;
+
+const message = document.getElementById("authMessage");
+
+if(!email || !password){
+message.textContent = "Please enter your email and password.";
+return;
+}
+
+if(password.length < 6){
+message.textContent = "Password must be at least 6 characters.";
+return;
+}
+
+message.textContent = "Creating your account...";
+
+const { data, error } = await supabaseClient.auth.signUp({
+email: email,
+password: password
+});
+
+if(error){
+message.textContent = error.message;
+return;
+}
+
+message.textContent = "Account created! Check your email to confirm your account.";
+};
+
 /* NOTES */
+  /* NOTES */
 function getNotes(){return JSON.parse(localStorage.getItem("studyNotes")||"[]")}
 function saveNotes(data){localStorage.setItem("studyNotes",JSON.stringify(data))}
 
