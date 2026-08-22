@@ -730,6 +730,60 @@ signUpBtn.style.display = "block";
 loginBtn.style.display = "block";
 }
 });
+
+document.getElementById("redeemVoucherBtn").onclick = async function(){
+
+const voucherCode = document.getElementById("voucherCode").value.trim();
+const voucherMessage = document.getElementById("voucherMessage");
+
+if(!voucherCode){
+voucherMessage.textContent = "Please enter a voucher code.";
+return;
+}
+
+voucherMessage.textContent = "Redeeming voucher...";
+
+const { data: sessionData } = await supabaseClient.auth.getSession();
+
+if(!sessionData.session){
+voucherMessage.textContent = "Please log in first.";
+return;
+}
+
+try{
+
+const response = await fetch("/api/redeem-voucher",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+accessToken:sessionData.session.access_token,
+code:voucherCode
+})
+});
+
+const result = await response.json();
+
+if(!response.ok){
+voucherMessage.textContent = result.error || "Voucher could not be redeemed.";
+return;
+}
+
+voucherMessage.textContent = "Voucher redeemed! Premium activated.";
+
+setTimeout(function(){
+location.reload();
+},1000);
+
+}catch(error){
+
+voucherMessage.textContent = "Something went wrong. Please try again.";
+
+}
+
+};
+
 document.getElementById("logoutBtn").onclick = async function(){
 const { error } = await supabaseClient.auth.signOut();
 
