@@ -718,7 +718,6 @@ const signUpBtn = document.getElementById("signUpBtn");
 const loginBtn = document.getElementById("loginBtn");
 
 if(session && session.user){
-if(session && session.user){
 accountStatus.textContent = "Logged in as " + session.user.email + " • Free Plan";
 logoutBtn.style.display = "block";
 signUpBtn.style.display = "none";
@@ -730,7 +729,6 @@ signUpBtn.style.display = "block";
 loginBtn.style.display = "block";
 }
 });
-
 document.getElementById("redeemVoucherBtn").onclick = async function(){
 
 const voucherCode = document.getElementById("voucherCode").value.trim();
