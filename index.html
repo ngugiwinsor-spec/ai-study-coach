@@ -308,6 +308,35 @@ $14.99 / year
     Redeem Voucher
   </button>
   <div id="voucherMessage"></div>
+    <div id="adminVoucherBox" style="margin-top:20px;display:none;">
+
+  <h3>Create Premium Voucher</h3>
+
+  <label>Premium duration (days)</label>
+  <input
+    id="voucherDuration"
+    type="number"
+    min="1"
+    value="30"
+    placeholder="30"
+  >
+
+  <label>Maximum uses</label>
+  <input
+    id="voucherMaxUses"
+    type="number"
+    min="1"
+    value="1"
+    placeholder="1"
+  >
+
+  <button class="main-btn" id="createVoucherBtn">
+    Create Voucher
+  </button>
+
+  <div id="createdVoucherMessage"></div>
+
+  </div>
   </div>
 </div>
   </section>
@@ -739,6 +768,76 @@ accountStatus.textContent =
 }
 
 });
+  const adminVoucherBox = document.getElementById("adminVoucherBox");
+const createVoucherBtn = document.getElementById("createVoucherBtn");
+const createdVoucherMessage = document.getElementById("createdVoucherMessage");
+
+if(
+session &&
+session.user &&
+session.user.email.toLowerCase() === "ngugiwinsor@gmail.com"
+){
+adminVoucherBox.style.display = "block";
+}
+
+createVoucherBtn.onclick = async function(){
+
+const duration = document.getElementById("voucherDuration").value;
+const maxUses = document.getElementById("voucherMaxUses").value;
+
+createdVoucherMessage.textContent = "Creating voucher...";
+
+if(!duration || Number(duration) < 1){
+createdVoucherMessage.textContent = "Enter a valid duration.";
+return;
+}
+
+if(!maxUses || Number(maxUses) < 1){
+createdVoucherMessage.textContent = "Enter a valid number of uses.";
+return;
+}
+
+try{
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(!sessionData.session){
+createdVoucherMessage.textContent = "Please log in first.";
+return;
+}
+
+const response = await fetch("/api/create-voucher",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+accessToken:sessionData.session.access_token,
+duration_days:Number(duration),
+max_uses:Number(maxUses)
+})
+});
+
+const result = await response.json();
+
+if(!response.ok){
+createdVoucherMessage.textContent =
+result.error || "Could not create voucher.";
+return;
+}
+
+createdVoucherMessage.textContent =
+"Voucher created: " + result.voucher.code;
+
+}catch(error){
+
+createdVoucherMessage.textContent =
+"Something went wrong. Please try again.";
+
+}
+
+};
 logoutBtn.style.display = "block";
 signUpBtn.style.display = "none";
 loginBtn.style.display = "none";
