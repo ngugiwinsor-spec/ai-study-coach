@@ -827,8 +827,31 @@ result.error || "Could not create voucher.";
 return;
 }
 
+createdVoucherMessage.innerHTML =
+"Voucher created: <strong>" + result.voucher.code + "</strong>" +
+' <button type="button" id="copyVoucherBtn" class="main-btn" style="margin-top:10px;">Copy Code</button>';
+
+document.getElementById("copyVoucherBtn").onclick = async function(){
+
+try{
+
+await navigator.clipboard.writeText(result.voucher.code);
+
+this.textContent = "Copied!";
+
+setTimeout(function(){
+document.getElementById("copyVoucherBtn").textContent = "Copy Code";
+},1500);
+
+}catch(error){
+
 createdVoucherMessage.textContent =
-"Voucher created: " + result.voucher.code;
+"Voucher created: " + result.voucher.code +
+" — Copy it manually.";
+
+}
+
+};
 
 }catch(error){
 
