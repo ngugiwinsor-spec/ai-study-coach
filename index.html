@@ -242,11 +242,16 @@ const supabaseClient = window.supabase.createClient(
 <div id="goalProgress">0 / 60 minutes today</div>
 </div>
 </section>
-  <section id="premium" class="panel">
+<section id="premium" class="panel">
 <div class="card">
+
 <div class="icon">💎</div>
+
 <h2>AI Study Coach Premium</h2>
-<p class="subtitle">Unlock more powerful tools and study without limits.</p>
+
+<p class="subtitle">
+Experience smarter studying with powerful tools designed to help you learn faster.
+</p>
 
 <div class="plan-day">
 <div class="plan-title">Premium Monthly</div>
@@ -264,20 +269,42 @@ $14.99 / year
 </div>
 </div>
 
-<h3>Premium includes</h3>
+<h3>✨ Try Premium before you upgrade</h3>
+
+<p class="subtitle">
+See what Premium can do before deciding whether it's right for you.
+</p>
 
 <div class="plan-body">
-✓ Higher AI Tutor limits<br>
-✓ More AI-generated quizzes<br>
-✓ More AI-generated flashcards<br>
-✓ Advanced study planning<br>
-✓ Ad-free experience<br>
-✓ New Premium features
+
+💎 <strong>AI Quizzes</strong><br>
+Create personalized quizzes for your subjects.<br><br>
+
+🃏 <strong>AI Flashcards</strong><br>
+Turn any topic into useful revision cards.<br><br>
+
+📅 <strong>Smart Study Planner</strong><br>
+Create a personalized study schedule.<br><br>
+
+📈 <strong>Progress Tracking</strong><br>
+Track your study time, goals and progress.
+
 </div>
 
-<button class="main-btn" id="upgradeBtn">Upgrade to Premium</button>
+<button class="main-btn" id="previewBtn">
+Try Premium Free
+</button>
+
+<button class="main-btn" id="upgradeBtn">
+Upgrade to Premium
+</button>
+
+<p class="subtitle" style="margin-top:15px;">
+Already have a voucher? Redeem it from your Account.
+</p>
+
 </div>
-  </section>
+</section>
   <section id="account" class="panel">
 <div class="card">
 <div class="icon">👤</div>
@@ -1159,7 +1186,38 @@ renderNotes();
 
 document.getElementById("search").addEventListener("input",renderNotes);
 document.getElementById("noteFilter").addEventListener("change",renderNotes);
-document.getElementById("noteSort").addEventListener("change",renderNotes);});
+document.getElementById("noteSort").addEventListener("change",renderNotes);/* PREMIUM PREVIEW */
+
+const previewBtn = document.getElementById("previewBtn");
+
+if(previewBtn){
+
+previewBtn.onclick = function(){
+
+let previews = Number(localStorage.getItem("premiumPreviews") || 0);
+
+if(previews >= 3){
+
+alert("Your free Premium preview has ended. Redeem a voucher or upgrade to Premium.");
+return;
+
+}
+
+previews++;
+
+localStorage.setItem("premiumPreviews", previews);
+
+alert(
+"Premium Preview Started!\n\n" +
+"You have " + (3 - previews) +
+" free preview session" + ((3 - previews) === 1 ? "" : "s") +
+" remaining."
+);
+
+};
+
+  }
+});
 </script>
 </body>
   </html>
