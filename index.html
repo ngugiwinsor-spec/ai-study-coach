@@ -113,11 +113,10 @@ const supabaseClient = window.supabase.createClient(
 <div class="container">
 <div class="tabs">
 <button class="tab active" data-tab="tutor">AI Tutor</button>
-<button class="tab" data-tab="quiz">Quiz</button>
-<button class="tab" data-tab="flashcards">Flashcards</button>
-<button class="tab" data-tab="planner">Planner</button>
-<button class="tab" data-tab="notes">Notes</button>
-<button class="tab" data-tab="progress">Progress</button>
+<button class="tab" data-tab="quiz" data-premium="true">Quiz 💎</button>
+<button class="tab" data-tab="flashcards" data-premium="true">Flashcards 💎</button>
+<button class="tab" data-tab="planner" data-premium="true">Planner 💎</button>
+<button class="tab" data-tab="progress" data-premium="true">Progress 💎</button>
   <button class="tab" data-tab="premium">💎 Premium</button>
   <button class="tab" data-tab="account">👤 Account</button>
 </div>
@@ -357,14 +356,54 @@ return String(text)
 
 /* TABS */
 document.querySelectorAll(".tab").forEach(function(tab){
-tab.addEventListener("click",function(){
-document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("active")});
-document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active")});
+tab.addEventListener("click",async function(){
+
+const premiumRequired = tab.dataset.premium === "true";
+
+if(premiumRequired){
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(!sessionData.session){
+alert("Please log in to access Premium features.");
+return;
+}
+
+const { data: profile } = await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id", sessionData.session.user.id)
+.single();
+
+const isPremium =
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date());
+
+if(!isPremium){
+alert("This feature requires Premium. Please redeem a voucher or upgrade.");
+return;
+}
+}
+
+document.querySelectorAll(".tab").forEach(function(t){
+t.classList.remove("active");
+});
+
+document.querySelectorAll(".panel").forEach(function(p){
+p.classList.remove("active");
+});
+
 tab.classList.add("active");
+
 document.getElementById(tab.dataset.tab).classList.add("active");
+
 if(tab.dataset.tab==="progress")updateProgress();
 if(tab.dataset.tab==="notes")renderNotes();
 if(tab.dataset.tab==="planner")loadSavedPlan();
+
 });
 });
 
