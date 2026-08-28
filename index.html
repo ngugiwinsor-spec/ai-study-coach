@@ -415,16 +415,42 @@ if(!isPremium){
 const previewStarted =
 localStorage.getItem("premiumPreviewStarted");
 
-if(!previewStarted){
+if(previewStarted){
+
+const startedTime = Number(
+localStorage.getItem("premiumPreviewStartedAt") || 0
+);
+
+const twentyFourHours = 24 * 60 * 60 * 1000;
+
+if(
+startedTime &&
+Date.now() - startedTime >= twentyFourHours
+){
+
+localStorage.removeItem("premiumPreviewStarted");
+localStorage.removeItem("premiumPreviewStartedAt");
+
+alert(
+"Your 24-hour Premium preview has ended. Redeem a voucher or upgrade to Premium."
+);
+
+return;
+}
+
+}else{
 
 const previewsUsed =
 Number(localStorage.getItem("premiumPreviews") || 0);
 
 if(previewsUsed >= 3){
+
 alert(
 "Your free Premium previews have ended. Redeem a voucher or upgrade to Premium."
 );
+
 return;
+
 }
 
 localStorage.setItem(
@@ -437,14 +463,18 @@ localStorage.setItem(
 "true"
 );
 
+localStorage.setItem(
+"premiumPreviewStartedAt",
+String(Date.now())
+);
+
 alert(
 "Premium Preview started!\n\n" +
-"You can now explore Quiz, Flashcards, Planner and Progress."
+"You now have 24 hours to explore Quiz, Flashcards, Planner and Progress."
 );
 
 }
 
-}
 }
 document.querySelectorAll(".tab").forEach(function(t){
 t.classList.remove("active");
