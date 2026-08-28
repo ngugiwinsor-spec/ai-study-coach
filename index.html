@@ -412,12 +412,17 @@ new Date(profile.premium_until) > new Date());
 
 if(!isPremium){
 
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted");
+
+if(!previewStarted){
+
 const previewsUsed =
 Number(localStorage.getItem("premiumPreviews") || 0);
 
 if(previewsUsed >= 3){
 alert(
-"Your free Premium preview has ended. Redeem a voucher or upgrade to Premium."
+"Your free Premium previews have ended. Redeem a voucher or upgrade to Premium."
 );
 return;
 }
@@ -427,17 +432,20 @@ localStorage.setItem(
 String(previewsUsed + 1)
 );
 
-alert(
-"Premium Preview: " +
-(2 - previewsUsed) +
-" preview session" +
-((2 - previewsUsed) === 1 ? "" : "s") +
-" remaining."
+localStorage.setItem(
+"premiumPreviewStarted",
+"true"
 );
-}
+
+alert(
+"Premium Preview started!\n\n" +
+"You can now explore Quiz, Flashcards, Planner and Progress."
+);
 
 }
 
+}
+}
 document.querySelectorAll(".tab").forEach(function(t){
 t.classList.remove("active");
 });
