@@ -434,48 +434,94 @@ localStorage.removeItem("premiumPreviewStartedAt");
 alert(
 "Your 24-hour Premium preview has ended. Redeem a voucher or upgrade to Premium."
 );
+const premiumRequired = tab.dataset.premium === "true";
 
+if(premiumRequired){
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(!sessionData.session){
+alert("Please log in to access Premium features.");
 return;
 }
 
-}else{
+const { data: profile } = await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id", sessionData.session.user.id)
+.single();
 
-const previewsUsed =
-Number(localStorage.getItem("premiumPreviews") || 0);
+const isPremium =
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date());
 
-if(previewsUsed >= 3){
+if(!isPremium){
 
-alert(
-"Your free Premium previews have ended. Redeem a voucher or upgrade to Premium."
-);
+document.querySelectorAll(".tab").forEach(function(tab){
 
+tab.addEventListener("click",async function(){
+
+const premiumRequired = tab.dataset.premium === "true";
+
+if(premiumRequired){
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(!sessionData.session){
+alert("Please log in to access this feature.");
+return;
+}
+
+const { data: profile } =
+await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id",sessionData.session.user.id)
+.single();
+
+const isPremium =
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date());
+
+if(!isPremium){
+
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted");
+
+if(!previewStarted){
+
+alert("Go to the Premium tab and tap Try Premium Free.");
 return;
 
 }
 
-localStorage.setItem(
-"premiumPreviews",
-String(previewsUsed + 1)
-);
+const startedTime =
+Number(localStorage.getItem("premiumPreviewStartedAt") || 0);
 
-localStorage.setItem(
-"premiumPreviewStarted",
-"true"
-);
+const twentyFourHours =
+24 * 60 * 60 * 1000;
 
-localStorage.setItem(
-"premiumPreviewStartedAt",
-String(Date.now())
-);
+if(!startedTime ||
+Date.now() - startedTime >= twentyFourHours){
 
-alert(
-"Premium Preview started!\n\n" +
-"You now have 24 hours to explore Quiz, Flashcards, Planner and Progress."
-);
+localStorage.removeItem("premiumPreviewStarted");
+localStorage.removeItem("premiumPreviewStartedAt");
+
+alert("Your Premium preview has ended. Redeem a voucher or upgrade to Premium.");
+return;
 
 }
 
 }
+
+}
+
 document.querySelectorAll(".tab").forEach(function(t){
 t.classList.remove("active");
 });
@@ -486,13 +532,27 @@ p.classList.remove("active");
 
 tab.classList.add("active");
 
-document.getElementById(tab.dataset.tab).classList.add("active");
+const panel =
+document.getElementById(tab.dataset.tab);
 
-if(tab.dataset.tab==="progress")updateProgress();
-if(tab.dataset.tab==="notes")renderNotes();
-if(tab.dataset.tab==="planner")loadSavedPlan();
+if(panel){
+panel.classList.add("active");
+}
+
+if(tab.dataset.tab==="progress"){
+updateProgress();
+}
+
+if(tab.dataset.tab==="notes"){
+renderNotes();
+}
+
+if(tab.dataset.tab==="planner"){
+loadSavedPlan();
+}
 
 });
+
 });
 
 /* KEEP THE WORKING API CONNECTION */
