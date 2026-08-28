@@ -411,9 +411,31 @@ profile.subscription === "premium" &&
 new Date(profile.premium_until) > new Date());
 
 if(!isPremium){
-alert("This feature requires Premium. Please redeem a voucher or upgrade.");
+
+const previewsUsed =
+Number(localStorage.getItem("premiumPreviews") || 0);
+
+if(previewsUsed >= 3){
+alert(
+"Your free Premium preview has ended. Redeem a voucher or upgrade to Premium."
+);
 return;
 }
+
+localStorage.setItem(
+"premiumPreviews",
+String(previewsUsed + 1)
+);
+
+alert(
+"Premium Preview: " +
+(2 - previewsUsed) +
+" preview session" +
+((2 - previewsUsed) === 1 ? "" : "s") +
+" remaining."
+);
+}
+
 }
 
 document.querySelectorAll(".tab").forEach(function(t){
