@@ -294,7 +294,8 @@ Track your study time, goals and progress.
 <button class="main-btn" id="previewBtn">
 Try Premium Free
 </button>
-
+  
+<div id="previewCountdown" class="subtitle"></div>
 <button class="main-btn" id="upgradeBtn">
 Upgrade to Premium
 </button>
@@ -1169,20 +1170,148 @@ document.getElementById("search").addEventListener("input",renderNotes);
 document.getElementById("noteFilter").addEventListener("change",renderNotes);
 document.getElementById("noteSort").addEventListener("change",renderNotes);/* PREMIUM PREVIEW */
 
+/* PREMIUM PREVIEW */
+
 const previewBtn = document.getElementById("previewBtn");
+const previewCountdown = document.getElementById("previewCountdown");
+
+const PREVIEW_DURATION = 24 * 60 * 60 * 1000;
+const MAX_PREVIEWS = 3;
+
+function updatePreviewCountdown(){
+
+const startedAt = Number(
+localStorage.getItem("premiumPreviewStartedAt") || 0
+);
+
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted") === "true";
+
+if(!previewStarted || !startedAt){
+
+if(previewCountdown){
+previewCountdown.textContent = "";
+}
+
+return;
+}
+
+const remaining = PREVIEW_DURATION - (Date.now() - startedAt);
+
+if(remaining <= 0){
+
+localStorage.removeItem("premiumPreviewStarted");
+localStorage.removeItem("premiumPreviewStartedAt");
+
+if(previewCountdown){
+previewCountdown.textContent =
+"Your 24-hour Premium preview has ended.";
+}
+
+return;
+}
+
+const hours = Math.floor(
+remaining / (60 * 60 * 1000)
+);
+
+const minutes = Math.floor(
+(remaining % (60 * 60 * 1000)) /
+(60 * 1000)
+);
+
+if(previewCountdown){
+
+previewCountdown.textContent =
+"💎 Premium Preview: " +
+hours + "h " +
+minutes + "m remaining";
+
+}
+
+}
 
 if(previewBtn){
 
 previewBtn.onclick = function(){
 
-let previews = Number(localStorage.getItem("premiumPreviews") || 0);
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted") === "true";
 
-if(previews >= 3){
+const startedAt = Number(
+localStorage.getItem("premiumPreviewStartedAt") || 0
+);
 
-alert("Your free Premium preview has ended. Redeem a voucher or upgrade to Premium.");
+if(previewStarted && startedAt){
+
+const remaining =
+PREVIEW_DURATION - (Date.now() - startedAt);
+
+if(remaining > 0){
+
+alert(
+"Your Premium Preview is already active.\n\n" +
+"You can continue exploring Premium features."
+);
+
+updatePreviewCountdown();
+
 return;
 
 }
+
+localStorage.removeItem("premiumPreviewStarted");
+localStorage.removeItem("premiumPreviewStartedAt");
+
+}
+
+const previewsUsed =
+Number(localStorage.getItem("premiumPreviews") || 0);
+
+if(previewsUsed >= MAX_PREVIEWS){
+
+alert(
+"Your free Premium previews have ended.\n\n" +
+"Redeem a voucher or upgrade to Premium."
+);
+
+return;
+
+}
+
+localStorage.setItem(
+"premiumPreviews",
+String(previewsUsed + 1)
+);
+
+localStorage.setItem(
+"premiumPreviewStarted",
+"true"
+);
+
+localStorage.setItem(
+"premiumPreviewStartedAt",
+String(Date.now())
+);
+
+alert(
+"💎 Premium Preview Started!\n\n" +
+"You now have 24 hours to explore Quiz, Flashcards, Planner and Progress."
+);
+
+updatePreviewCountdown();
+
+};
+
+}
+
+updatePreviewCountdown();
+
+setInterval(function(){
+
+updatePreviewCountdown();
+
+},60000);
 
 previews++;
 
