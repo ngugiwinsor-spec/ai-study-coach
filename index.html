@@ -661,27 +661,103 @@ let flashIndex=0;
 let showingAnswer=false;
 
 document.getElementById("makeFlash").onclick=async function(){
+
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted") === "true";
+
+const startedAt =
+Number(localStorage.getItem("premiumPreviewStartedAt") || 0);
+
+const previewDuration =
+24 * 60 * 60 * 1000;
+
+const previewActive =
+previewStarted &&
+startedAt &&
+(Date.now() - startedAt < previewDuration);
+
+let isPremium = false;
+
+if(!previewActive){
+
+try{
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(sessionData.session){
+
+const { data: profile } =
+await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id",sessionData.session.user.id)
+.single();
+
+if(
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date())
+){
+
+isPremium = true;
+
+}
+
+}
+
+}catch(error){
+
+console.log("Premium status check failed:",error);
+
+}
+
+}
+
+if(!isPremium && !previewActive){
+
+alert(
+"Flashcards are a Premium feature.\n\n" +
+"Start your 24-hour Premium Preview from the 💎 Premium tab, " +
+"or redeem a voucher."
+);
+
+return;
+
+}
+
 const topic=document.getElementById("flashTopic").value.trim();
 const count=document.getElementById("flashCount").value;
+
 if(!topic)return;
 
 document.getElementById("flashArea").classList.add("show");
 document.getElementById("flashText").textContent="Creating...";
 
 try{
+
 const result=await askAI(
 "Create exactly "+count+" flashcards about "+topic+
 ". Return ONLY valid JSON in this exact format: "+
 '[{"question":"Question","answer":"Answer"}]'
 );
 
-flashcards=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
+flashcards=JSON.parse(
+result.replace(/```json/g,"").replace(/```/g,"").trim()
+);
+
 flashIndex=0;
 showingAnswer=false;
 showFlashcard();
+
 }catch(e){
-document.getElementById("flashText").textContent="Couldn't create the flashcards.";
+
+document.getElementById("flashText").textContent=
+"Couldn't create the flashcards.";
+
 }
+
 };
 
 function showFlashcard(){
