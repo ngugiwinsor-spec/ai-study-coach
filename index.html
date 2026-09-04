@@ -1284,33 +1284,67 @@ document.getElementById("fill").style.width=percent+"%";
 }
 
 document.getElementById("addMinutes").onclick=function(){
+
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted") === "true";
+
+const startedAt =
+Number(localStorage.getItem("premiumPreviewStartedAt") || 0);
+
+const previewDuration =
+24 * 60 * 60 * 1000;
+
+const previewActive =
+previewStarted &&
+startedAt &&
+(Date.now() - startedAt < previewDuration);
+
+if(!previewActive){
+
+alert(
+"Progress Tracking is a Premium feature.\n\n" +
+"Start your 24-hour Premium Preview from the 💎 Premium tab, " +
+"or redeem a voucher."
+);
+
+return;
+
+}
+
 const input=document.getElementById("studyMinutes");
 const minutes=Number(input.value);
+
 if(!minutes)return;
 
 const data=getProgress();
 
 const goal=Number(document.getElementById("dailyGoal").value);
+
 if(goal>0)data.dailyGoal=goal;
 
 const today=new Date().toISOString().split("T")[0];
 
 if(data.lastStudyDay!==today){
+
 data.todayMinutes=0;
 data.lastStudyDay=today;
+
 }
 
 data.todayMinutes=(data.todayMinutes||0)+minutes;
 data.minutes+=minutes;
 
 if(data.lastStudyDate!==today){
+
 data.streak=(data.streak||0)+1;
 data.lastStudyDate=today;
+
 }
 
 saveProgress(data);
 input.value="";
 updateProgress();
+
 };
 
 updateProgress();
