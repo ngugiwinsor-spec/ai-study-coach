@@ -486,10 +486,14 @@ previewStarted &&
 startedAt &&
 (Date.now() - startedAt < previewDuration);
 
+let isPremium = false;
+
+if(!previewActive){
+
+try{
+
 const { data: sessionData } =
 await supabaseClient.auth.getSession();
-
-let isPremium = false;
 
 if(sessionData.session){
 
@@ -508,6 +512,14 @@ new Date(profile.premium_until) > new Date())
 ){
 
 isPremium = true;
+
+}
+
+}
+
+}catch(error){
+
+console.log("Premium status check failed:",error);
 
 }
 
