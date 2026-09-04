@@ -471,6 +471,60 @@ let current=0;
 let score=0;
 
 document.getElementById("makeQuiz").onclick=async function(){
+
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted") === "true";
+
+const startedAt =
+Number(localStorage.getItem("premiumPreviewStartedAt") || 0);
+
+const previewDuration =
+24 * 60 * 60 * 1000;
+
+const previewActive =
+previewStarted &&
+startedAt &&
+(Date.now() - startedAt < previewDuration);
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+let isPremium = false;
+
+if(sessionData.session){
+
+const { data: profile } =
+await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id",sessionData.session.user.id)
+.single();
+
+if(
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date())
+){
+
+isPremium = true;
+
+}
+
+}
+
+if(!isPremium && !previewActive){
+
+alert(
+"Quiz is a Premium feature.\n\n" +
+"Start your 24-hour Premium Preview from the 💎 Premium tab, " +
+"or redeem a voucher."
+);
+
+return;
+
+}
+
 const topic=document.getElementById("quizTopic").value.trim();
 const count=document.getElementById("quizCount").value;
 const difficulty=document.getElementById("difficulty").value;
@@ -486,6 +540,7 @@ area.textContent="Creating your quiz...";
 area.classList.add("show");
 
 try{
+
 const result=await askAI(
 "Create exactly "+count+" multiple choice questions about "+topic+
 ". Difficulty: "+difficulty+
@@ -493,14 +548,21 @@ const result=await askAI(
 '[{"question":"Question","options":["A","B","C","D"],"answer":0}]'
 );
 
-questions=JSON.parse(result.replace(/```json/g,"").replace(/```/g,"").trim());
+questions=JSON.parse(
+result.replace(/```json/g,"").replace(/```/g,"").trim()
+);
+
 current=0;
 score=0;
+
 showQuestion();
 
 }catch(e){
+
 area.textContent="Couldn't create the quiz. Please try again.";
+
 }
+
 };
 
 function showQuestion(){
