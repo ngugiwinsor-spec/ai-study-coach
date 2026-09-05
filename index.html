@@ -323,8 +323,11 @@ Already have a voucher? Redeem it from your Account.
 <button class="main-btn" id="signUpBtn">Create Account</button>
 <button class="main-btn" id="loginBtn">Log In</button>
 
-<button class="main-btn" id="logoutBtn" style="display:none;">Log Out</button>
+<button class="main-btn" id="forgotPasswordBtn">
+Forgot Password?
+</button>
 
+<button class="main-btn" id="logoutBtn" style="display:none;">Log Out</button>
 <div id="accountStatus"></div>
   <div id="voucherBox" style="margin-top:15px;">
   <input
@@ -938,6 +941,44 @@ return;
 }
 
 message.textContent = "Logged in successfully!";
+};
+  
+/* FORGOT PASSWORD */
+
+document.getElementById("forgotPasswordBtn").onclick = async function(){
+
+const email = document.getElementById("authEmail").value.trim();
+const message = document.getElementById("authMessage");
+
+if(!email){
+
+message.textContent =
+"Enter your email address first, then tap Forgot Password.";
+
+return;
+
+}
+
+message.textContent = "Sending password reset email...";
+
+const { error } =
+await supabaseClient.auth.resetPasswordForEmail(
+email,
+{
+redirectTo: window.location.origin
+}
+);
+
+if(error){
+
+message.textContent = error.message;
+return;
+
+}
+
+message.textContent =
+"Password reset email sent. Check your email.";
+
 };
  supabaseClient.auth.onAuthStateChange(function(event, session){
 const accountStatus = document.getElementById("accountStatus");
