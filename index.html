@@ -1283,7 +1283,7 @@ document.getElementById("overall").textContent=percent+"%";
 document.getElementById("fill").style.width=percent+"%";
 }
 
-document.getElementById("addMinutes").onclick=function(){
+document.getElementById("addMinutes").onclick=async function(){
 
 const previewStarted =
 localStorage.getItem("premiumPreviewStarted") === "true";
@@ -1299,7 +1299,46 @@ previewStarted &&
 startedAt &&
 (Date.now() - startedAt < previewDuration);
 
+let isPremium = false;
+
 if(!previewActive){
+
+try{
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(sessionData.session){
+
+const { data: profile } =
+await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id",sessionData.session.user.id)
+.single();
+
+if(
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date())
+){
+
+isPremium = true;
+
+}
+
+}
+
+}catch(error){
+
+console.log("Premium status check failed:",error);
+
+}
+
+}
+
+if(!isPremium && !previewActive){
 
 alert(
 "Progress Tracking is a Premium feature.\n\n" +
@@ -1346,7 +1385,6 @@ input.value="";
 updateProgress();
 
 };
-
 updateProgress();
 renderNotes();
 
