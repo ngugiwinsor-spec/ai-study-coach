@@ -326,6 +326,29 @@ Already have a voucher? Redeem it from your Account.
 <button class="main-btn" id="forgotPasswordBtn">
 Forgot Password?
 </button>
+  <div id="resetPasswordBox" style="display:none; margin-top:15px;">
+
+<label>New Password</label>
+<input
+  id="newPassword"
+  type="password"
+  placeholder="Enter your new password"
+>
+
+<label>Confirm New Password</label>
+<input
+  id="confirmPassword"
+  type="password"
+  placeholder="Confirm your new password"
+>
+
+<button class="main-btn" id="resetPasswordBtn">
+  Set New Password
+</button>
+
+<div id="resetPasswordMessage"></div>
+
+  </div>
 
 <button class="main-btn" id="logoutBtn" style="display:none;">Log Out</button>
 <div id="accountStatus"></div>
@@ -978,6 +1001,83 @@ return;
 
 message.textContent =
 "Password reset email sent. Check your email.";
+
+};
+
+/* SET NEW PASSWORD */
+
+supabaseClient.auth.onAuthStateChange(async function(event, session){
+
+if(event === "PASSWORD_RECOVERY"){
+
+const resetBox =
+document.getElementById("resetPasswordBox");
+
+if(resetBox){
+resetBox.style.display = "block";
+}
+
+}
+
+});
+
+document.getElementById("resetPasswordBtn").onclick = async function(){
+
+const newPassword =
+document.getElementById("newPassword").value;
+
+const confirmPassword =
+document.getElementById("confirmPassword").value;
+
+const message =
+document.getElementById("resetPasswordMessage");
+
+if(!newPassword || !confirmPassword){
+
+message.textContent =
+"Please enter and confirm your new password.";
+
+return;
+
+}
+
+if(newPassword !== confirmPassword){
+
+message.textContent =
+"Passwords do not match.";
+
+return;
+
+}
+
+if(newPassword.length < 6){
+
+message.textContent =
+"Password must be at least 6 characters.";
+
+return;
+
+}
+
+message.textContent = "Updating password...";
+
+const { error } =
+await supabaseClient.auth.updateUser({
+password: newPassword
+});
+
+if(error){
+
+message.textContent = error.message;
+return;
+
+}
+
+message.textContent =
+"Password updated successfully! You can now log in with your new password.";
+
+document.getElementById("newPassword").value = "";
+document.getElementById("confirmPassword").value = "";
 
 };
  supabaseClient.auth.onAuthStateChange(function(event, session){
