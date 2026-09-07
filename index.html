@@ -560,34 +560,59 @@ loadSavedPlan();
 });
 
 /* KEEP THE WORKING API CONNECTION */
-async function askAI(message, conversationHistory = []){
+async function askAI(
+  message,
+  conversationHistory = [],
+  image = null
+){
 
-let contextualMessage = message;
+  let contextualMessage = message;
 
-if(conversationHistory.length > 0){
+  if(conversationHistory.length > 0){
 
-contextualMessage =
-"You are the student's AI Tutor. Continue the conversation naturally and remember the previous context.\n" +
-"Give clear, organized answers using normal plain text only.\n" +
-"Do not use Markdown symbols such as #, ##, ###, **, __, ---, or bullet symbols.\n" +
-"Do not use decorative separators.\n" +
-"Use short paragraphs and simple numbered lists when a list is necessary.\n" +
-"Do not mention that you were given conversation history.\n\n" +
+    contextualMessage =
+      "You are the student's AI Tutor. Continue the conversation naturally and remember the previous context.\n" +
+      "Give clear, organized answers using normal plain text only.\n" +
+      "Do not use Markdown symbols such as #, ##, ###, **, __, ---, or bullet symbols.\n" +
+      "Do not use decorative separators.\n" +
+      "Use short paragraphs and simple numbered lists when a list is necessary.\n" +
+      "Do not mention that you were given conversation history.\n\n" +
 
-"PREVIOUS CONVERSATION:\n" +
+      "PREVIOUS CONVERSATION:\n" +
 
-conversationHistory.map(function(item){
+      conversationHistory.map(function(item){
 
-return (
-(item.role === "user" ? "Student: " : "AI Tutor: ") +
-item.content
-);
+        return (
+          (item.role === "user" ? "Student: " : "AI Tutor: ") +
+          item.content
+        );
 
-}).join("\n\n") +
+      }).join("\n\n") +
 
-"\n\nCURRENT STUDENT MESSAGE:\n" +
-message;
+      "\n\nCURRENT STUDENT MESSAGE:\n" +
+      message;
+  }
 
+  const response = await fetch("/api/chat",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      message: contextualMessage,
+      image: image
+    })
+  });
+
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(
+      data?.error || "AI request failed"
+    );
+  }
+
+  return data.answer;
 }
 
 const response = await fetch("/api/chat",{
@@ -701,7 +726,11 @@ const input=document.getElementById("question");
 
 const message=input.value.trim();
 
-if(!message)return;
+const fileInput=document.getElementById("fileInput");
+
+const file=fileInput.files[0];
+
+if(!message && !file)return;
 
 const button=document.getElementById("ask");
 
@@ -710,23 +739,61 @@ button.textContent="Thinking...";
 
 chatHistory.push({
 role:"user",
-content:message
+content:
+message ||
+"Please analyze the attached image."
 });
 
 saveChatHistory();
 
 renderChat();
 
-
-
 try{
+
+let imageData=null;
+
+if(file){
+
+if(!file.type.startsWith("image/")){
+
+throw new Error(
+"Only image attachments are supported right now."
+);
+
+}
+
+imageData=await new Promise(function(resolve,reject){
+
+const reader=new FileReader();
+
+reader.onload=function(){
+
+resolve(reader.result);
+
+};
+
+reader.onerror=function(){
+
+reject(
+new Error("Unable to read the image.")
+);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+}
 
 const previousHistory =
 chatHistory.slice(0,-1);
 
 const result=await askAI(
-message,
-previousHistory
+message ||
+"Please analyze the attached image and explain it clearly for me.",
+previousHistory,
+imageData
 );
 
 chatHistory.push({
@@ -739,6 +806,10 @@ saveChatHistory();
 renderChat();
 
 input.value="";
+
+fileInput.value="";
+
+document.getElementById("fileName").textContent="";
 
 }catch(error){
 
@@ -757,14 +828,19 @@ const errorBubble=document.createElement("div");
 errorBubble.className="chat-message ai";
 
 const label=document.createElement("div");
+
 label.className="chat-label";
+
 label.textContent="AI TUTOR";
 
 const text=document.createElement("div");
+
 text.textContent=
+error.message ||
 "Unable to connect to the AI right now. Please try again.";
 
 errorBubble.appendChild(label);
+
 errorBubble.appendChild(text);
 
 output.appendChild(errorBubble);
@@ -772,11 +848,13 @@ output.appendChild(errorBubble);
 }
 
 button.disabled=false;
+
 button.textContent="Send Message";
 
 input.focus();
 
 };
+
 document.getElementById("question").addEventListener(
 "keydown",
 function(event){
