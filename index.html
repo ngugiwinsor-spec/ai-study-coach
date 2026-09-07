@@ -746,10 +746,12 @@ file.type.startsWith("image/");
 const isPDF =
 file.type === "application/pdf";
 
-if(!isImage && !isPDF){
+const isDOCX =
+file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
+if(!isImage && !isPDF && !isDOCX){
 throw new Error(
-"Only images and PDF files are supported right now."
+"Only images, PDF, and DOCX files are supported right now."
 );
 
 }
@@ -784,6 +786,12 @@ imageData=fileData;
 }
 
 else if(isPDF){
+
+pdfData=fileData;
+
+}
+
+else if(isDOCX){
 
 pdfData=fileData;
 
