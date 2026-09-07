@@ -6,11 +6,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, image } = req.body || {};
+    const {
+      message,
+      image,
+      pdf,
+      fileName
+    } = req.body || {};
 
-    if ((!message || !message.trim()) && !image) {
+    if (
+      (!message || !message.trim()) &&
+      !image &&
+      !pdf
+    ) {
       return res.status(400).json({
-        error: "Message or image is required"
+        error: "Message, image, or PDF is required"
       });
     }
 
@@ -24,7 +33,26 @@ export default async function handler(req, res) {
 
     let userContent;
 
-    if (image) {
+    if (pdf) {
+
+      userContent = [
+        {
+          type: "text",
+          text:
+            message?.trim() ||
+            "Please analyze this PDF and explain its contents clearly for a student."
+        },
+        {
+          type: "file",
+          file: {
+            filename: fileName || "document.pdf",
+            file_data: pdf
+          }
+        }
+      ];
+
+    } else if (image) {
+
       userContent = [
         {
           type: "text",
@@ -39,8 +67,11 @@ export default async function handler(req, res) {
           }
         }
       ];
+
     } else {
+
       userContent = message.trim();
+
     }
 
     const response = await fetch(
@@ -55,11 +86,12 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: "openrouter/free",
+
           messages: [
             {
               role: "system",
               content:
-                "You are AI Study Coach. Help students understand academic topics clearly. When an image is provided, carefully analyze it and explain its academic content accurately. Give accurate explanations, examples, quizzes, flashcards, and study plans when requested."
+                "You are AI Study Coach. Help students understand academic topics clearly. When an image is provided, carefully analyze it and explain its academic content accurately. When a PDF is provided, read and analyze its contents carefully and explain them clearly for a student. Give accurate explanations, examples, quizzes, flashcards, and study plans when requested."
             },
             {
               role: "user",
@@ -94,6 +126,7 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
+
     console.error(error);
 
     return res.status(500).json({
