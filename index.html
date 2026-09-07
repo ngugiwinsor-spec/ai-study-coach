@@ -717,25 +717,7 @@ saveChatHistory();
 
 renderChat();
 
-document.getElementById("attachButton").onclick=function(){
 
-document.getElementById("fileInput").click();
-
-};
-
-document.getElementById("fileInput").addEventListener(
-"change",
-function(){
-
-const file=this.files[0];
-
-if(!file)return;
-
-document.getElementById("fileName").textContent =
-"📎 " + file.name;
-
-}
-);
 
 try{
 
@@ -829,6 +811,25 @@ renderChat();
 };
 
 renderChat();
+document.getElementById("attachButton").onclick=function(){
+
+document.getElementById("fileInput").click();
+
+};
+
+document.getElementById("fileInput").addEventListener(
+"change",
+function(){
+
+const file=this.files[0];
+
+if(!file)return;
+
+document.getElementById("fileName").textContent =
+"📎 " + file.name;
+
+}
+);
 
 /* QUIZ */
 let questions=[];
