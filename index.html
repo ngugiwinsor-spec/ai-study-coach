@@ -565,6 +565,7 @@ async function askAI(
   conversationHistory = [],
   image = null,
   pdf = null,
+  docx = null,
   fileName = null
 ){
 
@@ -604,6 +605,7 @@ async function askAI(
   message: contextualMessage,
   image: image,
   pdf: pdf,
+  docx: docx,
   fileName: fileName
 })
   });
@@ -738,6 +740,7 @@ try{
 
 let imageData=null;
 let pdfData=null;
+let docxData=null;
 if(file){
 
 const isImage =
@@ -793,7 +796,7 @@ pdfData=fileData;
 
 else if(isDOCX){
 
-pdfData=fileData;
+docxData=fileData;
 
 }
 
@@ -808,6 +811,7 @@ const result=await askAI(
   previousHistory,
   imageData,
   pdfData,
+  docxData,
   file ? file.name : null
 );
 
