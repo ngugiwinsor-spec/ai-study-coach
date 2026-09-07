@@ -518,8 +518,11 @@ let contextualMessage = message;
 if(conversationHistory.length > 0){
 
 contextualMessage =
-"You are continuing an ongoing conversation with a student. " +
-"Use the previous conversation to understand references and follow-up questions. " +
+"You are the student's AI Tutor. Continue the conversation naturally and remember the previous context.\n" +
+"Give clear, organized answers using normal plain text only.\n" +
+"Do not use Markdown symbols such as #, ##, ###, **, __, ---, or bullet symbols.\n" +
+"Do not use decorative separators.\n" +
+"Use short paragraphs and simple numbered lists when a list is necessary.\n" +
 "Do not mention that you were given conversation history.\n\n" +
 
 "PREVIOUS CONVERSATION:\n" +
@@ -568,6 +571,20 @@ localStorage.setItem(
 JSON.stringify(chatHistory)
 );
 }
+function cleanTutorResponse(text){
+
+return text
+.replace(/^#{1,6}\s*/gm,"")
+.replace(/\*\*(.*?)\*\*/g,"$1")
+.replace(/__(.*?)__/g,"$1")
+.replace(/~~(.*?)~~/g,"$1")
+.replace(/^[-*•]\s+/gm,"")
+.replace(/^\s*[-_]{3,}\s*$/gm,"")
+.replace(/`{1,3}/g,"")
+.replace(/\n{3,}/g,"\n\n")
+.trim();
+
+  }
 
 function renderChat(){
 
@@ -617,8 +634,7 @@ message.role === "user" ? "YOU" : "AI TUTOR";
 
 const text=document.createElement("div");
 
-text.textContent=message.content;
-
+text.textContent=cleanTutorResponse(message.content);
 bubble.appendChild(label);
 bubble.appendChild(text);
 
