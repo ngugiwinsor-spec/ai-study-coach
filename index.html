@@ -180,6 +180,7 @@ max-width:65%;
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.9.0/mammoth.browser.min.js"></script>
   <script>
 const SUPABASE_URL = "https://svxfjjxxncjuwvyuguue.supabase.co";
 const SUPABASE_KEY = "sb_publishable_zJQ33OqFywvp-Yj5rr3Urg_4ipuw0Ow";
@@ -605,7 +606,7 @@ async function askAI(
   message: contextualMessage,
   image: image,
   pdf: pdf,
-  docx: docx,
+  docxText: docxText,
   fileName: fileName
 })
   });
@@ -796,7 +797,15 @@ pdfData=fileData;
 
 else if(isDOCX){
 
-docxData=fileData;
+const arrayBuffer =
+await file.arrayBuffer();
+
+const result =
+await mammoth.extractRawText({
+  arrayBuffer: arrayBuffer
+});
+
+docxData = result.value;
 
 }
 
@@ -805,15 +814,14 @@ docxData=fileData;
 const previousHistory =
 chatHistory.slice(0,-1);
 
-const result=await askAI(
-  message ||
-  "Please analyze the attached file and explain it clearly for me.",
-  previousHistory,
-  imageData,
-  pdfData,
-  docxData,
-  file ? file.name : null
-);
+async function askAI(
+  message,
+  conversationHistory = [],
+  image = null,
+  pdf = null,
+  docxText = null,
+  fileName = null
+){
 
 chatHistory.push({
 role:"assistant",
