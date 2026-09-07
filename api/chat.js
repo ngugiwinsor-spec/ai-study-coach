@@ -6,11 +6,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body || {};
+    const { message, image } = req.body || {};
 
-    if (!message || !message.trim()) {
+    if ((!message || !message.trim()) && !image) {
       return res.status(400).json({
-        error: "Message is required"
+        error: "Message or image is required"
       });
     }
 
@@ -20,6 +20,27 @@ export default async function handler(req, res) {
       return res.status(500).json({
         error: "OPENROUTER_API_KEY is missing"
       });
+    }
+
+    let userContent;
+
+    if (image) {
+      userContent = [
+        {
+          type: "text",
+          text:
+            message?.trim() ||
+            "Please analyze this image and explain what it contains clearly for a student."
+        },
+        {
+          type: "image_url",
+          image_url: {
+            url: image
+          }
+        }
+      ];
+    } else {
+      userContent = message.trim();
     }
 
     const response = await fetch(
@@ -38,11 +59,11 @@ export default async function handler(req, res) {
             {
               role: "system",
               content:
-                "You are AI Study Coach. Help students understand academic topics clearly. Give accurate explanations, examples, quizzes, flashcards, and study plans when requested."
+                "You are AI Study Coach. Help students understand academic topics clearly. When an image is provided, carefully analyze it and explain its academic content accurately. Give accurate explanations, examples, quizzes, flashcards, and study plans when requested."
             },
             {
               role: "user",
-              content: message.trim()
+              content: userContent
             }
           ]
         })
@@ -73,9 +94,12 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
+    console.error(error);
+
     return res.status(500).json({
-      error: error?.message ||
+      error:
+        error?.message ||
         "Unable to connect to the AI"
     });
   }
-        }
+          }
