@@ -10,14 +10,14 @@ export default async function handler(req, res) {
   message,
   image,
   pdf,
-  docx,
+  docxText,
   fileName
 } = req.body || {};
     if (
       (!message || !message.trim()) &&
 !image &&
 !pdf &&
-!docx
+!docxtext
     ) {
       return res.status(400).json({
         error: "Message, image, PDF, or DOCX is required"
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
     let userContent;
 
-    if (pdf || docx) {
+    if (pdf) {
 
       userContent = [
         {
@@ -51,6 +51,13 @@ export default async function handler(req, res) {
           }
         }
       ];
+          } else if (docxText) {
+
+      userContent =
+        (message?.trim() ||
+        "Please analyze this Word document and explain its contents clearly for a student.") +
+        "\n\nWORD DOCUMENT CONTENT:\n" +
+        docxText;
 
     } else if (image) {
 
