@@ -889,25 +889,49 @@ renderChat();
 };
 
 renderChat();
-document.getElementById("attachButton").onclick=function(){
 
-document.getElementById("fileInput").click();
+const attachButton =
+document.getElementById("attachButton");
+
+const fileInput =
+document.getElementById("fileInput");
+
+const fileName =
+document.getElementById("fileName");
+
+if(attachButton && fileInput){
+
+attachButton.onclick=function(event){
+
+event.preventDefault();
+
+fileInput.click();
 
 };
 
-document.getElementById("fileInput").addEventListener(
-"change",
-function(){
+fileInput.onchange=function(){
 
-const file=this.files[0];
+const file=fileInput.files[0];
 
 if(!file)return;
 
-document.getElementById("fileName").textContent =
-"📎 " + file.name;
+if(!file.type.startsWith("image/")){
+
+fileName.textContent =
+"📎 Please select an image";
+
+fileInput.value="";
+
+return;
 
 }
-);
+
+fileName.textContent =
+"📎 " + file.name;
+
+};
+
+}
 
 /* QUIZ */
 let questions=[];
