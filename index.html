@@ -936,12 +936,12 @@ if(!file)return;
 
 if(
 !file.type.startsWith("image/") &&
-file.type !== "application/pdf"
+file.type !== "application/pdf" &&
+file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 ){
 
 fileName.textContent =
-"📎 Please select an image or PDF";
-
+"📎 Please select an image, PDF, or DOCX";
 fileInput.value="";
 
 return;
