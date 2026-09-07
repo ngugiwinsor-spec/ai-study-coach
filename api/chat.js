@@ -7,19 +7,20 @@ export default async function handler(req, res) {
 
   try {
     const {
-      message,
-      image,
-      pdf,
-      fileName
-    } = req.body || {};
-
+  message,
+  image,
+  pdf,
+  docx,
+  fileName
+} = req.body || {};
     if (
       (!message || !message.trim()) &&
-      !image &&
-      !pdf
+!image &&
+!pdf &&
+!docx
     ) {
       return res.status(400).json({
-        error: "Message, image, or PDF is required"
+        error: "Message, image, PDF, or DOCX is required"
       });
     }
 
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
 
     let userContent;
 
-    if (pdf) {
+    if (pdf || docx) {
 
       userContent = [
         {
@@ -45,7 +46,7 @@ export default async function handler(req, res) {
         {
           type: "file",
           file: {
-            filename: fileName || "document.pdf",
+            filename: fileName || "document",
             file_data: pdf
           }
         }
