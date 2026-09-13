@@ -1154,6 +1154,14 @@ runDocumentAction(
 );
 
 };
+
+document.getElementById("examQuizBtn").onclick=function(){
+
+runDocumentAction(
+"Create a 10-question exam quiz based only on the attached document. Cover the most important concepts, facts, definitions, and ideas. Make each question multiple choice with four options: A, B, C, and D. Clearly identify the correct answer after each question. Make the questions suitable for university-level exam revision. Do not use information that is not contained in the document."
+);
+
+};
   
 /* QUIZ */
 let questions=[];
