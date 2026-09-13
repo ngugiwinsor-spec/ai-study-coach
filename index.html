@@ -606,7 +606,7 @@ async function askAI(
   message: contextualMessage,
   image: image,
   pdf: pdf,
-  docxText: docxText,
+  docxText: docx,
   fileName: fileName
 })
   });
@@ -814,19 +814,31 @@ docxData = result.value;
 const previousHistory =
 chatHistory.slice(0,-1);
 
-async function askAI(
-  message,
-  conversationHistory = [],
-  image = null,
-  pdf = null,
-  docxText = null,
-  fileName = null
-){
+const result = await askAI(
+  message ||
+  "Please analyze the attached file and explain it clearly for me.",
+  previousHistory,
+  imageData,
+  pdfData,
+  docxData,
+  file ? file.name : null
+);
 
 chatHistory.push({
-role:"assistant",
-content:result
+  role:"assistant",
+  content:result
 });
+
+saveChatHistory();
+
+renderChat();
+
+input.value="";
+
+fileInput.value="";
+
+document.getElementById("fileName").textContent="";
+
 
 saveChatHistory();
 
