@@ -1004,6 +1004,141 @@ if(documentActions){
 
 }
   
+ /* DOCUMENT ANALYSIS BUTTONS */
+
+async function runDocumentAction(instruction){
+
+const file = fileInput.files[0];
+
+if(!file){
+alert("Please attach a document first.");
+return;
+}
+
+try{
+
+let imageData = null;
+let pdfData = null;
+let docxData = null;
+
+if(file.type.startsWith("image/")){
+
+const reader = new FileReader();
+
+imageData = await new Promise(function(resolve,reject){
+
+reader.onload=function(){
+resolve(reader.result);
+};
+
+reader.onerror=function(){
+reject(new Error("Unable to read the image."));
+};
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+else if(file.type === "application/pdf"){
+
+const reader = new FileReader();
+
+pdfData = await new Promise(function(resolve,reject){
+
+reader.onload=function(){
+resolve(reader.result);
+};
+
+reader.onerror=function(){
+reject(new Error("Unable to read the PDF."));
+};
+
+reader.readAsDataURL(file);
+
+});
+
+}
+
+else if(file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
+
+const arrayBuffer = await file.arrayBuffer();
+
+const extracted = await mammoth.extractRawText({
+arrayBuffer: arrayBuffer
+});
+
+docxData = extracted.value;
+
+}
+
+else{
+
+alert("Please attach an image, PDF, or DOCX.");
+return;
+
+}
+
+const result = await askAI(
+instruction,
+[],
+imageData,
+pdfData,
+docxData,
+file.name
+);
+
+chatHistory.push({
+role:"user",
+content:instruction
+});
+
+chatHistory.push({
+role:"assistant",
+content:result
+});
+
+saveChatHistory();
+renderChat();
+
+}catch(error){
+
+console.error(error);
+
+alert(
+error.message ||
+"Unable to analyze the document."
+);
+
+}
+
+}
+
+document.getElementById("summarizeBtn").onclick=function(){
+
+runDocumentAction(
+"Summarize the attached document clearly for a student. Include the main ideas and important information."
+);
+
+};
+
+document.getElementById("explainBtn").onclick=function(){
+
+runDocumentAction(
+"Explain the attached document in very simple language, as if teaching a 10-year-old. Do not leave out important information."
+);
+
+};
+
+document.getElementById("keyPointsBtn").onclick=function(){
+
+runDocumentAction(
+"Extract the most important key points from the attached document for studying. Keep them clear and organized."
+);
+
+};
+  
 /* QUIZ */
 let questions=[];
 let current=0;
