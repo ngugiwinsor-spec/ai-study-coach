@@ -752,11 +752,24 @@ const file=fileInput.files[0];
 
 if(!message && !file)return;
 
+const hasAccess = await hasPremiumAccess();
+
+if(!hasAccess){
+
+alert(
+"AI Tutor is a Premium feature.\n\n" +
+"Start your 24-hour Premium Preview from the 💎 Premium tab, " +
+"or redeem a voucher."
+);
+
+return;
+
+}
+
 const button=document.getElementById("ask");
 
 button.disabled=true;
 button.textContent="Thinking...";
-
 chatHistory.push({
 role:"user",
 content:
