@@ -2159,20 +2159,46 @@ box.append(title,subject,text,edit,pin,del);
 list.appendChild(box);
 });
   }
-document.getElementById("saveNote").onclick=function(){
+document.getElementById("saveNote").onclick=async function(){
+
+const hasAccess = await hasPremiumAccess();
+
+if(!hasAccess){
+
+alert(
+"Notes is a Premium feature.\n\n" +
+"Start your 24-hour Premium Preview from the 💎 Premium tab, " +
+"or redeem a voucher."
+);
+
+return;
+
+}
+
 const title=document.getElementById("noteTitle").value.trim();
 const subject=document.getElementById("noteSubject").value.trim();
 const text=document.getElementById("noteText").value.trim();
+
 if(!title||!text)return;
 
 const notes=getNotes();
-notes.unshift({id:Date.now(),title:title,subject:subject||"General",text:text,pinned:false});
+
+notes.unshift({
+id:Date.now(),
+title:title,
+subject:subject||"General",
+text:text,
+pinned:false
+});
+
 saveNotes(notes);
 
 document.getElementById("noteTitle").value="";
 document.getElementById("noteSubject").value="";
 document.getElementById("noteText").value="";
+
 renderNotes();
+
 };
 
 document.getElementById("search").oninput=renderNotes;
