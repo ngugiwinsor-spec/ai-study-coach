@@ -1618,6 +1618,21 @@ showFlashcard();
 
 /* STUDY PLANNER */
 document.getElementById("makePlan").onclick=async function(){
+
+const hasAccess = await hasPremiumAccess();
+
+if(!hasAccess){
+
+alert(
+"Study Planner is a Premium feature.\n\n" +
+"Start your 24-hour Premium Preview from the 💎 Premium tab, " +
+"or redeem a voucher."
+);
+
+return;
+
+}
+
 const topics=document.getElementById("plannerTopics").value.trim();
 const days=document.getElementById("days").value;
 const time=document.getElementById("time").value;
