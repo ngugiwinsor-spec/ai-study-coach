@@ -2177,6 +2177,65 @@ renderNotes();
 
 document.getElementById("search").oninput=renderNotes;
 
+/* PREMIUM ACCESS CHECK */
+
+async function hasPremiumAccess(){
+
+const previewStarted =
+localStorage.getItem("premiumPreviewStarted") === "true";
+
+const startedAt =
+Number(localStorage.getItem("premiumPreviewStartedAt") || 0);
+
+const previewDuration =
+24 * 60 * 60 * 1000;
+
+const previewActive =
+previewStarted &&
+startedAt &&
+(Date.now() - startedAt < previewDuration);
+
+if(previewActive){
+return true;
+}
+
+try{
+
+const { data: sessionData } =
+await supabaseClient.auth.getSession();
+
+if(sessionData.session){
+
+const { data: profile } =
+await supabaseClient
+.from("profiles")
+.select("subscription,premium_until")
+.eq("id",sessionData.session.user.id)
+.single();
+
+if(
+profile &&
+profile.subscription === "premium" &&
+(!profile.premium_until ||
+new Date(profile.premium_until) > new Date())
+){
+
+return true;
+
+}
+
+}
+
+}catch(error){
+
+console.log("Premium access check failed:",error);
+
+}
+
+return false;
+
+  }
+  
 /* PROGRESS */
 function getProgress(){
 return JSON.parse(localStorage.getItem("studyProgress")||'{"minutes":0,"quizTotal":0,"cardTotal":0,"streak":0,"dailyGoal":60}');
