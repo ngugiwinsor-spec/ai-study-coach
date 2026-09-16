@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       Accept: "application/json"
     };
 
-    // 1. Create the IntaSend customer
+    // 1. Create IntaSend customer
     const customerResponse = await fetch(
       "https://api.intasend.com/api/v1/subscriptions-customers/",
       {
@@ -52,16 +52,30 @@ export default async function handler(req, res) {
       }
     );
 
-    const customerData = await customerResponse.json();
+    const customerText = await customerResponse.text();
+
+    let customerData;
+
+    try {
+      customerData = JSON.parse(customerText);
+    } catch {
+      customerData = { raw_response: customerText };
+    }
 
     if (!customerResponse.ok) {
-      return res.status(customerResponse.status).json({
+      console.error("IntaSend customer error:", {
+        status: customerResponse.status,
+        response: customerData
+      });
+
+      return res.status(500).json({
         error: "Could not create IntaSend customer.",
+        intasend_status: customerResponse.status,
         details: customerData
       });
     }
 
-    // 2. Create the subscription
+    // 2. Create subscription
     const subscriptionResponse = await fetch(
       "https://api.intasend.com/api/v1/subscriptions/",
       {
@@ -74,16 +88,30 @@ export default async function handler(req, res) {
       }
     );
 
-    const subscriptionData = await subscriptionResponse.json();
+    const subscriptionText = await subscriptionResponse.text();
+
+    let subscriptionData;
+
+    try {
+      subscriptionData = JSON.parse(subscriptionText);
+    } catch {
+      subscriptionData = { raw_response: subscriptionText };
+    }
 
     if (!subscriptionResponse.ok) {
-      return res.status(subscriptionResponse.status).json({
+      console.error("IntaSend subscription error:", {
+        status: subscriptionResponse.status,
+        response: subscriptionData
+      });
+
+      return res.status(500).json({
         error: "Could not create IntaSend subscription.",
+        intasend_status: subscriptionResponse.status,
         details: subscriptionData
       });
     }
 
-    // 3. Send the secure payment URL back to the app
+    // 3. Return secure IntaSend payment/setup URL
     return res.status(200).json({
       success: true,
       setup_url: subscriptionData.setup_url,
@@ -96,7 +124,8 @@ export default async function handler(req, res) {
     console.error("IntaSend subscription error:", error);
 
     return res.status(500).json({
-      error: "Something went wrong while creating the subscription."
+      error: "Something went wrong while creating the subscription.",
+      details: error.message
     });
   }
-}
+        }
