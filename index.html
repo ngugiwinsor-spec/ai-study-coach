@@ -401,20 +401,20 @@ Clear Conversation
 Experience smarter studying with powerful tools designed to help you learn faster.
 </p>
 
-<div class="plan-day">
-<div class="plan-title">Premium Monthly</div>
-<div class="plan-body">
-KES 199 / month<br>
-$1.99 / month
-</div>
+<div class="plan-day premium-plan" onclick="startPremiumPayment('monthly')">
+  <div class="plan-title">Premium Monthly</div>
+  <div class="plan-body">
+    KES 199 / month<br>
+    $1.99 / month
+  </div>
 </div>
 
-<div class="plan-day">
-<div class="plan-title">Premium Yearly</div>
-<div class="plan-body">
-KES 1,499 / year<br>
-$14.99 / year
-</div>
+<div class="plan-day premium-plan" onclick="startPremiumPayment('yearly')">
+  <div class="plan-title">Premium Yearly</div>
+  <div class="plan-body">
+    KES 1,499 / year<br>
+    $14.99 / year
+  </div>
 </div>
 
 <h3>✨ Try Premium before you upgrade</h3>
@@ -2575,6 +2575,51 @@ updatePreviewCountdown();
 },60000);
 
 });
+</script>
+<script>
+async function startPremiumPayment(plan) {
+  const email = prompt("Enter your email address:");
+  if (!email) return;
+
+  const firstName = prompt("Enter your first name:");
+  if (!firstName) return;
+
+  const lastName = prompt("Enter your last name:");
+  if (!lastName) return;
+
+  try {
+    const response = await fetch("/api/create-subscription.js", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email.trim(),
+        first_name: firstName.trim(),
+        last_name: lastName.trim(),
+        plan: plan
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error(data);
+      alert(data.error || "Unable to start payment.");
+      return;
+    }
+
+    if (data.setup_url) {
+      window.location.href = data.setup_url;
+    } else {
+      alert("Payment link was not returned. Please try again.");
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Something went wrong. Please try again.");
+  }
+}
 </script>
 </body>
   </html>
