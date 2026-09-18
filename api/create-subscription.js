@@ -115,6 +115,12 @@ export default async function handler(req, res) {
     }
 
     // 3. Return secure IntaSend payment/setup URL
+    console.log("IntaSend subscription created:", {
+  subscription_id: subscriptionData.subscription_id,
+  setup_url_host: subscriptionData.setup_url
+    ? new URL(subscriptionData.setup_url).host
+    : null
+});
     return res.status(200).json({
       success: true,
       setup_url: subscriptionData.setup_url,
