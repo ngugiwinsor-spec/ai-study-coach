@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
     // 1. Create IntaSend customer
     const customerResponse = await fetch(
-    "https://sandbox.intasend.com/api/v1/subscriptions-customers/",
+    "https://api.intasend.com/api/v1/subscriptions-customers/",
       {
         method: "POST",
         headers,
@@ -80,7 +80,7 @@ export default async function handler(req, res) {
 
     // 2. Create subscription
     const subscriptionResponse = await fetch(
-    "https://sandbox.intasend.com/api/v1/subscriptions/",
+    "https://api.intasend.com/api/v1/subscriptions/",
       {
         method: "POST",
         headers,
