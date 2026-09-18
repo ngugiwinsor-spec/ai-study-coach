@@ -87,7 +87,8 @@ export default async function handler(req, res) {
         body: JSON.stringify({
   customer_id: customerData.customer_id,
   plan_id: planIds[plan],
-  reference: `AI-STUDY-${Date.now()}`
+  reference: `AI-STUDY-${Date.now()}`,
+  redirect_url: "https://ai-study-coach-eta.vercel.app/"
 })
       }
     );
