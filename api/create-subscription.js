@@ -120,7 +120,12 @@ export default async function handler(req, res) {
   setup_url_host: subscriptionData.setup_url
     ? new URL(subscriptionData.setup_url).host
     : null,
+  redirect_url_host: subscriptionData.redirect_url
+    ? new URL(subscriptionData.redirect_url).host
+    : null,
   setup_url_exists: !!subscriptionData.setup_url,
+  redirect_url_exists: !!subscriptionData.redirect_url,
+  status: subscriptionData.status,
   keys: Object.keys(subscriptionData)
 });
     return res.status(200).json({
