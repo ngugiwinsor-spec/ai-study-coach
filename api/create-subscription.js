@@ -63,10 +63,13 @@ export default async function handler(req, res) {
     }
 
     if (!customerResponse.ok) {
-      console.error("IntaSend customer error:", {
-        status: customerResponse.status,
-        response: customerData
-      });
+      console.error(
+  "IntaSend customer error:",
+  JSON.stringify({
+    status: customerResponse.status,
+    response: customerData
+  }, null, 2)
+);
 
       return res.status(500).json({
         error: "Could not create IntaSend customer.",
