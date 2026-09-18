@@ -85,9 +85,10 @@ export default async function handler(req, res) {
         method: "POST",
         headers,
         body: JSON.stringify({
-          customer_id: customerData.customer_id,
-          plan_id: planIds[plan]
-        })
+  customer_id: customerData.customer_id,
+  plan_id: planIds[plan],
+  reference: `AI-STUDY-${Date.now()}`
+})
       }
     );
 
