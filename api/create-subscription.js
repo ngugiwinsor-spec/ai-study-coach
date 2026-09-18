@@ -12,10 +12,10 @@ export default async function handler(req, res) {
       });
     }
 
-    const planIds = {
-      monthly: "R0V5607-month",
-      yearly: "QY6D9K4-year"
-    };
+  const planIds = {
+  monthly: "R0V5607",
+  yearly: "QY6D9K4"
+};
 
     if (!planIds[plan]) {
       return res.status(400).json({
