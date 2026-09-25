@@ -772,16 +772,22 @@ Forgot Password?
 <script>
 document.addEventListener("DOMContentLoaded",function(){
 function clean(text){
-return String(text)
-.replace(/#{1,6}\s*/g,"")
-.replace(/\*\*\*/g,"")
-.replace(/\*\*/g,"")
-.replace(/\*/g,"")
-.replace(/```[a-zA-Z]*/g,"")
-.replace(/```/g,"")
-.trim();
-}
-
+  return String(text)
+    .replace(/#{1,6}\s*/g,"")
+    .replace(/\*\*\*/g,"")
+    .replace(/\*\*/g,"")
+    .replace(/\*/g,"")
+    .replace(/```[\s\S]*?```/g,function(match){
+      return match.replace(/```[a-zA-Z0-9_-]*/,"").replace(/```/g,"");
+    })
+    .replace(/`([^`]+)`/g,"$1")
+    .replace(/^[-•▪◦]\s+/gm,"")
+    .replace(/^>\s?/gm,"")
+    .replace(/_{2,}/g,"")
+    .replace(/\n{3,}/g,"\n\n")
+    .trim();
+  }
+  
 /* TABS */
 
   document.querySelectorAll(".tab").forEach(function(tab){
