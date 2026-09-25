@@ -89,95 +89,272 @@ button{font:inherit;cursor:pointer}
 .fill{height:100%;width:0;background:#172033}
 
 @media(max-width:600px){.card{padding:18px}.grid,.stats{grid-template-columns:1fr}}
+/* =========================
+   CHATGPT-STYLE AI TUTOR
+   ========================= */
+
+.tutor-shell{
+    width:100%;
+    max-width:900px;
+    margin:0 auto;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.05);
+}
+
+.tutor-topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 20px;
+    border-bottom:1px solid #e5e7eb;
+    background:#fff;
+}
+
+.tutor-title{
+    font-size:18px;
+    font-weight:700;
+    color:#172033;
+}
+
+.tutor-subtitle{
+    font-size:12px;
+    color:#7b8494;
+    margin-top:3px;
+}
+
+.tutor-topbar .clear-chat-btn{
+    width:auto;
+    margin:0;
+    padding:8px 13px;
+    border-radius:9px;
+    font-size:12px;
+}
+
 .chat-box{
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-height:500px;
-overflow-y:auto;
-padding:4px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    min-height:430px;
+    max-height:560px;
+    overflow-y:auto;
+    padding:28px 24px;
+    background:#fff;
+}
+
+.tutor-welcome{
+    text-align:center;
+    max-width:650px;
+    margin:auto;
+}
+
+.tutor-welcome-icon{
+    width:58px;
+    height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 16px;
+    border-radius:16px;
+    background:#f1f3f5;
+    font-size:28px;
+}
+
+.tutor-welcome h2{
+    margin:0;
+    font-size:24px;
+    color:#172033;
+}
+
+.tutor-welcome p{
+    max-width:520px;
+    margin:10px auto 22px;
+    color:#697586;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.suggestion-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    max-width:600px;
+    margin:auto;
+}
+
+.suggestion-btn{
+    padding:13px;
+    border:1px solid #e1e5ea;
+    border-radius:12px;
+    background:#fff;
+    color:#374151;
+    cursor:pointer;
+    text-align:left;
+    font-size:13px;
+}
+
+.suggestion-btn:hover{
+    background:#f7f8fa;
 }
 
 .chat-message{
-max-width:88%;
-padding:13px 15px;
-border-radius:14px;
-line-height:1.6;
-font-size:14px;
-white-space:pre-wrap;
+    max-width:82%;
+    padding:13px 16px;
+    border-radius:15px;
+    line-height:1.65;
+    font-size:14px;
+    white-space:pre-wrap;
 }
 
 .chat-message.user{
-align-self:flex-end;
-background:#172033;
-color:white;
-border-bottom-right-radius:4px;
+    align-self:flex-end;
+    background:#172033;
+    color:white;
+    border-bottom-right-radius:5px;
 }
 
 .chat-message.ai{
-align-self:flex-start;
-background:#f8fafc;
-border:1px solid #e3e8ef;
-color:#18212f;
-border-bottom-left-radius:4px;
+    align-self:flex-start;
+    background:#f7f8fa;
+    border:1px solid #e5e7eb;
+    color:#18212f;
+    border-bottom-left-radius:5px;
 }
 
 .chat-label{
-font-size:11px;
-font-weight:bold;
-margin-bottom:5px;
-opacity:.65;
+    font-size:11px;
+    font-weight:bold;
+    margin-bottom:5px;
+    opacity:.65;
 }
 
 .chat-input-area{
-margin-top:15px;
+    padding:14px 18px 18px;
+    border-top:1px solid #e5e7eb;
+    background:#fff;
 }
 
-.chat-input-area textarea{
-min-height:90px;
-}
-
-.clear-chat-btn{
-width:100%;
-border:1px solid #dce2ea;
-border-radius:11px;
-background:white;
-color:#536174;
-padding:12px;
-margin-top:10px;
-font-weight:bold;
-}
 .attachment-row{
-display:flex;
-align-items:center;
-gap:10px;
-margin-top:10px;
-flex-wrap:wrap;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:8px;
+    flex-wrap:wrap;
 }
 
 .attach-btn{
-border:1px solid #dce2ea;
-border-radius:11px;
-background:white;
-color:#536174;
-padding:10px 14px;
-font-weight:bold;
-cursor:pointer;
+    border:1px solid #dce2ea;
+    border-radius:10px;
+    background:white;
+    color:#536174;
+    padding:8px 12px;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:12px;
 }
 
-.attach-btn:active{
-transform:scale(.98);
+.attach-btn:hover{
+    background:#f7f8fa;
 }
 
 #fileName{
-font-size:12px;
-color:#697586;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap;
-max-width:65%;
+    font-size:12px;
+    color:#697586;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    max-width:65%;
 }
+
+.chat-input-area textarea{
+    width:100%;
+    min-height:65px;
+    max-height:160px;
+    resize:vertical;
+    border:1px solid #dce2ea;
+    border-radius:13px;
+    padding:13px 14px;
+    font-size:14px;
+    outline:none;
+    box-sizing:border-box;
+}
+
+.chat-input-area textarea:focus{
+    border-color:#aeb7c5;
+}
+
+.composer-bottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:8px;
+}
+
+.composer-hint{
+    font-size:10px;
+    color:#9aa3b1;
+}
+
+.send-btn{
+    width:38px;
+    height:38px;
+    border:none;
+    border-radius:10px;
+    background:#172033;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.send-btn:hover{
+    opacity:.9;
+}
+
+.clear-chat-btn{
+    border:1px solid #dce2ea;
+    border-radius:11px;
+    background:white;
+    color:#536174;
+    padding:10px 14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+
+    .tutor-shell{
+        border-radius:12px;
+    }
+
+    .chat-box{
+        min-height:400px;
+        padding:20px 14px;
+    }
+
+    .suggestion-grid{
+        grid-template-columns:1fr;
+    }
+
+    .tutor-welcome h2{
+        font-size:21px;
+    }
+
+    .chat-message{
+        max-width:90%;
+    }
+
+    .composer-hint{
+        display:none;
+    }
+
+    }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.9.0/mammoth.browser.min.js"></script>
@@ -213,80 +390,128 @@ const supabaseClient = window.supabase.createClient(
 </div>
 
 <section id="tutor" class="panel active">
-<div class="card">
-<div class="icon">🤖</div>
-<h2>AI Tutor</h2>
-<p class="subtitle">Ask a question and get a simple explanation tailored for studying.</p><div class="card" id="studySnapshot">
-<h3>📊 Study Snapshot</h3>
-<p>⏱️ Minutes studied: <span id="homeMinutes">0</span></p>
-<p>📝 Quizzes completed: <span id="homeQuizzes">0</span></p>
-<p>🧠 Flashcards reviewed: <span id="homeCards">0</span></p>
-<p>🔥 Study streak: <span id="homeStreak">0</span></p>
-</div>
-<div id="answer" class="chat-box"></div>
 
-<div class="chat-input-area">
-<label>Your message</label>
+  <div class="tutor-shell">
 
-<textarea id="question" placeholder="Ask your AI Tutor anything..."></textarea>
+    <div class="tutor-topbar">
+      <div>
+        <div class="tutor-title">AI Tutor</div>
+        <div class="tutor-subtitle">Your personal study assistant</div>
+      </div>
 
-<div class="attachment-row">
+      <button type="button" class="clear-chat-btn" id="clearChatTop">
+        New chat
+      </button>
+    </div>
 
-<button type="button" class="attach-btn" id="attachButton">
-📎 Attach
-</button>
+    <div id="answer" class="chat-box">
 
-<input
-type="file"
-id="fileInput"
-accept="image/*,.pdf,.doc,.docx,.txt"
-hidden
->
+      <div class="tutor-welcome">
+        <div class="tutor-welcome-icon">🤖</div>
+        <h2>How can I help you study?</h2>
+        <p>
+          Ask me anything, explain a difficult topic, summarize your notes,
+          or prepare for an exam.
+        </p>
 
-<span id="fileName"></span>
-<div id="documentActions" style="display:none;margin-top:10px;">
+        <div class="suggestion-grid">
+          <button type="button" class="suggestion-btn"
+            onclick="document.getElementById('question').value='Explain this topic to me simply.'">
+            💡 Explain a topic
+          </button>
 
-<p style="font-size:13px;font-weight:bold;margin:5px 0 8px;">
-📄 Document actions
-</p>
+          <button type="button" class="suggestion-btn"
+            onclick="document.getElementById('question').value='Help me understand this concept.'">
+            🧠 Help me understand
+          </button>
 
-<div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button type="button" class="suggestion-btn"
+            onclick="document.getElementById('question').value='Give me some study questions about this topic.'">
+            📝 Study questions
+          </button>
 
-<button type="button" class="attach-btn" id="summarizeBtn">
-Summarize
-</button>
+          <button type="button" class="suggestion-btn"
+            onclick="document.getElementById('question').value='Quiz me on this topic.'">
+            🧪 Quiz me
+          </button>
+        </div>
+      </div>
 
-<button type="button" class="attach-btn" id="explainBtn">
-Explain Simply
-</button>
+    </div>
 
-<button type="button" class="attach-btn" id="keyPointsBtn">
-Key Points
-</button>
+    <div class="chat-input-area">
 
-<button type="button" class="attach-btn" id="studyQuestionsBtn">
-📝 Study Questions
-  </button>
+      <div class="attachment-row">
 
-<button type="button" class="attach-btn" id="examQuizBtn">
-🧪 Exam Quiz
-</button>
+        <button type="button" class="attach-btn" id="attachButton">
+          📎 Attach
+        </button>
 
-</div>
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*,.pdf,.doc,.docx,.txt"
+          hidden
+        >
 
-</div>
+        <span id="fileName"></span>
 
-</div>
+      </div>
 
-<button class="main-btn" id="ask">Send Message</button>
+      <div id="documentActions" style="display:none;margin-top:10px;">
 
-<button type="button" class="clear-chat-btn" id="clearChat">
-Clear Conversation
-</button>
+        <p style="font-size:13px;font-weight:bold;margin:5px 0 8px;">
+          📄 Document actions
+        </p>
 
-</div>
-</div>
-</section>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+
+          <button type="button" class="attach-btn" id="summarizeBtn">
+            Summarize
+          </button>
+
+          <button type="button" class="attach-btn" id="explainBtn">
+            Explain Simply
+          </button>
+
+          <button type="button" class="attach-btn" id="keyPointsBtn">
+            Key Points
+          </button>
+
+          <button type="button" class="attach-btn" id="studyQuestionsBtn">
+            📝 Study Questions
+          </button>
+
+          <button type="button" class="attach-btn" id="examQuizBtn">
+            🧪 Exam Quiz
+          </button>
+
+        </div>
+
+      </div>
+
+      <textarea
+        id="question"
+        placeholder="Message your AI Tutor..."
+      ></textarea>
+
+      <div class="composer-bottom">
+
+        <span class="composer-hint">
+          AI Tutor can make mistakes. Check important information.
+        </span>
+
+        <button type="button" class="send-btn" id="ask">
+          ↑
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  </section>
 
 <section id="quiz" class="panel">
 <div class="card">
