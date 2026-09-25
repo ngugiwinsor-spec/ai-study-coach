@@ -328,6 +328,22 @@ button{font:inherit;cursor:pointer}
     cursor:pointer;
 }
 
+.copy-ai-btn{
+    border:1px solid #dce2ea;
+    border-radius:8px;
+    background:white;
+    color:#536174;
+    padding:6px 10px;
+    margin-top:8px;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.copy-ai-btn:active{
+    transform:scale(.97);
+}
+    
 @media(max-width:600px){
 
     .tutor-shell{
@@ -965,8 +981,46 @@ text.textContent=cleanTutorResponse(message.content);
 bubble.appendChild(label);
 bubble.appendChild(text);
 
-output.appendChild(bubble);
+if(message.role !== "user"){
 
+const copyButton=document.createElement("button");
+
+copyButton.type="button";
+copyButton.className="copy-ai-btn";
+copyButton.textContent="Copy";
+
+copyButton.onclick=async function(){
+
+try{
+
+await navigator.clipboard.writeText(
+cleanTutorResponse(message.content)
+);
+
+copyButton.textContent="Copied ✓";
+
+setTimeout(function(){
+copyButton.textContent="Copy";
+},1500);
+
+}catch(error){
+
+copyButton.textContent="Copy failed";
+
+setTimeout(function(){
+copyButton.textContent="Copy";
+},1500);
+
+}
+
+};
+
+bubble.appendChild(copyButton);
+
+}
+
+output.appendChild(bubble);
+  
 });
 
 output.scrollTop=output.scrollHeight;
