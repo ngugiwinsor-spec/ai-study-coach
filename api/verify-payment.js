@@ -23,7 +23,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,
+      `https://api.paystack.co/charge/${encodeURIComponent(reference)}`,
       {
         method: "GET",
         headers: {
@@ -35,11 +35,11 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    console.log("Paystack verification:", data);
+    console.log("Paystack charge verification:", data);
 
     if (!response.ok || !data.status) {
       return res.status(500).json({
-        error: "Could not verify payment.",
+        error: "Could not verify M-PESA payment.",
         details: data.message || "Unknown Paystack error"
       });
     }
@@ -51,7 +51,8 @@ export default async function handler(req, res) {
       amount: data.data.amount,
       currency: data.data.currency,
       channel: data.data.channel,
-      gateway_response: data.data.gateway_response
+      gateway_response: data.data.gateway_response,
+      display_text: data.data.display_text
     });
 
   } catch (error) {
