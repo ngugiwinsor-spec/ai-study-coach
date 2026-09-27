@@ -101,9 +101,10 @@ export default async function handler(req, res) {
         console.error("Paystack M-PESA error:", data);
 
         return res.status(500).json({
-          error: "Could not start M-PESA payment.",
-          details: data.message || "Unknown Paystack error"
-        });
+  error: "Could not start M-PESA payment.",
+  details: data.message || "Unknown Paystack error",
+  paystack_response: data
+});
       }
 
       console.log("M-PESA payment started:", {
