@@ -12,138 +12,73 @@ export default async function handler(req, res) {
       });
     }
 
-  const planIds = {
-  monthly: "R0V5607",
-  yearly: "QY6D9K4"
-};
+    const planCodes = {
+      monthly: "PLN_7i9lg806r2o48rt",
+      yearly: "PLN_cz22w661j6blb88"
+    };
 
-    if (!planIds[plan]) {
+    if (!planCodes[plan]) {
       return res.status(400).json({
         error: "Invalid plan selected."
       });
     }
 
-    const secretKey = process.env.INTASEND_SECRET_KEY;
+    const secretKey = process.env.PAYSTACK_SECRET_KEY;
 
     if (!secretKey) {
       return res.status(500).json({
-        error: "IntaSend secret key is not configured."
+        error: "Paystack secret key is not configured."
       });
     }
 
-    const headers = {
-      Authorization: `Bearer ${secretKey}`,
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    };
-
-    // 1. Create IntaSend customer
-    const customerResponse = await fetch(
-    "https://payment.intasend.com/api/v1/subscriptions-customers/",
+    const response = await fetch(
+      "https://api.paystack.co/transaction/initialize",
       {
         method: "POST",
-        headers,
+        headers: {
+          Authorization: `Bearer ${secretKey}`,
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           email,
-          first_name,
-          last_name,
-          country: "KE"
+          amount: plan === "monthly" ? 19900 : 149900,
+          currency: "KES",
+          plan: planCodes[plan],
+          callback_url: "https://ai-study-coach-eta.vercel.app/"
         })
       }
     );
 
-    const customerText = await customerResponse.text();
+    const data = await response.json();
 
-    let customerData;
-
-    try {
-      customerData = JSON.parse(customerText);
-    } catch {
-      customerData = { raw_response: customerText };
-    }
-
-    if (!customerResponse.ok) {
-      console.error(
-  "IntaSend customer error:",
-  JSON.stringify({
-    status: customerResponse.status,
-    response: customerData
-  }, null, 2)
-);
+    if (!response.ok || !data.status) {
+      console.error("Paystack initialization error:", data);
 
       return res.status(500).json({
-        error: "Could not create IntaSend customer.",
-        intasend_status: customerResponse.status,
-        details: customerData
+        error: "Could not initialize Paystack payment.",
+        details: data.message || "Unknown Paystack error"
       });
     }
 
-    // 2. Create subscription
-    const subscriptionResponse = await fetch(
-    "https://payment.intasend.com/api/v1/subscriptions/",
-      {
-        method: "POST",
-        headers,
-        body: JSON.stringify({
-  customer_id: customerData.customer_id,
-  plan_id: planIds[plan],
-  reference: `AI-STUDY-${Date.now()}`,
-  redirect_url: "https://ai-study-coach-eta.vercel.app/"
-})
-      }
-    );
+    console.log("Paystack payment initialized:", {
+      reference: data.data.reference,
+      plan,
+      plan_code: planCodes[plan]
+    });
 
-    const subscriptionText = await subscriptionResponse.text();
-
-    let subscriptionData;
-
-    try {
-      subscriptionData = JSON.parse(subscriptionText);
-    } catch {
-      subscriptionData = { raw_response: subscriptionText };
-    }
-
-    if (!subscriptionResponse.ok) {
-      console.error("IntaSend subscription error:", {
-        status: subscriptionResponse.status,
-        response: subscriptionData
-      });
-
-      return res.status(500).json({
-        error: "Could not create IntaSend subscription.",
-        intasend_status: subscriptionResponse.status,
-        details: subscriptionData
-      });
-    }
-
-    // 3. Return secure IntaSend payment/setup URL
-    console.log("IntaSend subscription response:", {
-  subscription_id: subscriptionData.subscription_id,
-  setup_url_host: subscriptionData.setup_url
-    ? new URL(subscriptionData.setup_url).host
-    : null,
-  redirect_url_host: subscriptionData.redirect_url
-    ? new URL(subscriptionData.redirect_url).host
-    : null,
-  setup_url_exists: !!subscriptionData.setup_url,
-  redirect_url_exists: !!subscriptionData.redirect_url,
-  status: subscriptionData.status,
-  keys: Object.keys(subscriptionData)
-});
     return res.status(200).json({
       success: true,
-      setup_url: subscriptionData.setup_url,
-      subscription_id: subscriptionData.subscription_id,
-      customer_id: customerData.customer_id,
-      plan: plan
+      authorization_url: data.data.authorization_url,
+      reference: data.data.reference,
+      plan
     });
 
   } catch (error) {
-    console.error("IntaSend subscription error:", error);
+    console.error("Paystack subscription error:", error);
 
     return res.status(500).json({
       error: "Something went wrong while creating the subscription.",
       details: error.message
     });
   }
-        }
+      }
