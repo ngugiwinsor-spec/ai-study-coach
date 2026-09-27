@@ -113,13 +113,14 @@ export default async function handler(req, res) {
       });
 
       return res.status(200).json({
-        success: true,
-        payment_method: "mpesa",
-        reference: data.data.reference,
-        status: data.data.status,
-        display_text: data.data.display_text,
-        plan
-      });
+  success: true,
+  payment_method: "mpesa",
+  reference: data.data.reference,
+  status: data.data.status,
+  display_text: data.data.display_text,
+  plan,
+  paystack_message: data.message
+});
     }
 
     /*
