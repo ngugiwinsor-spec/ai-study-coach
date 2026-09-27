@@ -41,10 +41,11 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           email,
-          amount: plan === "monthly" ? 19900 : 149900,
-          currency: "KES",
-          plan: planCodes[plan],
-          callback_url: "https://ai-study-coach-eta.vercel.app/"
+amount: plan === "monthly" ? 19900 : 149900,
+currency: "KES",
+plan: planCodes[plan],
+channels: ["card", "mobile_money"],
+callback_url: "https://ai-study-coach-eta.vercel.app/"
         })
       }
     );
