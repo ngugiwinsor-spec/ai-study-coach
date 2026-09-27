@@ -2874,6 +2874,25 @@ async function startPremiumPayment(plan) {
   const lastName = prompt("Enter your last name:");
   if (!lastName) return;
 
+  const method = prompt(
+    "Choose payment method:\n\n1. Card\n2. M-PESA\n\nEnter 1 or 2:"
+  );
+
+  if (method !== "1" && method !== "2") {
+    alert("Please choose 1 for Card or 2 for M-PESA.");
+    return;
+  }
+
+  let phone = "";
+
+  if (method === "2") {
+    phone = prompt(
+      "Enter your Safaricom M-PESA number:\nExample: 0712345678"
+    );
+
+    if (!phone) return;
+  }
+
   try {
     const response = await fetch("/api/create-subscription.js", {
       method: "POST",
@@ -2884,7 +2903,9 @@ async function startPremiumPayment(plan) {
         email: email.trim(),
         first_name: firstName.trim(),
         last_name: lastName.trim(),
-        plan: plan
+        phone: phone.trim(),
+        plan: plan,
+        payment_method: method === "2" ? "mpesa" : "card"
       })
     });
 
@@ -2896,11 +2917,24 @@ async function startPremiumPayment(plan) {
       return;
     }
 
-    if (data.authorization_url) {
-      window.location.href = data.authorization_url;
-    } else {
-      alert("Payment link was not returned. Please try again.");
+    if (data.payment_method === "card") {
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        alert("Card payment link was not returned.");
+      }
+      return;
     }
+
+    if (data.payment_method === "mpesa") {
+      alert(
+        data.display_text ||
+        "Please check your phone and complete the M-PESA payment."
+      );
+      return;
+    }
+
+    alert("Payment method was not recognized.");
 
   } catch (error) {
     console.error(error);
