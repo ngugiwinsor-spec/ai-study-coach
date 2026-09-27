@@ -2933,12 +2933,43 @@ async function startPremiumPayment(plan) {
     }
 
     if (data.payment_method === "mpesa") {
-      alert(
-        data.display_text ||
-        "Please check your phone and complete the M-PESA payment."
-      );
-      return;
-    }
+  alert(
+    data.display_text ||
+    "M-PESA payment has been started. Please check your phone."
+  );
+
+  if (data.reference) {
+    setTimeout(async function () {
+      try {
+        const verifyResponse = await fetch(
+          "/api/verify-payment.js?reference=" +
+          encodeURIComponent(data.reference)
+        );
+
+        const verifyData = await verifyResponse.json();
+
+        console.log("M-PESA verification:", verifyData);
+
+        if (verifyData.status === "success") {
+          alert("Payment successful! 🎉");
+        } else {
+          alert(
+            "Payment status: " +
+            (verifyData.status || "unknown") +
+            "\n\nPaystack: " +
+            (verifyData.gateway_response || "No additional information")
+          );
+        }
+
+      } catch (error) {
+        console.error("Verification error:", error);
+        alert("Payment started, but we could not check its status yet.");
+      }
+    }, 5000);
+  }
+
+  return;
+  }
 
     alert("Payment method was not recognized.");
 
