@@ -2951,8 +2951,68 @@ async function startPremiumPayment(plan) {
         console.log("M-PESA verification:", verifyData);
 
         if (verifyData.status === "success") {
-          alert("Payment successful! 🎉");
-        } else {
+  try {
+    const sessionResult =
+      await supabaseClient.auth.getSession();
+
+    const session =
+      sessionResult.data.session;
+
+    if (!session) {
+      alert(
+        "Payment successful, but you are not logged in. Please log in and contact support."
+      );
+      return;
+    }
+
+    const activateResponse =
+      await fetch("/api/activate-premium", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          reference: data.reference,
+          user_id: session.user.id,
+          plan: plan
+        })
+      });
+
+    const activateData =
+      await activateResponse.json();
+
+    if (!activateResponse.ok) {
+      console.error(
+        "Premium activation error:",
+        activateData
+      );
+
+      alert(
+        activateData.error ||
+        "Payment succeeded, but Premium could not be activated."
+      );
+
+      return;
+    }
+
+    alert(
+      "Payment successful! 🎉\n\n" +
+      "Premium has been activated."
+    );
+
+    window.location.reload();
+
+  } catch (error) {
+    console.error(
+      "Premium activation error:",
+      error
+    );
+
+    alert(
+      "Payment succeeded, but Premium activation needs another attempt."
+    );
+  }
+} else {
           alert(
             "M-PESA payment status: " +
             (verifyData.status || "unknown")
