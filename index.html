@@ -2912,10 +2912,16 @@ async function startPremiumPayment(plan) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error(data);
-      alert(data.error || "Unable to start payment.");
-      return;
-    }
+  console.error("Payment error:", data);
+
+  alert(
+    data.details
+      ? data.error + "\n\nPaystack says:\n" + data.details
+      : data.error || "Unable to start payment."
+  );
+
+  return;
+  }
 
     if (data.payment_method === "card") {
       if (data.authorization_url) {
