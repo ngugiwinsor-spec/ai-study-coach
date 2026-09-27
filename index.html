@@ -2935,14 +2935,14 @@ async function startPremiumPayment(plan) {
     if (data.payment_method === "mpesa") {
   alert(
     data.display_text ||
-    "M-PESA payment has been started. Please check your phone."
+    "The payment has been started. Please check your phone."
   );
 
   if (data.reference) {
     setTimeout(async function () {
       try {
         const verifyResponse = await fetch(
-          "/api/verify-payment.js?reference=" +
+          "/api/verify-payment?reference=" +
           encodeURIComponent(data.reference)
         );
 
@@ -2954,22 +2954,23 @@ async function startPremiumPayment(plan) {
           alert("Payment successful! 🎉");
         } else {
           alert(
-            "Payment status: " +
-            (verifyData.status || "unknown") +
-            "\n\nPaystack: " +
-            (verifyData.gateway_response || "No additional information")
+            "M-PESA payment status: " +
+            (verifyData.status || "unknown")
           );
         }
 
       } catch (error) {
         console.error("Verification error:", error);
-        alert("Payment started, but we could not check its status yet.");
+
+        alert(
+          "The payment was started, but we could not check its status yet."
+        );
       }
     }, 5000);
   }
 
   return;
-  }
+}
 
     alert("Payment method was not recognized.");
 
