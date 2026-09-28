@@ -950,9 +950,19 @@ label.className="chat-label";
 label.textContent="AI TUTOR";
 
 const text = document.createElement("div");
-text.textContent=
-"Hi! I'm your AI Study Coach. Ask me anything about your studies.";
 
+text.innerHTML = `
+  <strong style="font-size:16px;">
+    Hi! I'm your AI Study Coach 👋
+  </strong>
+  <div style="margin-top:6px;">
+    What are we studying today?
+  </div>
+  <div style="margin-top:8px;font-size:13px;opacity:.75;">
+    Ask me to explain a topic, simplify your notes,
+    create study questions, or prepare you for an exam.
+  </div>
+`;
 welcome.appendChild(label);
 welcome.appendChild(text);
 
