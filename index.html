@@ -321,14 +321,55 @@ button{font:inherit;cursor:pointer}
   }
     
 /* PROGRESS */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stat{padding:18px;background:#f8fafc;border:1px solid #e4e9ef;border-radius:14px}
-.stat-number{font-size:25px;font-weight:bold;margin-top:7px}
-.stat-label{font-size:12px;color:#718096}
-.track{height:8px;background:#e2e7ed;border-radius:20px;margin-top:10px;overflow:hidden}
-.fill{height:100%;width:0;background:#172033}
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
 
-@media(max-width:600px){.card{padding:18px}.grid,.stats{grid-template-columns:1fr}}
+.stat{
+    padding:18px;
+    background:linear-gradient(135deg,#ffffff 0%,#f5f3ff 100%);
+    border:1px solid #ddd6fe;
+    border-radius:14px;
+    box-shadow:0 5px 16px rgba(124,58,237,.07);
+}
+
+.stat-number{
+    font-size:25px;
+    font-weight:bold;
+    margin-top:7px;
+    color:#6d28d9;
+}
+
+.stat-label{
+    font-size:12px;
+    color:#7c3aed;
+}
+
+.track{
+    height:8px;
+    background:#e9e5ff;
+    border-radius:20px;
+    margin-top:10px;
+    overflow:hidden;
+}
+
+.fill{
+    height:100%;
+    width:0;
+    background:linear-gradient(90deg,#7c3aed,#4f46e5);
+}
+
+@media(max-width:600px){
+    .card{
+        padding:18px;
+    }
+
+    .grid,.stats{
+        grid-template-columns:1fr;
+    }
+}
 /* =========================
    CHATGPT-STYLE AI TUTOR
    ========================= */
