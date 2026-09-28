@@ -113,7 +113,23 @@ select:focus{
 }
 textarea{min-height:120px;resize:vertical}
 button{font:inherit;cursor:pointer}
-.main-btn{width:100%;border:0;border-radius:11px;background:#172033;color:white;padding:13px;margin-top:17px;font-weight:bold}
+.main-btn{
+    width:100%;
+    border:0;
+    border-radius:11px;
+    background:linear-gradient(135deg,#4f46e5,#7c3aed);
+    color:white;
+    padding:13px;
+    margin-top:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.main-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(79,70,229,.18);
+}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .response{display:none;margin-top:20px;background:#f8fafc;border:1px solid #e5eaf0;border-radius:13px;padding:18px;line-height:1.7;font-size:14px}
 .response.show{display:block}
