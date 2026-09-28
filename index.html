@@ -67,12 +67,50 @@ h1{margin:0;font-size:26px}
     box-shadow:0 4px 12px rgba(79,70,229,.20);
   }
 .panel{display:none}.panel.active{display:block}
-.card{background:white;border:1px solid #e6eaf0;border-radius:17px;padding:22px;box-shadow:0 3px 15px rgba(15,23,42,.04)}
+.card{
+    background:linear-gradient(135deg,#ffffff 0%,#fafaff 100%);
+    border:1px solid #e1e4f5;
+    border-radius:17px;
+    padding:22px;
+    box-shadow:0 6px 20px rgba(79,70,229,.06);
+    transition:.2s ease;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(79,70,229,.10);
+}
 .icon{font-size:26px;margin-bottom:8px}
-h2{margin:0 0 6px;font-size:21px}
-.subtitle{color:#697586;font-size:14px;line-height:1.5;margin:0 0 22px}
+h2{
+    margin:0 0 6px;
+    font-size:21px;
+    color:#312e81;
+    font-weight:700;
+}
+.subtitle{
+    color:#6366a8;
+    font-size:14px;
+    line-height:1.5;
+    margin:0 0 22px;
+}
 label{display:block;font-size:13px;font-weight:bold;margin:15px 0 7px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #dce2ea;border-radius:11px;font:inherit;background:white}
+input,textarea,select{
+    width:100%;
+    padding:12px;
+    border:1px solid #dce2ea;
+    border-radius:11px;
+    font:inherit;
+    background:white;
+    transition:.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    border-color:#818cf8;
+    box-shadow:0 0 0 3px rgba(99,102,241,.10);
+}
 textarea{min-height:120px;resize:vertical}
 button{font:inherit;cursor:pointer}
 .main-btn{width:100%;border:0;border-radius:11px;background:#172033;color:white;padding:13px;margin-top:17px;font-weight:bold}
