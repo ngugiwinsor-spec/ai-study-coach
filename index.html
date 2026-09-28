@@ -435,26 +435,28 @@ const supabaseClient = window.supabase.createClient(
         </p>
 
         <div class="suggestion-grid">
-          <button type="button" class="suggestion-btn"
-            onclick="document.getElementById('question').value='Explain this topic to me simply.'">
-            💡 Explain a topic
-          </button>
 
-          <button type="button" class="suggestion-btn"
-            onclick="document.getElementById('question').value='Help me understand this concept.'">
-            🧠 Help me understand
-          </button>
+  <button type="button" class="suggestion-btn"
+    onclick="document.getElementById('question').value='Explain this topic to me simply: '; document.getElementById('question').focus();">
+    📚 Explain a topic
+  </button>
 
-          <button type="button" class="suggestion-btn"
-            onclick="document.getElementById('question').value='Give me some study questions about this topic.'">
-            📝 Study questions
-          </button>
+  <button type="button" class="suggestion-btn"
+    onclick="document.getElementById('question').value='Create a quiz to test me on: '; document.getElementById('question').focus();">
+    📝 Create a quiz
+  </button>
 
-          <button type="button" class="suggestion-btn"
-            onclick="document.getElementById('question').value='Quiz me on this topic.'">
-            🧪 Quiz me
-          </button>
-        </div>
+  <button type="button" class="suggestion-btn"
+    onclick="document.getElementById('question').value='Create flashcards for this topic: '; document.getElementById('question').focus();">
+    🃏 Make flashcards
+  </button>
+
+  <button type="button" class="suggestion-btn"
+    onclick="document.getElementById('question').value='Help me study these notes: '; document.getElementById('question').focus();">
+    📄 Study my notes
+  </button>
+
+</div>
       </div>
 
     </div>
