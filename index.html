@@ -3060,7 +3060,33 @@ document.getElementById("homeStreak").textContent=data.streak||0;document.getEle
 const todayMinutes=data.todayMinutes||0;
 const goalPercent=Math.min(100,Math.round(todayMinutes/goal*100));
 document.getElementById("goalProgress").textContent=todayMinutes+" / "+goal+" minutes";
+const focusText=document.querySelector(".today-focus-text");
 
+if(focusText){
+
+    if(todayMinutes<=0){
+
+        focusText.textContent=
+        "Start small. Aim for 20 minutes today.";
+
+    }else if(todayMinutes<goal){
+
+        focusText.textContent=
+        "Good start! Keep going and reach your daily goal.";
+
+    }else if(todayMinutes===goal){
+
+        focusText.textContent=
+        "🎉 Daily goal complete! Great work today.";
+
+    }else{
+
+        focusText.textContent=
+        "🔥 You went beyond your goal today!";
+
+    }
+
+  }
 const percent=Math.min(100,Math.round(
 (Math.min((data.minutes || 0)/300*100,100)+
 Math.min((data.quizTotal || 0)/10*100,100)+
